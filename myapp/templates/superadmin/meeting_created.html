@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Created</title>
+{% include "partials/poppins.html" %}
+</head>
+
+<body>
+
+    <h2>Google Meet Created Successfully</h2>
+
+    <p>Class: {{ meeting.class_title }}</p>
+    <p>Date: {{ meeting.class_date }}</p>
+    <p>Time: {{ meeting.class_time }}</p>
+
+    <p>
+        <a href="{{ meeting.meeting_url }}" target="_blank">
+            Open Google Meet
+        </a>
+    </p>
+
+    {% if cohost_added %}
+      <p style="color:green">Teacher co-host configured. Teacher can join directly.</p>
+    {% else %}
+      <p style="color:#b45309">Meet created, but teacher co-host could not be configured: {{ cohost_error }}</p>
+    {% endif %}
+    <p><a href="{% url 'teacher_classes' %}">View / Start Classes</a></p>
+    <p><a href="{% url 'schedule_meeting' %}">Schedule Another Class</a></p>
+
+</body>
+</html>

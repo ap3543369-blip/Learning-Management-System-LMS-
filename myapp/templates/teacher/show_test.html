@@ -1,0 +1,579 @@
+{% extends 'teacher/base.html' %}
+
+{% block title %}View Online Tests | NOU e-Gyan{% endblock %}
+{% block page_title %}View Online Tests{% endblock %}
+
+{% block content %}
+
+<style>
+    .tests-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* HERO */
+    .tests-hero {
+        position: relative;
+        padding: 32px 35px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        background: #661620;
+        box-shadow: none;
+        color: #fff;
+        overflow: hidden;
+    }
+
+    .tests-hero::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        right: -50px;
+        top: -80px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+    }
+
+    .tests-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 13px;
+    }
+
+    .tests-eyebrow span {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.13);
+        border: 1px solid rgba(255,255,255,0.16);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .tests-hero h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.3;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+
+    .tests-hero p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: rgba(255,255,255,.82);
+        position: relative;
+        z-index: 2;
+    }
+
+    .tests-session-tag {
+        position: absolute;
+        right: 35px;
+        bottom: 32px;
+        padding: 6px 11px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.16);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+        z-index: 2;
+    }
+
+    /* CARD */
+    .tests-card {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ece4df;
+        border-radius: 10px;
+        padding: 28px;
+        box-shadow: none;
+    }
+
+    .tests-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #eee6e1;
+    }
+
+    .tests-title-area {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .tests-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8eceb;
+        color: #81221f;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .tests-title-area h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #292323;
+    }
+
+    .tests-title-area p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        color: #8a7d78;
+    }
+
+    /* ADD BUTTON */
+    .add-test-btn {
+        height: 42px;
+        padding: 0 17px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        border-radius: 6px;
+        background: #81221f;
+        color: #fff !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: none;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .add-test-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: none;
+    }
+
+    /* TABLE */
+    .tests-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid #eee5df;
+        border-radius: 8px;
+    }
+
+    .tests-table {
+        width: 100%;
+        min-width: 1050px;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .tests-table thead th {
+        padding: 13px 12px;
+        background: #faf6f3;
+        border-bottom: 1px solid #e9dfda;
+        color: #5f514c;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .tests-table tbody td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #f0e9e5;
+        color: #4d4541;
+        font-size: 13px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .tests-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .tests-table tbody tr {
+        transition: .18s ease;
+    }
+
+    .tests-table tbody tr:hover {
+        background: #fdf9f7;
+    }
+
+    .serial {
+        color: #8d7e78;
+        font-weight: 600;
+    }
+
+    .test-name {
+        color: #2e2724;
+        font-weight: 600;
+    }
+
+    .course-name {
+        color: #635650;
+        font-weight: 500;
+    }
+
+    .subject-name {
+        color: #6e625d;
+    }
+
+    /* STATUS */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 9px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        background: #eaf7ef;
+        color: #23743e;
+        border: 1px solid #d6efdf;
+    }
+
+    .status-badge::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #2d9b52;
+    }
+
+    /* ACTIONS */
+    .test-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .test-action {
+        height: 30px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid #e5dcd7;
+        background: #fff;
+        color: #5d514c !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .18s ease;
+        white-space: nowrap;
+    }
+
+    .test-action:hover {
+        background: #f8efed;
+        border-color: #cfa9a4;
+        color: #81221f !important;
+    }
+
+    .test-action.edit {
+        color: #81221f !important;
+        border-color: #d9bbb7;
+        background: #fcf5f3;
+    }
+
+    .test-action.questions {
+        color: #176b78 !important;
+        border-color: #b9dce1;
+        background: #f1fafb;
+    }
+
+    .test-action.bulk {
+        color: #725b17 !important;
+        border-color: #e6d9a9;
+        background: #fffaf0;
+    }
+
+    .test-action.delete {
+        color: #a52b2b !important;
+        border-color: #e5c3c3;
+        background: #fff5f5;
+    }
+
+    .test-action.delete:hover {
+        background: #a52b2b;
+        color: #fff !important;
+        border-color: #a52b2b;
+    }
+
+    /* EMPTY */
+    .empty-tests {
+        padding: 55px 20px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 13px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8eceb;
+        color: #81221f;
+        font-size: 18px;
+    }
+
+    .empty-tests h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #3a302c;
+    }
+
+    .empty-tests p {
+        margin: 5px 0 0;
+        font-size: 13px;
+        color: #91847e;
+    }
+
+    /* FOOTER NOTE */
+    .tests-note {
+        margin-top: 16px;
+        font-size: 13px;
+        color: #91847e;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+
+        .tests-hero {
+            padding: 25px 22px;
+        }
+
+        .tests-hero h1 {
+            font-size: 24px;
+        }
+
+        .tests-hero p {
+            font-size: 13px;
+        }
+
+        .tests-session-tag {
+            position: static;
+            display: inline-flex;
+            margin-top: 18px;
+        }
+
+        .tests-card {
+            padding: 20px;
+        }
+
+        .tests-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-test-btn {
+            width: 100%;
+        }
+
+        .tests-table-wrap {
+            margin-top: 5px;
+        }
+    }
+</style>
+
+
+<div class="tests-page">
+
+    <!-- HERO -->
+    <section class="tests-hero">
+
+        <div class="tests-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>ONLINE ASSESSMENT</span>
+        </div>
+
+        <h1>Online Tests</h1>
+
+        <p>
+            Manage online tests, MCQ question banks and assessment details.
+        </p>
+
+        <span class="tests-session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- TEST CARD -->
+    <section class="tests-card">
+
+        <div class="tests-card-header">
+
+            <div class="tests-title-area">
+
+                <div class="tests-icon">
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
+
+                <div>
+                    <h2>Test List</h2>
+                    <p>
+                        View and manage all online assessments
+                    </p>
+                </div>
+
+            </div>
+
+            <a href="" class="add-test-btn">
+                <i class="fa-solid fa-plus"></i>
+                Add Test
+            </a>
+
+        </div>
+
+
+        {% if tests %}
+
+        <div class="tests-table-wrap">
+
+            <table class="tests-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Test</th>
+                        <th>Course</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Duration</th>
+                        <th>Marks</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for test in tests %}
+
+                    <tr>
+
+                        <td class="serial">
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td class="test-name">
+                            {{ test.test_title }}
+                        </td>
+
+                        <td class="course-name">
+                            {{ test.course }}
+                        </td>
+
+                        <td class="subject-name">
+                            {{ test.subject }}
+                        </td>
+
+                        <td>
+                            {{ test.test_date }}
+                        </td>
+
+                        <td>
+                            {{ test.duration }} min
+                        </td>
+
+                        <td>
+                            {{ test.total_marks }}
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge">
+                                {{ test.status }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="test-actions">
+
+                                <a
+                                    href=""
+                                    class="test-action edit">
+                                    Edit
+                                </a>
+
+                                <a
+                                    href="{% url 'tadd_question' test.id %}"
+                                    class="test-action questions">
+                                    Questions
+                                </a>
+
+                                <a
+                                    href="{% url 'tbulk_question_upload' test.id %}"
+                                    class="test-action bulk">
+                                    Bulk Upload
+                                </a>
+
+                                <a
+                                    href=""
+                                    class="test-action delete"
+                                    onclick="return confirm('Are you sure you want to delete this test?');">
+                                    Delete
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-tests">
+
+            <div class="empty-icon">
+                <i class="fa-solid fa-file-circle-question"></i>
+            </div>
+
+            <h3>No Online Tests Found</h3>
+
+            <p>
+                Create your first online test using the Add Test button.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="tests-note">
+            <i class="fa-solid fa-circle-info"></i>
+            Manage test details, questions and bulk question uploads from the actions above.
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

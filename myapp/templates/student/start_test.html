@@ -1,0 +1,1335 @@
+{% extends "student/base.html" %}
+
+{% block title %}
+{{ test.test_title }} | Online Test
+{% endblock %}
+
+{% block page_title %}
+Online Test
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =====================================================
+   ONLINE TEST PAGE
+===================================================== */
+
+.student-test-page{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    font-family:"Poppins",sans-serif;
+}
+
+
+/* =====================================================
+   TEST HEADER
+===================================================== */
+
+.test-header{
+    position:relative;
+    overflow:hidden;
+
+    background:#130e70;
+
+    border-radius:10px;
+    padding:28px 30px;
+    margin-bottom:22px;
+
+    color:#fff;
+
+    box-shadow:
+        none;
+}
+
+.test-header::before{
+    content:"";
+    position:absolute;
+
+    width:230px;
+    height:230px;
+
+    right:-80px;
+    top:-120px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(255,255,255,.13);
+}
+
+.test-header::after{
+    content:"";
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    right:120px;
+    bottom:-85px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.07);
+}
+
+.test-header-content{
+    position:relative;
+    z-index:2;
+}
+
+.test-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:6px 11px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.15);
+
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+
+    margin-bottom:12px;
+}
+
+.test-title{
+    margin:0;
+
+    color:#fff;
+
+    font-size:24px;
+    line-height:1.35;
+
+    font-weight:600;
+}
+
+.test-description{
+    margin:7px 0 0;
+
+    color:rgba(255,255,255,.82);
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   TEST META
+===================================================== */
+
+.test-meta{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+
+    gap:9px;
+
+    margin-top:18px;
+}
+
+.test-meta-item{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    padding:7px 11px;
+
+    border-radius:6px;
+
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.13);
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:500;
+}
+
+.test-meta-item i{
+    font-size:13px;
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.test-layout{
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        280px;
+
+    gap:22px;
+
+    align-items:start;
+}
+
+
+/* =====================================================
+   QUESTIONS CARD
+===================================================== */
+
+.test-questions-card{
+    background:#fff;
+
+    border:1px solid #e5e8ee;
+
+    border-radius:10px;
+
+    box-shadow:
+        none;
+
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.test-card-header{
+    padding:20px 24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    border-bottom:1px solid #edf0f4;
+}
+
+.test-card-title{
+    display:flex;
+    align-items:center;
+
+    gap:11px;
+}
+
+.test-card-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:8px;
+
+    background:#eef4ff;
+
+    color:#130e70;
+
+    font-size:16px;
+}
+
+.test-card-title h2{
+    margin:0;
+
+    color:#202535;
+
+    font-size:16px;
+    font-weight:600;
+}
+
+.test-card-title p{
+    margin:3px 0 0;
+
+    color:#9097a6;
+
+    font-size:13px;
+}
+
+.question-count{
+    padding:7px 11px;
+
+    border-radius:10px;
+
+    background:#eef8fa;
+
+    color:#168ea6;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* =====================================================
+   QUESTIONS
+===================================================== */
+
+.test-questions{
+    padding:22px 24px;
+}
+
+.question-box{
+    padding:20px;
+
+    margin-bottom:16px;
+
+    background:#fcfdff;
+
+    border:1px solid #e7eaf0;
+
+    border-radius:8px;
+
+    transition:.2s ease;
+}
+
+.question-box:last-child{
+    margin-bottom:0;
+}
+
+.question-box:hover{
+    border-color:#cfd8ed;
+
+    box-shadow:
+        none;
+}
+
+
+/* =====================================================
+   QUESTION HEADER
+===================================================== */
+
+.question-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-bottom:15px;
+}
+
+.question-number{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:30px;
+    height:28px;
+
+    padding:0 8px;
+
+    border-radius:6px;
+
+    background:#130e70;
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+.question-text{
+    flex:1;
+
+    margin:0;
+
+    color:#272d3d;
+
+    font-size:13px;
+    line-height:1.65;
+
+    font-weight:600;
+}
+
+.question-marks{
+    padding:5px 9px;
+
+    border-radius:10px;
+
+    background:#f1f5f9;
+
+    color:#667085;
+
+    font-size:13px;
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+
+/* =====================================================
+   OPTIONS
+===================================================== */
+
+.question-options{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:10px;
+}
+
+.option-label{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    min-height:48px;
+
+    padding:10px 13px;
+
+    box-sizing:border-box;
+
+    border:1px solid #e2e6ed;
+
+    border-radius:6px;
+
+    background:#fff;
+
+    color:#555e6f;
+
+    font-size:13px;
+
+    line-height:1.45;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+}
+
+.option-label:hover{
+    border-color:#9caee0;
+
+    background:#f8faff;
+
+    color:#242b3b;
+}
+
+
+/* hide radio */
+
+.option-label input{
+    position:absolute;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+
+/* option letter */
+
+.option-letter{
+    width:25px;
+    height:25px;
+
+    min-width:25px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:6px;
+
+    background:#f1f3f7;
+
+    color:#697386;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* selected */
+
+.option-label:has(input:checked){
+    border-color:#168ea6;
+
+    background:#f0fafc;
+
+    color:#126879;
+
+    box-shadow:
+        none;
+}
+
+.option-label:has(input:checked) .option-letter{
+    background:#168ea6;
+
+    color:#fff;
+}
+
+
+/* =====================================================
+   SUBMIT AREA
+===================================================== */
+
+.test-submit-area{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:18px 24px;
+
+    border-top:1px solid #edf0f4;
+
+    background:#fbfcfe;
+}
+
+.test-submit-note{
+    display:flex;
+    align-items:center;
+
+    gap:7px;
+
+    color:#8a92a0;
+
+    font-size:13px;
+}
+
+.test-submit-note i{
+    color:#168ea6;
+}
+
+.submit-test-btn{
+    height:42px;
+
+    padding:0 20px;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#130e70;
+
+    color:#fff;
+
+    font-family:"Poppins",sans-serif;
+
+    font-size:13px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:
+        none;
+
+    transition:.2s ease;
+}
+
+.submit-test-btn:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =====================================================
+   RIGHT SIDE INFO
+===================================================== */
+
+.test-info-card{
+    position:sticky;
+
+    top:20px;
+
+    background:#fff;
+
+    border:1px solid #e5e8ee;
+
+    border-radius:10px;
+
+    padding:20px;
+
+    box-shadow:
+        none;
+}
+
+.info-heading{
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding-bottom:16px;
+
+    border-bottom:1px solid #edf0f4;
+}
+
+.info-icon{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:6px;
+
+    background:#eef4ff;
+
+    color:#130e70;
+
+    font-size:14px;
+}
+
+.info-heading h3{
+    margin:0;
+
+    color:#252b3a;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+.info-heading p{
+    margin:3px 0 0;
+
+    color:#9299a7;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   INFO ITEMS
+===================================================== */
+
+.info-items{
+    padding-top:15px;
+}
+
+.info-item{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:11px 0;
+
+    border-bottom:1px solid #f0f2f5;
+}
+
+.info-item:last-child{
+    border-bottom:none;
+}
+
+.info-label{
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#858d9c;
+
+    font-size:13px;
+}
+
+.info-label i{
+    width:20px;
+
+    color:#168ea6;
+
+    text-align:center;
+}
+
+.info-value{
+    color:#343b4b;
+
+    font-size:13px;
+    font-weight:600;
+
+    text-align:right;
+}
+
+
+/* =====================================================
+   INSTRUCTION BOX
+===================================================== */
+
+.test-instruction{
+    margin-top:18px;
+
+    padding:13px;
+
+    border-radius:6px;
+
+    background:#f4f9fb;
+
+    border:1px solid #dceef2;
+}
+
+.test-instruction-title{
+    display:flex;
+    align-items:center;
+
+    gap:6px;
+
+    margin-bottom:6px;
+
+    color:#176b78;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+.test-instruction p{
+    margin:0;
+
+    color:#71818a;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.test-empty{
+    padding:60px 20px;
+
+    text-align:center;
+}
+
+.test-empty-icon{
+    width:60px;
+    height:60px;
+
+    margin:0 auto 14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:#eef4ff;
+
+    color:#130e70;
+
+    font-size:20px;
+}
+
+.test-empty h3{
+    margin:0 0 5px;
+
+    color:#303646;
+
+    font-size:14px;
+}
+
+.test-empty p{
+    margin:0;
+
+    color:#9199a7;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:950px){
+
+    .test-layout{
+        grid-template-columns:1fr;
+    }
+
+    .test-info-card{
+        position:static;
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .test-header{
+        padding:23px;
+    }
+
+    .test-title{
+        font-size:20px;
+    }
+
+    .test-meta{
+        gap:6px;
+    }
+
+    .test-meta-item{
+        font-size:13px;
+    }
+
+    .test-card-header{
+        padding:17px;
+    }
+
+    .test-questions{
+        padding:16px;
+    }
+
+    .question-box{
+        padding:15px;
+    }
+
+    .question-options{
+        grid-template-columns:1fr;
+    }
+
+    .question-top{
+        align-items:flex-start;
+    }
+
+    .test-submit-area{
+        align-items:stretch;
+
+        flex-direction:column;
+
+        padding:17px;
+    }
+
+    .submit-test-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+
+<div class="student-test-page">
+
+
+    <!-- =================================================
+         TEST HEADER
+    ================================================== -->
+
+    <section class="test-header">
+
+        <div class="test-header-content">
+
+            <div class="test-eyebrow">
+
+                <i class="fa-solid fa-pen-to-square"></i>
+
+                ONLINE ASSESSMENT
+
+            </div>
+
+
+            <h1 class="test-title">
+                {{ test.test_title }}
+            </h1>
+
+
+            <p class="test-description">
+                Read each question carefully and select the correct answer.
+            </p>
+
+
+            <div class="test-meta">
+
+                <div class="test-meta-item">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    {{ test.duration }} Minutes
+
+                </div>
+
+
+                <div class="test-meta-item">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    {{ test.total_marks }} Marks
+
+                </div>
+
+
+                <div class="test-meta-item">
+
+                    <i class="fa-solid fa-book"></i>
+
+                    {{ test.course }}
+
+                </div>
+
+
+                <div class="test-meta-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    {{ test.subject }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MAIN LAYOUT
+    ================================================== -->
+
+    <div class="test-layout">
+
+
+        <!-- =================================================
+             QUESTIONS
+        ================================================== -->
+
+        <section class="test-questions-card">
+
+
+            <!-- HEADER -->
+
+            <div class="test-card-header">
+
+                <div class="test-card-title">
+
+                    <div class="test-card-icon">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Test Questions
+                        </h2>
+
+                        <p>
+                            Select one answer for every question.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question-count">
+
+                    {{ question|length }} Questions
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="test-questions">
+
+
+                    {% for q in question %}
+
+
+                    <div class="question-box">
+
+
+                        <!-- QUESTION TOP -->
+
+                        <div class="question-top">
+
+
+                            <span class="question-number">
+
+                                Q{{ forloop.counter }}
+
+                            </span>
+
+
+                            <p class="question-text">
+
+                                {{ q.question }}
+
+                            </p>
+
+
+                            <span class="question-marks">
+
+                                {{ q.marks }} Mark{% if q.marks != 1 %}s{% endif %}
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- OPTIONS -->
+
+                        <div class="question-options">
+
+
+                            <!-- A -->
+
+                            <label class="option-label">
+
+                                <input
+                                    type="radio"
+                                    name="q{{ q.id }}"
+                                    value="A"
+                                    required
+                                >
+
+                                <span class="option-letter">
+                                    A
+                                </span>
+
+                                <span>
+                                    {{ q.option_a }}
+                                </span>
+
+                            </label>
+
+
+
+                            <!-- B -->
+
+                            <label class="option-label">
+
+                                <input
+                                    type="radio"
+                                    name="q{{ q.id }}"
+                                    value="B"
+                                >
+
+                                <span class="option-letter">
+                                    B
+                                </span>
+
+                                <span>
+                                    {{ q.option_b }}
+                                </span>
+
+                            </label>
+
+
+
+                            <!-- C -->
+
+                            <label class="option-label">
+
+                                <input
+                                    type="radio"
+                                    name="q{{ q.id }}"
+                                    value="C"
+                                >
+
+                                <span class="option-letter">
+                                    C
+                                </span>
+
+                                <span>
+                                    {{ q.option_c }}
+                                </span>
+
+                            </label>
+
+
+
+                            <!-- D -->
+
+                            <label class="option-label">
+
+                                <input
+                                    type="radio"
+                                    name="q{{ q.id }}"
+                                    value="D"
+                                >
+
+                                <span class="option-letter">
+                                    D
+                                </span>
+
+                                <span>
+                                    {{ q.option_d }}
+                                </span>
+
+                            </label>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    {% empty %}
+
+
+                    <div class="test-empty">
+
+                        <div class="test-empty-icon">
+
+                            <i class="fa-regular fa-circle-question"></i>
+
+                        </div>
+
+                        <h3>
+                            No Questions Available
+                        </h3>
+
+                        <p>
+                            Questions have not been added to this test yet.
+                        </p>
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                {% if question %}
+
+                <div class="test-submit-area">
+
+
+                    <div class="test-submit-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Make sure you have answered all questions before submitting.
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-test-btn"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Submit Test
+
+                    </button>
+
+
+                </div>
+
+                {% endif %}
+
+
+            </form>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RIGHT INFO
+        ================================================== -->
+
+        <aside class="test-info-card">
+
+
+            <div class="info-heading">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Test Information
+                    </h3>
+
+                    <p>
+                        Assessment details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-items">
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        Duration
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ test.duration }} Min
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+
+                        <i class="fa-solid fa-star"></i>
+
+                        Total Marks
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ test.total_marks }}
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+
+                        <i class="fa-solid fa-list-ol"></i>
+
+                        Questions
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ question|length }}
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Course
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ test.course }}
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="info-item">
+
+                    <span class="info-label">
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                        Subject
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ test.subject }}
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- INSTRUCTION -->
+
+            <div class="test-instruction">
+
+                <div class="test-instruction-title">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    Instructions
+
+                </div>
+
+                <p>
+                    Select one option for each question.
+                    Review your answers carefully before
+                    submitting the test.
+                </p>
+
+            </div>
+
+
+        </aside>
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

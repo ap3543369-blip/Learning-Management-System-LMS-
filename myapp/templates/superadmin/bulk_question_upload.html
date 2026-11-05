@@ -1,0 +1,870 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}
+Bulk Question Upload | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Bulk Question Upload
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+.bulk-page{
+    max-width:1200px;
+    margin:0 auto;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.bulk-hero{
+    position:relative;
+    padding:32px 35px;
+    margin-bottom:25px;
+    border-radius:10px;
+    overflow:hidden;
+    color:#fff;
+
+    background:#661620;
+
+    box-shadow:none;
+}
+
+.bulk-hero::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    right:-100px;
+    top:-140px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.bulk-hero::after{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    right:70px;
+    bottom:-120px;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+}
+
+.bulk-eyebrow{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.bulk-eyebrow span{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 11px;
+    border-radius:10px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.16);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+.bulk-hero h1{
+    position:relative;
+    z-index:2;
+    margin:0;
+    font-size:28px;
+    line-height:1.3;
+    font-weight:600;
+}
+
+.bulk-hero p{
+    position:relative;
+    z-index:2;
+    margin-top:7px;
+    color:rgba(255,255,255,.78);
+    font-size:13px;
+}
+
+.bulk-tag{
+    position:absolute;
+    right:35px;
+    bottom:30px;
+    z-index:2;
+    padding:8px 14px;
+    border-radius:10px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.14);
+    color:#f5d1ad;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+
+/* =========================================
+   TWO COLUMN
+========================================= */
+
+.bulk-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+    gap:24px;
+    align-items:start;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.bulk-card,
+.bulk-info-card{
+    width:100%;
+    box-sizing:border-box;
+    background:#fff;
+    border:1px solid #ece4df;
+    border-radius:10px;
+    padding:28px;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.bulk-card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding-bottom:20px;
+    border-bottom:1px solid #eee7e2;
+    margin-bottom:22px;
+}
+
+.bulk-card-title{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.bulk-card-icon{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#fff1e9;
+    color:#963029;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+.bulk-card-title h2{
+    margin:0;
+    color:#321b1b;
+    font-size:18px;
+    font-weight:600;
+}
+
+.bulk-card-title p{
+    margin-top:3px;
+    color:#9b928d;
+    font-size:13px;
+}
+
+.bulk-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 14px;
+    border-radius:10px;
+    background:#fff7ef;
+    border:1px solid #f0ddd0;
+    color:#a14a26;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.bulk-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.bulk-field label{
+    margin-bottom:8px;
+    color:#332727;
+    font-size:13px;
+    font-weight:600;
+}
+
+.bulk-field label span{
+    color:#b5322a;
+}
+
+.bulk-file{
+    width:100%;
+    height:48px;
+    box-sizing:border-box;
+    padding:0 10px;
+    border:1px solid #e6ddd7;
+    border-radius:6px;
+    background:#fffdfb;
+    color:#403837;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.bulk-file::file-selector-button{
+    height:34px;
+    margin-right:10px;
+    padding:0 12px;
+    border:none;
+    border-radius:6px;
+    background:#f7ebe6;
+    color:#81221f;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+
+/* =========================================
+   FORMAT BOX
+========================================= */
+
+.bulk-format{
+    margin-top:22px;
+    padding:16px;
+    border:1px solid #eee4df;
+    border-radius:8px;
+    background:#fdf9f7;
+}
+
+.bulk-format-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+    color:#4b3b36;
+    font-size:13px;
+    font-weight:600;
+}
+
+.bulk-format-title i{
+    color:#963029;
+}
+
+.bulk-format-code{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    border-radius:6px;
+    background:#fff;
+    border:1px solid #e9dfda;
+    color:#6b5c56;
+    font-family:monospace;
+    font-size:13px;
+    line-height:1.6;
+    overflow-x:auto;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.bulk-actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:30px;
+    padding-top:23px;
+    border-top:1px solid #eee7e2;
+}
+
+.bulk-note{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#968c87;
+    font-size:13px;
+}
+
+.bulk-note i{
+    color:#9b3028;
+}
+
+.bulk-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.bulk-btn{
+    height:42px;
+    padding:0 17px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:none;
+    border-radius:6px;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.bulk-btn-primary{
+    background:#81221f;
+
+    color:#fff;
+
+    box-shadow:
+        none;
+}
+
+.bulk-btn-secondary{
+    background:#f7f0ec;
+    color:#7c241f;
+}
+
+.bulk-btn:hover{
+    transform:translateY(-2px);
+}
+
+
+/* =========================================
+   RIGHT INFO CARD
+========================================= */
+
+.bulk-info-card{
+    position:sticky;
+    top:20px;
+}
+
+.bulk-info-head{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding-bottom:20px;
+    border-bottom:1px solid #eee7e2;
+    margin-bottom:18px;
+}
+
+.bulk-info-icon{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#f1f7f7;
+    color:#176b78;
+    font-size:16px;
+}
+
+.bulk-info-head h2{
+    margin:0;
+    color:#321b1b;
+    font-size:18px;
+    font-weight:600;
+}
+
+.bulk-info-head p{
+    margin-top:3px;
+    color:#9b928d;
+    font-size:13px;
+}
+
+
+/* =========================================
+   COLUMN LIST
+========================================= */
+
+.bulk-columns{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.bulk-column{
+    padding:7px 9px;
+    border-radius:6px;
+    border:1px solid #e8ddd7;
+    background:#fffdfb;
+    color:#675954;
+    font-family:monospace;
+    font-size:13px;
+}
+
+.bulk-column.required{
+    background:#fff3ee;
+    border-color:#efd3c8;
+    color:#8c3028;
+}
+
+
+/* =========================================
+   RULES
+========================================= */
+
+.bulk-rules{
+    margin-top:22px;
+}
+
+.bulk-rules-title{
+    margin-bottom:10px;
+    color:#40332e;
+    font-size:13px;
+    font-weight:600;
+}
+
+.bulk-rule{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin-bottom:10px;
+    color:#766963;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.bulk-rule i{
+    margin-top:3px;
+    color:#2d8b4c;
+    font-size:13px;
+}
+
+
+/* =========================================
+   SAMPLE BUTTON
+========================================= */
+
+.sample-btn{
+    width:100%;
+    height:40px;
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border-radius:6px;
+    border:1px solid #e3cbc2;
+    background:#fff8f4;
+    color:#81221f !important;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.sample-btn:hover{
+    background:#81221f;
+    color:#fff !important;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:900px){
+
+    .bulk-layout{
+        grid-template-columns:1fr;
+    }
+
+    .bulk-info-card{
+        position:static;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .bulk-hero{
+        padding:25px 22px;
+    }
+
+    .bulk-hero h1{
+        font-size:24px;
+    }
+
+    .bulk-tag{
+        position:static;
+        display:inline-flex;
+        margin-top:18px;
+    }
+
+    .bulk-card,
+    .bulk-info-card{
+        padding:20px;
+    }
+
+    .bulk-card-head{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .bulk-actions{
+        align-items:stretch;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .bulk-buttons{
+        flex-direction:column;
+    }
+
+    .bulk-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="bulk-page">
+
+
+    <!-- =====================================
+         HERO
+    ====================================== -->
+
+    <section class="bulk-hero">
+
+        <div class="bulk-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                QUESTION BANK
+            </span>
+
+        </div>
+
+        <h1>
+            Bulk Question Upload
+        </h1>
+
+        <p>
+            Upload multiple MCQ questions at once using a CSV file.
+        </p>
+
+        <span class="bulk-tag">
+            CSV UPLOAD
+        </span>
+
+    </section>
+
+
+
+    <!-- =====================================
+         TWO COLUMN CONTENT
+    ====================================== -->
+
+    <div class="bulk-layout">
+
+
+        <!-- =================================
+             LEFT : UPLOAD FORM
+        ================================== -->
+
+        <section class="bulk-card">
+
+            <div class="bulk-card-head">
+
+                <div class="bulk-card-title">
+
+                    <div class="bulk-card-icon">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Upload Questions
+                        </h2>
+
+                        <p>
+                            Select a CSV file containing your MCQ questions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="bulk-label">
+                    BULK IMPORT
+                </span>
+
+            </div>
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+                action=""
+            >
+
+                {% csrf_token %}
+
+
+                <div class="bulk-field">
+
+                    <label for="csv_file">
+                        CSV File <span>*</span>
+                    </label>
+
+                    <input
+                        type="file"
+                        id="csv_file"
+                        name="csv_file"
+                        class="bulk-file"
+                        accept=".csv,text/csv"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- FORMAT -->
+
+                <div class="bulk-format">
+
+                    <div class="bulk-format-title">
+
+                        <i class="fa-solid fa-table-columns"></i>
+
+                        Required CSV Columns
+
+                    </div>
+
+                    <div class="bulk-format-code">
+                        question, option_a, option_b, option_c, option_d, correct_option, marks
+                    </div>
+
+                </div>
+
+
+                <!-- ACTION -->
+
+                <div class="bulk-actions">
+
+                    <div class="bulk-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Invalid or duplicate rows will be skipped.
+
+                    </div>
+
+
+                    <div class="bulk-buttons">
+
+                        <a
+                            href=""
+                            class="bulk-btn bulk-btn-secondary"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="bulk-btn bulk-btn-primary"
+                        >
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                            Upload Questions
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================
+             RIGHT : CSV INFORMATION
+        ================================== -->
+
+        <section class="bulk-info-card">
+
+
+            <div class="bulk-info-head">
+
+                <div class="bulk-info-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        CSV Format
+                    </h2>
+
+                    <p>
+                        Follow these columns while preparing your file.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLUMNS -->
+
+            <div class="bulk-columns">
+
+                <span class="bulk-column required">
+                    question
+                </span>
+
+                <span class="bulk-column required">
+                    option_a
+                </span>
+
+                <span class="bulk-column required">
+                    option_b
+                </span>
+
+                <span class="bulk-column required">
+                    option_c
+                </span>
+
+                <span class="bulk-column required">
+                    option_d
+                </span>
+
+                <span class="bulk-column required">
+                    correct_option
+                </span>
+
+                <span class="bulk-column required">
+                    marks
+                </span>
+
+            </div>
+
+
+            <!-- RULES -->
+
+            <div class="bulk-rules">
+
+                <div class="bulk-rules-title">
+                    Upload Rules
+                </div>
+
+
+                <div class="bulk-rule">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        Correct option must be <b>A, B, C or D</b>.
+                    </span>
+
+                </div>
+
+
+                <div class="bulk-rule">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        Marks should be <b>1 or greater</b>.
+                    </span>
+
+                </div>
+
+
+                <div class="bulk-rule">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        Duplicate questions will be skipped automatically.
+                    </span>
+
+                </div>
+
+
+                <div class="bulk-rule">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        Rows with missing or invalid data will be skipped.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SAMPLE -->
+
+            <a
+                href=""
+                class="sample-btn"
+            >
+
+                <i class="fa-solid fa-download"></i>
+
+                Download Sample CSV
+
+            </a>
+
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

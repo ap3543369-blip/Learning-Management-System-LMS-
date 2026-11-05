@@ -1,0 +1,1138 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Add Student | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Add Student{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   STUDENT PAGE
+========================================================= */
+
+.student-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.student-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.student-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -190px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 50%;
+
+    box-shadow:
+        none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.hero-eyebrow span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+
+    white-space: nowrap;
+}
+
+.student-hero h1 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+.student-hero p {
+    margin: 8px 0 18px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    opacity: .86;
+
+    max-width: 760px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.session-tag {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.14);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   TWO COLUMN LAYOUT
+========================================================= */
+
+.student-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+
+    gap: 24px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.student-card {
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-head {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+.card-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 0;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 16px;
+}
+
+.card-title h2 {
+    margin: 0;
+
+    color: #381b1b;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-title p {
+    margin: 4px 0 0;
+
+    color: #8b7772;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-label-title {
+    margin-bottom: 15px;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+.form-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 21px 20px;
+}
+
+.field {
+    min-width: 0;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #493532;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ded4cf;
+
+    border-radius: 6px;
+
+    background: #fff;
+
+    padding: 0 13px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    color: #493532;
+
+    outline: none;
+
+    transition: .2s ease;
+}
+
+.field input,
+.field select {
+    height: 48px;
+}
+
+.field textarea {
+    min-height: 105px;
+
+    padding: 13px;
+
+    resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #b2a39e;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #9b4a4f;
+
+    box-shadow:
+        0 0 0 3px rgba(133,31,40,.07);
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 42px;
+}
+
+
+/* =========================================================
+   FORM NOTE
+========================================================= */
+
+.form-note {
+    margin-top: 18px;
+
+    padding: 11px 13px;
+
+    border-radius: 6px;
+
+    background: #faf5f2;
+
+    border: 1px solid #eee3de;
+
+    color: #806c66;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.form-note i {
+    margin-right: 6px;
+
+    color: #851f28;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #eee7e2;
+}
+
+.btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    text-decoration: none;
+}
+
+.save-btn {
+    background: #851f28;
+
+    color: white;
+}
+
+.save-btn:hover {
+    background: #6d1820;
+}
+
+
+/* =========================================================
+   BULK UPLOAD
+========================================================= */
+
+.bulk-card {
+    height: fit-content;
+}
+
+.bulk-download {
+    height: 38px;
+
+    padding: 0 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    border-radius: 6px;
+
+    background: #f8eee9;
+
+    border: 1px solid #eadbd4;
+
+    color: #851f28;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.bulk-download:hover {
+    background: #f2e4de;
+}
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+.file-field {
+    margin-top: 5px;
+}
+
+.file-field input[type="file"] {
+    width: 100%;
+
+    height: auto;
+
+    padding: 10px;
+
+    background: #faf7f5;
+
+    cursor: pointer;
+}
+
+.file-field input[type="file"]::file-selector-button {
+    margin-right: 10px;
+
+    padding: 8px 11px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #851f28;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BULK BUTTON
+========================================================= */
+
+.bulk-btn {
+    width: 100%;
+
+    margin-top: 20px;
+}
+
+.bulk-btn i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CSV NOTE
+========================================================= */
+
+.csv-note {
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border-radius: 6px;
+
+    background: #faf7f5;
+
+    border: 1px solid #eee4df;
+
+    color: #806c66;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.csv-note strong {
+    color: #493532;
+
+    font-size: 13px;
+}
+
+.csv-columns {
+    margin-top: 8px;
+
+    padding: 9px;
+
+    border-radius: 6px;
+
+    background: white;
+
+    border: 1px solid #eee5e0;
+
+    color: #705b55;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .student-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bulk-card {
+        height: auto;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .student-hero {
+        padding: 25px;
+    }
+
+    .student-hero h1 {
+        font-size: 24px;
+    }
+
+    .student-card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .card-head {
+        align-items: flex-start;
+    }
+
+    .bulk-download {
+        width: 100%;
+    }
+
+    .form-actions {
+        width: 100%;
+    }
+
+    .save-btn {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .hero-eyebrow {
+        flex-wrap: wrap;
+    }
+
+    .student-hero p {
+        font-size: 13px;
+    }
+
+    .card-head {
+        flex-direction: column;
+    }
+
+}
+
+
+</style>
+
+
+<div class="student-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="student-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>ACADEMIC ERP</span>
+
+            <span>SESSION 2026-2027</span>
+
+        </div>
+
+
+        <h1>
+            Student Admission & Bulk Upload
+        </h1>
+
+
+        <p>
+            Add one student manually or upload multiple students
+            using a CSV file for faster admission management.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         TWO CARDS
+    ====================================================== -->
+
+    <div class="student-grid">
+
+
+        <!-- =================================================
+             SINGLE STUDENT
+        ================================================== -->
+
+        <section class="student-card">
+
+
+            <div class="card-head">
+
+                <div class="card-title">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Add Single Student
+                        </h2>
+
+                        <p>
+                            Enter student admission details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-label-title">
+                STUDENT INFORMATION
+            </div>
+
+
+            <!--
+                NOTE:
+                Current addstudent view handles CSV upload.
+                Manual form is kept visually ready.
+            -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- ENROLLMENT -->
+
+                    <div class="field">
+
+                        <label>
+                            Enrollment No.
+                        </label>
+
+                        <input
+                            type="text"
+                            name="Enrollment_no"
+                            placeholder="NOU2026001"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- NAME -->
+
+                    <div class="field">
+
+                        <label>
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Enter student name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="field">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="student@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MOBILE -->
+
+                    <div class="field">
+
+                        <label>
+                            Mobile
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="mobile"
+                            placeholder="Enter mobile number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SESSION -->
+
+                    <div class="field">
+
+                        <label>
+                            Session
+                        </label>
+
+                        <select name="session" required>
+
+                            <option value="">
+                                Select Session
+                            </option>
+
+                            {% for session in sessions %}
+
+                            <option value="{{ session.session_name }}">
+                                {{ session.session_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- COURSE -->
+
+                    <div class="field">
+
+                        <label>
+                            Course
+                        </label>
+
+                        <select name="course" required>
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+                            {% for course in courses %}
+
+                            <option value="{{ course.course_name }}">
+                                {{ course.course_code }} -
+                                {{ course.course_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SEMESTER -->
+
+                    <div class="field">
+
+                        <label>
+                            Semester
+                        </label>
+
+                        <input
+                            type="text"
+                            name="sem"
+                            value="Semester I"
+                            placeholder="Semester I"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="field">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Enter username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="field">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            value="Student@123"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="field">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select name="status">
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- NOTE -->
+
+                <div class="form-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    All student admission fields are required.
+                    Login credentials can be used by the student
+                    to access the portal.
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn save-btn"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        Add Student
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BULK UPLOAD
+        ================================================== -->
+
+        <section class="student-card bulk-card">
+
+
+            <div class="card-head">
+
+                <div class="card-title">
+
+                    <div class="card-icon">
+
+                        <i class="fa-solid fa-file-csv"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Bulk Student Upload
+                        </h2>
+
+                        <p>
+                            Add multiple students using CSV.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="#"
+                    class="bulk-download"
+                >
+
+                    <i class="fa-solid fa-download"></i>
+
+                    CSV Sample
+
+                </a>
+
+            </div>
+
+
+            <div class="form-label-title">
+                BULK IMPORT
+            </div>
+
+
+            <!-- CSV FORM -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="field file-field">
+
+                    <label>
+                        Select CSV File
+                    </label>
+
+                    <input
+                        type="file"
+                        name="csv_file"
+                        accept=".csv"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn save-btn bulk-btn"
+                >
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    Upload Students
+
+                </button>
+
+
+            </form>
+
+
+            <!-- CSV INFORMATION -->
+
+            <div class="csv-note">
+
+                <strong>
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Required CSV Columns
+
+                </strong>
+
+
+                <div class="csv-columns">
+
+                    Enrollment_no,
+                    name,
+                    email,
+                    mobile,
+                    course,
+                    session,
+                    sem,
+                    username,
+                    password,
+                    status
+
+                </div>
+
+
+                <div style="margin-top:10px;">
+
+                    Make sure the CSV contains all required
+                    columns and valid student information before
+                    uploading.
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

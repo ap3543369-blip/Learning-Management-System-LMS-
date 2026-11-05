@@ -1,0 +1,941 @@
+{% extends "student/base.html" %}
+
+{% block title %}
+Student Dashboard | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Student Dashboard
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   STUDENT DASHBOARD
+========================================================= */
+
+.student-dashboard{
+    width:100%;
+    font-family:"Poppins",sans-serif;
+    color:#202535;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.student-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.student-summary-item{
+    background:#fff;
+    border:1px solid #dddcec;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:none;
+    transition:.2s ease;
+}
+
+.student-summary-item:hover{
+    transform:translateY(-2px);
+    box-shadow:none;
+}
+
+.student-summary-label{
+    display:block;
+    color:#71868a;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+
+.student-summary-value{
+    display:block;
+    color:#130e70;
+    font-size:24px;
+    font-weight:600;
+    line-height:1.1;
+}
+
+.student-summary-note{
+    display:block;
+    margin-top:7px;
+    color:#93a4a7;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.student-card-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.student-card{
+    position:relative;
+    background:#fff;
+    border:1px solid #dddcec;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:none;
+    overflow:hidden;
+    transition:.2s ease;
+}
+
+.student-card::after{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    right:-45px;
+    bottom:-45px;
+    border-radius:50%;
+    background:rgba(22,142,166,.06);
+}
+
+.student-card:hover{
+    transform:translateY(-3px);
+    border-color:#c7e0e5;
+    box-shadow:none;
+}
+
+.student-card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.student-card-icon{
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#e9e8f8;
+    color:#168ea6;
+    font-size:14px;
+    font-weight:600;
+}
+
+.student-card-badge{
+    padding:5px 8px;
+    border-radius:10px;
+    background:#f1f1f8;
+    color:#66848a;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+.student-card-value{
+    color:#181648;
+    font-size:28px;
+    font-weight:600;
+    line-height:1;
+}
+
+.student-card-label{
+    margin-top:7px;
+    color:#72888c;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.student-section{
+    background:#fff;
+    border:1px solid #dddcec;
+    border-radius:10px;
+    margin-bottom:22px;
+    box-shadow:none;
+    overflow:hidden;
+}
+
+.student-section-head{
+    padding:18px 20px;
+    border-bottom:1px solid #ededf3;
+}
+
+.student-section-head h2{
+    margin:0;
+    color:#1a1845;
+    font-size:14px;
+    font-weight:600;
+}
+
+.student-section-head p{
+    margin:4px 0 0;
+    color:#84969a;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.student-shortcuts{
+    padding:16px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.student-shortcut{
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px 15px;
+    border:1px solid #e3e2ef;
+    border-radius:8px;
+    background:#fbfbfe;
+    transition:.2s ease;
+    text-decoration:none;
+}
+
+.student-shortcut:hover{
+    background:#f3f3fb;
+    border-color:#bcdde4;
+    transform:translateY(-2px);
+}
+
+.student-shortcut-icon{
+    width:38px;
+    height:38px;
+    flex:0 0 38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#e8e7f7;
+    color:#168ea6;
+    font-size:13px;
+    font-weight:600;
+}
+
+.student-shortcut-copy{
+    flex:1;
+    min-width:0;
+}
+
+.student-shortcut-copy b{
+    display:block;
+    color:#2b294e;
+    font-size:13px;
+    font-weight:600;
+}
+
+.student-shortcut-copy small{
+    display:block;
+    margin-top:3px;
+    color:#899a9e;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.student-arrow{
+    color:#168ea6;
+    font-size:16px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.student-two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.student-panel{
+    background:#fff;
+    border:1px solid #dddcec;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:none;
+}
+
+.student-panel-head{
+    padding:17px 19px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #ededf3;
+}
+
+.student-panel-title b{
+    display:block;
+    color:#1a1845;
+    font-size:13px;
+    font-weight:600;
+}
+
+.student-panel-title small{
+    display:block;
+    margin-top:3px;
+    color:#8a9ca0;
+    font-size:13px;
+}
+
+.student-panel-tag{
+    padding:5px 8px;
+    border-radius:10px;
+    background:#eeedf8;
+    color:#168ea6;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+.student-list{
+    padding:15px;
+}
+
+
+/* =========================================================
+   LIST ITEMS
+========================================================= */
+
+.student-list-item{
+    padding:13px 4px;
+    border-bottom:1px solid #f0f0f4;
+}
+
+.student-list-item:last-child{
+    border-bottom:none;
+}
+
+.student-list-item b{
+    display:block;
+    color:#29274e;
+    font-size:13px;
+    font-weight:600;
+}
+
+.student-list-item p{
+    margin:4px 0;
+    color:#7e9195;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.student-list-item small{
+    color:#9aa9ac;
+    font-size:13px;
+}
+
+.student-status{
+    display:inline-block;
+    padding:4px 7px;
+    border-radius:10px;
+    background:#edf8f8;
+    color:#168ea6;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.student-empty{
+    min-height:110px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#9aaaad;
+    font-size:13px;
+    padding:20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .student-summary,
+    .student-card-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:750px){
+
+    .student-two-col{
+        grid-template-columns:1fr;
+    }
+
+    .student-shortcuts{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+@media(max-width:550px){
+
+    .student-summary,
+    .student-card-grid{
+        grid-template-columns:1fr;
+    }
+
+    .student-summary-item{
+        padding:16px;
+    }
+
+    .student-card{
+        padding:17px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="student-dashboard">
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="student-summary">
+
+
+        <!-- SUBJECTS -->
+
+        <div class="student-summary-item">
+
+            <span class="student-summary-label">
+                Current Subjects
+            </span>
+
+            <b class="student-summary-value">
+                {{ current_subjects }}
+            </b>
+
+            <span class="student-summary-note">
+                Subjects in Semester {{ student.sem }}
+            </span>
+
+        </div>
+
+
+        <!-- ASSIGNMENTS -->
+
+        <div class="student-summary-item">
+
+            <span class="student-summary-label">
+                Assignments
+            </span>
+
+            <b class="student-summary-value">
+                {{ assignments_count }}
+            </b>
+
+            <span class="student-summary-note">
+                Published course tasks
+            </span>
+
+        </div>
+
+
+        <!-- ATTENDANCE -->
+
+        <div class="student-summary-item">
+
+            <span class="student-summary-label">
+                Attendance
+            </span>
+
+            <b class="student-summary-value">
+                {{ attendance }}%
+            </b>
+
+            <span class="student-summary-note">
+                Current attendance performance
+            </span>
+
+        </div>
+
+
+        <!-- ONLINE CLASSES -->
+
+        <div class="student-summary-item">
+
+            <span class="student-summary-label">
+                Online Classes
+            </span>
+
+            <b class="student-summary-value">
+                {{ online_classes }}
+            </b>
+
+            <span class="student-summary-note">
+                Upcoming Google Meet classes
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DASHBOARD CARDS
+    ====================================================== -->
+
+    <section class="student-card-grid">
+
+
+        <!-- ONLINE TESTS -->
+
+        <article class="student-card">
+
+            <div class="student-card-top">
+
+                <span class="student-card-icon">
+                    Q
+                </span>
+
+                <span class="student-card-badge">
+                    TESTS
+                </span>
+
+            </div>
+
+            <div class="student-card-value">
+                {{ online_tests }}
+            </div>
+
+            <div class="student-card-label">
+                Online Tests
+            </div>
+
+        </article>
+
+
+        <!-- STUDY MATERIAL -->
+
+        <article class="student-card">
+
+            <div class="student-card-top">
+
+                <span class="student-card-icon">
+                    M
+                </span>
+
+                <span class="student-card-badge">
+                    CONTENT
+                </span>
+
+            </div>
+
+            <div class="student-card-value">
+                {{ study_materials }}
+            </div>
+
+            <div class="student-card-label">
+                Study Materials
+            </div>
+
+        </article>
+
+
+        <!-- SUBMISSIONS -->
+
+        <article class="student-card">
+
+            <div class="student-card-top">
+
+                <span class="student-card-icon">
+                    ✓
+                </span>
+
+                <span class="student-card-badge">
+                    WORK
+                </span>
+
+            </div>
+
+            <div class="student-card-value">
+                {{ submissions }}
+            </div>
+
+            <div class="student-card-label">
+                My Submissions
+            </div>
+
+        </article>
+
+
+        <!-- TEST RESULTS -->
+
+        <article class="student-card">
+
+            <div class="student-card-top">
+
+                <span class="student-card-icon">
+                    %
+                </span>
+
+                <span class="student-card-badge">
+                    RESULTS
+                </span>
+
+            </div>
+
+            <div class="student-card-value">
+                {{ test_results }}
+            </div>
+
+            <div class="student-card-label">
+                Test Results
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+    ====================================================== -->
+
+    <section class="student-section">
+
+        <div class="student-section-head">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <p>
+                Continue your learning
+            </p>
+
+        </div>
+
+
+        <div class="student-shortcuts">
+
+
+            <!-- STUDY MATERIAL -->
+
+            <a href="{% url 'sm' %}"
+               class="student-shortcut">
+
+                <span class="student-shortcut-icon">
+                    M
+                </span>
+
+                <span class="student-shortcut-copy">
+
+                    <b>
+                        Study Material
+                    </b>
+
+                    <small>
+                        Open course notes and learning resources.
+                    </small>
+
+                </span>
+
+                <span class="student-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- PROGRAMMING LAB -->
+
+            <a href="{% url 'student_code_lab' %}"
+               class="student-shortcut">
+
+                <span class="student-shortcut-icon">
+                    &lt;/&gt;
+                </span>
+
+                <span class="student-shortcut-copy">
+
+                    <b>
+                        Programming Lab
+                    </b>
+
+                    <small>
+                        Write, run and test your programs.
+                    </small>
+
+                </span>
+
+                <span class="student-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- ASSIGNMENTS -->
+
+            <a href="{% url 'stu_assignment' %}"
+               class="student-shortcut">
+
+                <span class="student-shortcut-icon">
+                    A
+                </span>
+
+                <span class="student-shortcut-copy">
+
+                    <b>
+                        Assignments
+                    </b>
+
+                    <small>
+                        View and submit course tasks.
+                    </small>
+
+                </span>
+
+                <span class="student-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- GOOGLE MEET -->
+
+            <a href=""
+               class="student-shortcut">
+
+                <span class="student-shortcut-icon">
+                    ▶
+                </span>
+
+                <span class="student-shortcut-copy">
+
+                    <b>
+                        Google Meet Classes
+                    </b>
+
+                    <small>
+                        View schedule and join live classes.
+                    </small>
+
+                </span>
+
+                <span class="student-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPCOMING + NOTICES
+    ====================================================== -->
+
+    <section class="student-two-col">
+
+
+        <!-- =================================================
+             UPCOMING CLASSES
+        ================================================== -->
+
+        <article class="student-panel">
+
+
+            <div class="student-panel-head">
+
+                <div class="student-panel-title">
+
+                    <b>
+                        Upcoming Classes
+                    </b>
+
+                    <small>
+                        Your live learning schedule
+                    </small>
+
+                </div>
+
+                <span class="student-panel-tag">
+                    MY SCHEDULE
+                </span>
+
+            </div>
+
+
+            <div class="student-list">
+
+
+                {% for class in upcoming_classes %}
+
+                <div class="student-list-item">
+
+                    <b>
+                        {{ class.class_title }}
+                    </b>
+
+                    <p>
+
+                        {{ class.subject }}
+
+                        •
+
+                        {{ class.course }}
+
+                    </p>
+
+                    <small>
+
+                        {{ class.class_date|date:"d M Y" }}
+
+                        •
+
+                        {{ class.class_time|time:"h:i A" }}
+
+                        •
+
+                        {{ class.duration }} min
+
+                    </small>
+
+                </div>
+
+                {% empty %}
+
+                <div class="student-empty">
+                    No classes scheduled yet.
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             IMPORTANT NOTICES
+        ================================================== -->
+
+        <article class="student-panel">
+
+
+            <div class="student-panel-head">
+
+                <div class="student-panel-title">
+
+                    <b>
+                        Important Notices
+                    </b>
+
+                    <small>
+                        Latest student communication
+                    </small>
+
+                </div>
+
+                <span class="student-panel-tag">
+                    LATEST
+                </span>
+
+            </div>
+
+
+            <div class="student-list">
+
+
+                {% for announcement in announcements %}
+
+                <div class="student-list-item">
+
+                    <b>
+                        {{ announcement.title }}
+                    </b>
+
+                    <p>
+                        {{ announcement.message|truncatechars:120 }}
+                    </p>
+
+                    <small>
+
+                        {{ announcement.publish_date|date:"d M Y" }}
+
+                        •
+
+                        {{ announcement.priority }}
+
+                    </small>
+
+                </div>
+
+                {% empty %}
+
+                <div class="student-empty">
+                    No announcements available.
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    
+
+</div>
+
+{% endblock %}

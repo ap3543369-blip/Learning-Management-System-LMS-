@@ -1,0 +1,616 @@
+{% extends "student/base.html" %}
+
+{% block title %}My Online Classes{% endblock %}
+
+{% block extra_css %}
+<style>
+    .student-meets {
+        font-family: Poppins, sans-serif;
+        width: 100%;
+    }
+
+    /* Header */
+    .student-meets-hero {
+        background: #130e70;
+        border-radius: 10px;
+        padding: 25px 28px;
+        color: #fff;
+        margin-bottom: 22px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: none;
+    }
+
+    .student-meets-hero::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        right: -55px;
+        top: -70px;
+    }
+
+    .student-meets-hero::before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        right: 90px;
+        bottom: -75px;
+    }
+
+    .student-meets-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .student-meets-hero h1 {
+        margin: 0 0 7px;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .student-meets-hero p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,0.82);
+    }
+
+    .student-meets-hero-icon {
+        position: absolute;
+        right: 28px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 58px;
+        height: 58px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.13);
+        border: 1px solid rgba(255,255,255,0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        z-index: 2;
+    }
+
+    /* Top info */
+    .student-meets-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .student-meets-info-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 17px 18px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        box-shadow: none;
+    }
+
+    .student-meets-info-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: #f0fafc;
+        color: #168ea6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .student-meets-info-card strong {
+        display: block;
+        font-size: 18px;
+        color: #130e70;
+        line-height: 1.2;
+    }
+
+    .student-meets-info-card span {
+        display: block;
+        margin-top: 3px;
+        font-size: 13px;
+        color: #9097a6;
+        font-weight: 600;
+    }
+
+    /* Grid */
+    .student-meet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 18px;
+    }
+
+    /* Meeting Card */
+    .student-meet-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 21px;
+        box-shadow: none;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .student-meet-card:hover {
+        transform: translateY(-4px);
+        box-shadow: none;
+        border-color: #c9e6eb;
+    }
+
+    .student-meet-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #130e70;
+    }
+
+    .student-meet-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .student-meet-title-wrap {
+        min-width: 0;
+    }
+
+    .student-meet-card h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #202535;
+        margin: 0;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .student-meet-number {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: #f4f9fb;
+        color: #168ea6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    /* Details */
+    .student-meet-details {
+        border-top: 1px solid #edf0f3;
+        border-bottom: 1px solid #edf0f3;
+        padding: 13px 0;
+        margin-bottom: 15px;
+    }
+
+    .student-meet-detail {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .student-meet-detail:first-child {
+        margin-top: 0;
+    }
+
+    .student-meet-detail:last-child {
+        margin-bottom: 0;
+    }
+
+    .student-meet-detail-icon {
+        width: 29px;
+        height: 29px;
+        border-radius: 6px;
+        background: #f4f9fb;
+        color: #168ea6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .student-meet-detail-text {
+        min-width: 0;
+    }
+
+    .student-meet-detail-text small {
+        display: block;
+        color: #9aa1ad;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+        text-transform: none;
+        letter-spacing: 0;
+    }
+
+    .student-meet-detail-text span {
+        display: block;
+        color: #394454;
+        font-size: 13px;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    /* Status */
+    .student-meet-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 6px 11px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 13px;
+    }
+
+    .student-live {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .student-scheduled {
+        background: #f0f5ff;
+        color: #130e70;
+    }
+
+    .student-closed {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .student-live-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #16a34a;
+        box-shadow: none;
+    }
+
+    /* Buttons */
+    .student-meet-action {
+        margin-top: 1px;
+    }
+
+    .student-join {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 15px;
+        border-radius: 8px;
+        background: #130e70;
+        color: #fff;
+        font-weight: 600;
+        font-size: 13px;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+    .student-join:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: none;
+    }
+
+    .student-disabled {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 15px;
+        border-radius: 8px;
+        background: #f4f6f8;
+        border: 1px solid #e5e8ee;
+        color: #8b94a1;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    /* Empty */
+    .student-empty {
+        background: #fff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 10px;
+        padding: 50px 25px;
+        text-align: center;
+        color: #718096;
+        grid-column: 1 / -1;
+    }
+
+    .student-empty-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 14px;
+        border-radius: 10px;
+        background: #f4f9fb;
+        color: #168ea6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .student-empty h3 {
+        margin: 0 0 6px;
+        color: #202535;
+        font-size: 16px;
+    }
+
+    .student-empty p {
+        margin: 0;
+        font-size: 13px;
+        color: #9097a6;
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+        .student-meets-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .student-meets-hero {
+            padding: 21px;
+        }
+
+        .student-meets-hero h1 {
+            font-size: 20px;
+        }
+
+        .student-meets-hero-icon {
+            right: 18px;
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+        }
+
+        .student-meet-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .student-meet-card {
+            padding: 18px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}Online Classes{% endblock %}
+
+{% block content %}
+
+<section class="student-meets">
+
+    <!-- Hero -->
+    <div class="student-meets-hero">
+        <div class="student-meets-hero-content">
+            <h1>My Online Classes</h1>
+            <p>View and join online classes scheduled for your enrolled course.</p>
+        </div>
+
+        <div class="student-meets-hero-icon">
+            <i class="fas fa-video"></i>
+        </div>
+    </div>
+
+
+    <!-- Summary -->
+    <div class="student-meets-info">
+
+        <div class="student-meets-info-card">
+            <div class="student-meets-info-icon">
+                <i class="fas fa-video"></i>
+            </div>
+            <div>
+                <strong>{{ upcoming_meetings|length }}</strong>
+                <span>Upcoming Classes</span>
+            </div>
+        </div>
+
+        <div class="student-meets-info-card">
+            <div class="student-meets-info-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div>
+                <strong>{{ request.user.username }}</strong>
+                <span>Student Account</span>
+            </div>
+        </div>
+
+        <div class="student-meets-info-card">
+            <div class="student-meets-info-icon">
+                <i class="fas fa-circle-play"></i>
+            </div>
+            <div>
+                <strong>Live</strong>
+                <span>Join when class starts</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Meetings -->
+    <div class="student-meet-grid">
+
+        {% for meeting in upcoming_meetings %}
+
+        <article class="student-meet-card">
+
+            <div class="student-meet-card-top">
+
+                <div class="student-meet-title-wrap">
+                    <h2>{{ meeting.class_title }}</h2>
+                </div>
+
+                <div class="student-meet-number">
+                    {{ forloop.counter|stringformat:"02d" }}
+                </div>
+
+            </div>
+
+
+            <div class="student-meet-details">
+
+                <div class="student-meet-detail">
+                    <div class="student-meet-detail-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+
+                    <div class="student-meet-detail-text">
+                        <small>Course</small>
+                        <span>{{ meeting.course }}</span>
+                    </div>
+                </div>
+
+
+                <div class="student-meet-detail">
+                    <div class="student-meet-detail-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+
+                    <div class="student-meet-detail-text">
+                        <small>Subject</small>
+                        <span>{{ meeting.subject }}</span>
+                    </div>
+                </div>
+
+
+                <div class="student-meet-detail">
+                    <div class="student-meet-detail-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="student-meet-detail-text">
+                        <small>Teacher</small>
+                        <span>
+                            {{ meeting.teacher.get_full_name|default:meeting.teacher.username }}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="student-meet-detail">
+                    <div class="student-meet-detail-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+
+                    <div class="student-meet-detail-text">
+                        <small>Date</small>
+                        <span>{{ meeting.class_date }}</span>
+                    </div>
+                </div>
+
+
+                <div class="student-meet-detail">
+                    <div class="student-meet-detail-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+
+                    <div class="student-meet-detail-text">
+                        <small>Time</small>
+                        <span>{{ meeting.class_time }}</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+            {% if meeting.status == 'live' %}
+
+                <span class="student-meet-status student-live">
+                    <span class="student-live-dot"></span>
+                    LIVE NOW
+                </span>
+
+                <div class="student-meet-action">
+                    <a class="student-join"
+                       href="{% url 'join_meeting' meeting.id %}">
+                        <i class="fas fa-video"></i>
+                        Join Class
+                    </a>
+                </div>
+
+            {% elif meeting.status == 'closed' %}
+
+                <span class="student-meet-status student-closed">
+                    <i class="fas fa-check-circle"></i>
+                    CLOSED
+                </span>
+
+                <div class="student-meet-action">
+                    <span class="student-disabled">
+                        <i class="fas fa-lock"></i>
+                        Class Ended
+                    </span>
+                </div>
+
+            {% else %}
+
+                <span class="student-meet-status student-scheduled">
+                    <i class="fas fa-calendar-check"></i>
+                    SCHEDULED
+                </span>
+
+                <div class="student-meet-action">
+                    <span class="student-disabled">
+                        <i class="fas fa-clock"></i>
+                        Join Class · Not Started
+                    </span>
+                </div>
+
+            {% endif %}
+
+        </article>
+
+        {% empty %}
+
+        <div class="student-empty">
+
+            <div class="student-empty-icon">
+                <i class="fas fa-video-slash"></i>
+            </div>
+
+            <h3>No Online Classes</h3>
+
+            <p>
+                No online classes are scheduled for your course yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

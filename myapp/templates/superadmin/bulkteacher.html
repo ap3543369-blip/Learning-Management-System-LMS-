@@ -1,0 +1,704 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}
+Bulk Teacher Upload
+{% endblock %}
+
+{% block page_title %}
+Bulk Teacher Upload
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .teacher-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .teacher-hero {
+
+        background: #7b1e2b;
+
+        color: #fff;
+
+        border-radius: 10px;
+
+        padding: 28px 32px;
+
+        margin-bottom: 24px;
+
+        box-shadow:
+            none;
+    }
+
+
+    .hero-eyebrow {
+
+        display: flex;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+
+        margin-bottom: 18px;
+    }
+
+
+    .hero-eyebrow span {
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background:
+            rgba(255,255,255,.14);
+
+        border:
+            1px solid
+            rgba(255,255,255,.18);
+    }
+
+
+    .teacher-hero h1 {
+
+        margin: 0 0 8px;
+
+        font-size: 28px;
+
+        line-height: 1.2;
+
+        font-weight: 600;
+    }
+
+
+    .teacher-hero p {
+
+        margin: 0;
+
+        max-width: 760px;
+
+        color:
+            rgba(255,255,255,.82);
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+
+    .session-tag {
+
+        display: inline-block;
+
+        margin-top: 18px;
+
+        padding: 7px 13px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #7b1e2b;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .form-card {
+
+        background: #fff;
+
+        border:
+            1px solid #ece4df;
+
+        border-radius: 10px;
+
+        box-shadow:
+            none;
+
+        overflow: hidden;
+
+        margin-bottom: 24px;
+    }
+
+
+    .section-head {
+
+        padding: 22px 26px;
+
+        border-bottom:
+            1px solid #eee7e2;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+
+    .section-head h2 {
+
+        margin: 0 0 5px;
+
+        font-size: 20px;
+
+        color: #241c19;
+
+        font-weight: 600;
+    }
+
+
+    .section-head p {
+
+        margin: 0;
+
+        color: #81766f;
+
+        font-size: 13px;
+    }
+
+
+    .upload-body {
+
+        padding: 28px 26px;
+    }
+
+
+    /* =========================
+       FILE UPLOAD
+    ========================= */
+
+    .upload-box {
+
+        border:
+            2px dashed #d9cec7;
+
+        border-radius: 10px;
+
+        padding: 42px 25px;
+
+        text-align: center;
+
+        background: #fcfaf9;
+
+        transition: .2s ease;
+    }
+
+
+    .upload-box:hover {
+
+        border-color: #8d2635;
+
+        background: #fffaf9;
+    }
+
+
+    .upload-icon {
+
+        width: 58px;
+
+        height: 58px;
+
+        margin: 0 auto 15px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #f7e9eb;
+
+        color: #7b1e2b;
+
+        font-size: 24px;
+    }
+
+
+    .upload-box h3 {
+
+        margin: 0 0 7px;
+
+        color: #2d2420;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .upload-box p {
+
+        margin: 0 auto 20px;
+
+        max-width: 600px;
+
+        color: #81766f;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+    }
+
+
+    .file-input {
+
+        display: block;
+
+        width: 100%;
+
+        max-width: 500px;
+
+        margin: 0 auto;
+
+        padding: 10px;
+
+        border:
+            1px solid #ddd4ce;
+
+        border-radius: 8px;
+
+        background: #fff;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        color: #4b413c;
+    }
+
+
+    /* =========================
+       FORMAT
+    ========================= */
+
+    .format-section {
+
+        margin-top: 25px;
+
+        padding: 20px;
+
+        border-radius: 8px;
+
+        background: #f8f5f3;
+
+        border:
+            1px solid #ebe3de;
+    }
+
+
+    .format-section h3 {
+
+        margin: 0 0 12px;
+
+        font-size: 14px;
+
+        color: #302722;
+
+        font-weight: 600;
+    }
+
+
+    .format-code {
+
+        overflow-x: auto;
+
+        padding: 15px;
+
+        border-radius: 6px;
+
+        background: #241c19;
+
+        color: #f6efeb;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+
+        white-space: nowrap;
+    }
+
+
+    .format-note {
+
+        margin-top: 12px;
+
+        color: #81766f;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================
+       ACTIONS
+    ========================= */
+
+    .form-actions {
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 25px;
+
+        padding-top: 22px;
+
+        border-top:
+            1px solid #eee7e2;
+    }
+
+
+    .btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 42px;
+
+        padding: 0 18px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        background: #7b1e2b;
+
+        color: #fff;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+
+    .btn:hover {
+
+        background: #641622;
+
+        transform: translateY(-1px);
+    }
+
+
+    .btn-light {
+
+        background: #f6f2ef;
+
+        color: #5d514b;
+
+        border:
+            1px solid #e6ddd7;
+    }
+
+
+    .btn-light:hover {
+
+        background: #eee8e3;
+
+        color: #332925;
+    }
+
+
+    .btn-sm {
+
+        min-height: 38px;
+
+        padding: 0 14px;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        .teacher-hero {
+
+            padding: 23px 20px;
+
+            border-radius: 10px;
+        }
+
+
+        .teacher-hero h1 {
+
+            font-size: 24px;
+        }
+
+
+        .section-head {
+
+            padding: 19px 18px;
+
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+
+        .upload-body {
+
+            padding: 22px 18px;
+        }
+
+
+        .upload-box {
+
+            padding: 32px 18px;
+        }
+
+
+        .form-actions {
+
+            flex-direction: column-reverse;
+        }
+
+
+        .form-actions .btn {
+
+            width: 100%;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="teacher-page">
+
+
+    <!-- HERO -->
+
+    <section class="teacher-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+
+        <h1>
+            Bulk Teacher Upload
+        </h1>
+
+
+        <p>
+            Upload multiple teacher records at once
+            using the standard CSV format.
+        </p>
+
+
+        <span class="session-tag">
+            TEACHER MANAGEMENT
+        </span>
+
+    </section>
+
+
+
+    <!-- UPLOAD CARD -->
+
+    <div class="form-card">
+
+
+        <div class="section-head">
+
+            <div>
+
+                <h2>
+                    Upload Teacher Records
+                </h2>
+
+                <p>
+                    Select a CSV file containing
+                    teacher information.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'viewteacher' %}"
+                class="btn btn-light btn-sm"
+            >
+                Back to Teachers
+            </a>
+
+        </div>
+
+
+
+        <div class="upload-body">
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="upload-box">
+
+
+                    <div class="upload-icon">
+
+                        <i class="fa-solid fa-file-csv"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Select Teacher CSV File
+                    </h3>
+
+
+                    <p>
+                        Upload a CSV file containing
+                        all required teacher fields.
+                    </p>
+
+
+                    <input
+                        type="file"
+                        name="csv_file"
+                        class="file-input"
+                        accept=".csv"
+                        required
+                    >
+
+
+                </div>
+
+
+
+                <!-- FORMAT -->
+
+                <div class="format-section">
+
+                    <h3>
+                        Required CSV Format
+                    </h3>
+
+
+                    <div class="format-code">
+
+employee_id,name,email,mobile,department,designation,username,password,status
+
+                    </div>
+
+
+                    <div class="format-note">
+
+                        <strong>Example:</strong><br>
+
+                        1001,Ayush Singh,ayush@gmail.com,9876543210,CSE,Professor,ayush,12345,Active<br>
+
+                        1002,Rahul Kumar,rahul@gmail.com,9876543211,CSE,Assistant Professor,rahul,12345,Active
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+
+                    <a
+                        href="{% url 'viewteacher' %}"
+                        class="btn btn-light"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn"
+                    >
+
+                        <i
+                            class="fa-solid fa-upload"
+                            style="margin-right:8px;"
+                        ></i>
+
+                        Upload Teachers
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

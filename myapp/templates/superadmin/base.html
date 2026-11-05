@@ -1,0 +1,1710 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} NOU e-Gyan {% endblock %}</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+
+        /* =========================================
+           RESET & GLOBALS
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f4f6f9;
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .layout {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            background: #58121a;
+
+            color: white;
+            z-index: 1000;
+
+            box-shadow: none;
+
+            overflow: hidden;
+
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+        /* =========================================
+           BRAND
+        ========================================= */
+
+        .brand {
+            min-height: 85px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 18px 22px;
+
+            flex-shrink: 0;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .seal {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+
+            color: #701a24;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            box-shadow: none;
+
+            letter-spacing: 0;
+        }
+
+        .brand b {
+            display: block;
+
+            font-size: 20px;
+            line-height: 1.2;
+
+            font-weight: 600;
+
+            color: #ffffff;
+
+            letter-spacing: 0;
+        }
+
+        .brand small {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #f3c291;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-transform: none;
+
+            letter-spacing: 0;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           ROLE BADGE
+        ========================================= */
+
+        .role {
+            margin: 16px 16px 8px;
+
+            padding: 10px 14px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            flex-shrink: 0;
+
+            border-radius: 6px;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            color: #ffd09b;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            letter-spacing: 0;
+
+            text-transform: none;
+        }
+
+
+        /* =========================================
+           NAVIGATION SCROLL AREA
+        ========================================= */
+
+        .nav {
+            flex: 1;
+
+            min-height: 0;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 10px 14px 30px;
+
+            scrollbar-width: thin;
+
+            scrollbar-color:
+                rgba(255, 255, 255, 0.2)
+                transparent;
+        }
+
+        .nav::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+
+            border-radius: 8px;
+        }
+
+        .nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+
+        /* =========================================
+           NAV GROUP
+        ========================================= */
+
+        .group {
+            margin-bottom: 16px;
+        }
+
+        .group-title {
+            padding: 8px 12px 6px;
+
+            color: rgba(255, 255, 255, 0.644);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-transform: none;
+
+            letter-spacing: 0;
+        }
+
+        .sub {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 4px;
+        }
+
+
+        /* =========================================
+           NAV LINK
+        ========================================= */
+
+        .nav-link {
+            min-height: 42px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 10px 14px;
+
+            border-radius: 8px;
+
+            border-left: 4px solid transparent;
+
+            color: rgba(255, 255, 255, 0.82);
+
+            font-size: 16px;
+            font-weight: 600;
+
+            transition:
+                all 0.2s ease;
+        }
+
+
+        /* ICON */
+
+        .nav-link i.item-icon {
+            width: 20px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            color: #f3c291;
+
+            transition:
+                transform 0.2s ease,
+                color 0.2s ease,
+                filter 0.2s ease;
+        }
+
+
+        /* =========================================
+           HOVER
+        ========================================= */
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+
+            color: #ffffff;
+
+            transform: translateX(3px);
+        }
+
+        .nav-link:hover i.item-icon {
+            color: #ffffff;
+
+            transform: scale(1.15);
+        }
+
+
+        /* =========================================
+           ACTIVE LINK
+        ========================================= */
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.22);
+
+            color: #ffffff;
+
+            font-weight: 600;
+
+            /* LEFT SIDE BORDER */
+            border-left: 4px solid #f3c291;
+
+            /* GLOW */
+            box-shadow:
+                0 0 12px rgba(243, 194, 145, 0.25),
+                inset 0 0 12px rgba(255, 255, 255, 0.04);
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active i.item-icon {
+            color: #ffffff;
+
+            filter:
+                drop-shadow(
+                    0 0 5px rgba(255, 255, 255, 0.5)
+                );
+        }
+
+
+        /* =========================================
+           MAIN AREA & TOPBAR
+        ========================================= */
+
+        .main {
+            width: calc(100% - 280px);
+
+            min-height: 100vh;
+
+            margin-left: 280px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            transition: all 0.3s ease;
+        }
+
+        .topbar {
+            width: 100%;
+
+            height: 75px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 32px;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 500;
+
+            box-shadow:
+                none;
+        }
+
+
+        /* PAGE TITLE */
+
+        .page-id b {
+            display: block;
+
+            color: #0f172a;
+
+            font-size: 20px;
+
+            font-weight: 600;
+        }
+
+        .page-id small {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            font-weight: 500;
+        }
+
+
+        /* =========================================
+           TOP TOOLS
+        ========================================= */
+
+        .top-tools {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        /* PROFILE */
+
+        .profile-pill {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 6px 12px;
+
+            border-radius: 30px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                #701a24;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            box-shadow:
+                none;
+        }
+
+        .profile-pill b {
+            display: block;
+
+            color: #1e293b;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .profile-pill small {
+            display: block;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           LOGOUT
+        ========================================= */
+
+        .logout-btn {
+            height: 38px;
+
+            padding: 0 16px;
+
+            border: 1px solid #fee2e2;
+
+            border-radius: 6px;
+
+            background: #fef2f2;
+
+            color: #991b1b;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #991b1b;
+
+            color: #ffffff;
+
+            border-color: #991b1b;
+
+            box-shadow:
+                none;
+        }
+
+
+        /* =========================================
+           MOBILE MENU BUTTON
+        ========================================= */
+
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+
+            margin-right: 12px;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #701a24;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================================
+           CONTENT & FOOTER
+        ========================================= */
+
+        .content {
+            flex: 1;
+
+            padding: 32px;
+
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 8px;
+
+            padding: 24px;
+
+            box-shadow:
+                none;
+        }
+
+        .card h2 {
+            color: #0f172a;
+
+            font-size: 18px;
+
+            font-weight: 600;
+        }
+
+        .foot {
+            min-height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 15px 30px;
+
+            background: #ffffff;
+
+            border-top: 1px solid #e2e8f0;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            text-align: center;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .sidebar {
+                width: 260px;
+            }
+
+            .main {
+                width: calc(100% - 260px);
+
+                margin-left: 260px;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                left: -280px;
+
+                width: 280px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main {
+                width: 100%;
+
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            .topbar {
+                height: 65px;
+
+                padding: 0 16px;
+            }
+
+            .page-id {
+                display: none;
+            }
+
+            .profile-pill > div:last-child {
+                display: none;
+            }
+
+            .profile-pill {
+                padding: 3px;
+
+                background: transparent;
+
+                border: none;
+            }
+
+            .content {
+                padding: 18px 14px;
+            }
+        }
+
+
+        /* =========================================
+           MESSAGE OVERLAY
+        ========================================= */
+
+        .message-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 99999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: rgba(30, 20, 20, 0.45);
+
+            backdrop-filter: blur(3px);
+        }
+
+
+        /* =========================================
+           POPUP BOX
+        ========================================= */
+
+        .message-popup {
+            width: 380px;
+
+            min-height: 310px;
+
+            padding: 35px 30px;
+
+            background: #ffffff;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            font-family: "Poppins", sans-serif;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.20);
+
+            animation:
+                popupShow 0.35s ease;
+        }
+
+
+        /* SUCCESS */
+
+        .message-popup.success {
+            color: #176b3a;
+        }
+
+
+        /* ERROR */
+
+        .message-popup.error {
+            color: #a52828;
+        }
+
+
+        /* BIG ICON */
+
+        .message-icon {
+            width: 90px;
+            height: 90px;
+
+            margin-bottom: 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 40px;
+        }
+
+        .message-popup.success .message-icon {
+            background: #e9f9ef;
+
+            color: #20a957;
+        }
+
+        .message-popup.error .message-icon {
+            background: #fff0f0;
+
+            color: #d93636;
+        }
+
+
+        /* TITLE */
+
+        .message-popup h3 {
+            margin: 0 0 10px;
+
+            color: #321b1b;
+
+            font-size: 20px;
+
+            font-weight: 600;
+        }
+
+
+        /* MESSAGE */
+
+        .message-popup p {
+            margin: 0;
+
+            max-width: 300px;
+
+            color: #817773;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* CLOSE BUTTON */
+
+        .message-close-btn {
+            margin-top: 24px;
+
+            width: 100px;
+
+            height: 40px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background:
+                #81221f;
+
+            color: white;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                none;
+
+            transition: 0.2s;
+        }
+
+        .message-close-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                none;
+        }
+
+
+        /* =========================================
+           POPUP ANIMATION
+        ========================================= */
+
+        @keyframes popupShow {
+
+            from {
+                opacity: 0;
+
+                transform: scale(0.80);
+            }
+
+            to {
+                opacity: 1;
+
+                transform: scale(1);
+            }
+        }
+
+
+        /* =========================================
+           POPUP MOBILE
+        ========================================= */
+
+        @media (max-width: 500px) {
+
+            .message-popup {
+                width: calc(100% - 40px);
+
+                min-height: 290px;
+
+                padding: 30px 22px;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %} {% endblock %}
+
+    {% include "partials/poppins.html" %}
+    {% include "partials/ds.html" with theme="maroon" %}
+</head>
+
+
+<body>
+
+    <div class="layout">
+
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+
+            <!-- BRAND -->
+
+            <div class="brand">
+
+                <div class="seal">
+                    NOU
+                </div>
+
+                <div>
+
+                    <b>
+                        NOU e-Gyan
+                    </b>
+
+                    <small>
+                        Nalanda Open University
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- ROLE -->
+
+            <div class="role">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                {% block user_role %}
+                    SUPER ADMIN
+                {% endblock %}
+
+            </div>
+
+
+            <!-- =================================
+                 NAVIGATION
+            ================================== -->
+
+            <nav class="nav">
+
+
+                <!-- DASHBOARD -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Main
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'superadmindash' %}active{% endif %}"
+                            href="{% url 'superadmindash' %}"
+                        >
+
+                            <i class="fa-solid fa-chart-pie item-icon"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANAGE SESSION -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Manage Session
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addsession' %}active{% endif %}"
+                            href="{% url 'addsession' %}"
+                        >
+
+                            <i class="fa-solid fa-calendar-plus item-icon"></i>
+
+                            Add Session
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'showsession' %}active{% endif %}"
+                            href="{% url 'showsession' %}"
+                        >
+
+                            <i class="fa-solid fa-calendar-days item-icon"></i>
+
+                            Show Session
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANAGE COURSES -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Manage Courses
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addcourse' %}active{% endif %}"
+                            href="{% url 'addcourse' %}"
+                        >
+
+                            <i class="fa-solid fa-folder-plus item-icon"></i>
+
+                            Add Course
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewcourse' %}active{% endif %}"
+                            href="{% url 'viewcourse' %}"
+                        >
+
+                            <i class="fa-solid fa-graduation-cap item-icon"></i>
+
+                            View Course
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANAGE SUBJECT -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Manage Subject
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addsubject' %}active{% endif %}"
+                            href="{% url 'addsubject' %}"
+                        >
+
+                            <i class="fa-solid fa-book-medical item-icon"></i>
+
+                            Add Subject
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewsubject' %}active{% endif %}"
+                            href="{% url 'viewsubject' %}"
+                        >
+
+                            <i class="fa-solid fa-book-open item-icon"></i>
+
+                            View Subject
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANAGE TEACHERS -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Manage Teachers
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addteacher' %}active{% endif %}"
+                            href="{% url 'addteacher' %}"
+                        >
+
+                            <i class="fa-solid fa-user-plus item-icon"></i>
+
+                            Add Teacher
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'bulkteacher' %}active{% endif %}"
+                            href="{% url 'bulkteacher' %}"
+                        >
+
+                            <i class="fa-solid fa-file-import item-icon"></i>
+
+                            Bulk Uplaod Teacher
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewteacher' %}active{% endif %}"
+                            href="{% url 'viewteacher' %}"
+                        >
+
+                            <i class="fa-solid fa-chalkboard-user item-icon"></i>
+
+                            View Teacher
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MANAGE STUDENTS -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Manage Students
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addstudent' %}active{% endif %}"
+                            href="{% url 'addstudent' %}"
+                        >
+
+                            <i class="fa-solid fa-file-import item-icon"></i>
+
+                            Add / Bulk Upload
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewstudent' %}active{% endif %}"
+                            href="{% url 'viewstudent' %}"
+                        >
+
+                            <i class="fa-solid fa-users-gear item-icon"></i>
+
+                            View Students
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STUDY MATERIAL -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Study Material
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'uploadsm' %}active{% endif %}"
+                            href="{% url 'uploadsm' %}"
+                        >
+
+                            <i class="fa-solid fa-cloud-arrow-up item-icon"></i>
+
+                            Upload SM
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewsm' %}active{% endif %}"
+                            href="{% url 'viewsm' %}"
+                        >
+
+                            <i class="fa-solid fa-file-pdf item-icon"></i>
+
+                            View SM
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TASK -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Task & Assignment
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'addtask' %}active{% endif %}"
+                            href="{% url 'addtask' %}"
+                        >
+
+                            <i class="fa-solid fa-square-plus item-icon"></i>
+
+                            Add Task
+
+                        </a>
+
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'viewtask' %}active{% endif %}"
+                            href="{% url 'viewtask' %}"
+                        >
+
+                            <i class="fa-solid fa-list-check item-icon"></i>
+
+                            View Task
+
+                        </a>
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'all_submissions' %}active{% endif %}"
+                            href="{% url 'all_submissions' %}"
+                        >
+
+                            <i class="fa-solid fa-list-check item-icon"></i>
+
+                            Evaluate Task
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ONLINE TEST -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Online Test
+                    </div>
+
+                    <div class="sub">
+
+                        <a class="nav-link" href="{% url 'online_test' %}">
+
+                            <i class="fa-solid fa-file-circle-plus item-icon"></i>
+
+                            Add Test
+
+                        </a>
+
+
+                        <a class="nav-link" href="{% url 'show_test' %}" >
+
+                            <i class="fa-solid fa-file-lines item-icon"></i>
+
+                            View Test
+
+                        </a>
+
+
+                        <a class="nav-link" href="{% url 'all_test_results' %}">
+
+                            <i class="fa-solid fa-square-poll-vertical item-icon"></i>
+
+                            Results
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATTENDANCE -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Attendance
+                    </div>
+
+                    <div class="sub">
+
+                        <a class="nav-link" href="{% url 'attendance' %}">
+
+                            <i class="fa-solid fa-clipboard-user item-icon"></i>
+
+                            Student Attendance
+
+                        </a>
+
+
+                        <a class="nav-link" href="{% url 'show_attendance' %}">
+
+                            <i class="fa-solid fa-chart-line item-icon"></i>
+
+                            Attendance Reports
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ONLINE CLASSES -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Online Classes
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'googlemeet' %}active{% endif %}"
+                            href="{% url 'onlineclass' %}"
+                        >
+
+                            <i class="fa-solid fa-video item-icon"></i>
+
+                            Schedule Meet Class
+
+                        </a>
+
+
+                        <a class="nav-link" href="{% url 'superadmin_classes' %}">
+
+                            <i class="fa-solid fa-display item-icon"></i>
+
+                            View Classes
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMMUNICATION -->
+
+                <div class="group">
+
+                    <div class="group-title">
+                        Communication
+                    </div>
+
+                    <div class="sub">
+
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'announcement' %}active{% endif %}"
+                            href="{% url 'announcement' %}"
+                        >
+
+                            <i class="fa-solid fa-bullhorn item-icon"></i>
+
+                            Announcements
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </nav>
+
+        </aside>
+
+
+        <!-- =====================================
+             MAIN AREA
+        ====================================== -->
+
+        <main class="main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="topbar">
+
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                    "
+                >
+
+                    <button
+                        class="menu-btn"
+                        onclick="toggleSidebar()"
+                        aria-label="Toggle Navigation"
+                    >
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+
+                    <div class="page-id">
+
+                        <b>
+                            {% block page_title %}
+                                Super Admin Dashboard
+                            {% endblock %}
+                        </b>
+
+                        <small>
+                            NOU e-Gyan • Super Admin Workspace
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOP RIGHT -->
+
+                <div class="top-tools">
+
+
+                    <div class="profile-pill">
+
+                        <div class="profile-avatar">
+                            SU
+                        </div>
+
+                        <div>
+
+                            <b>
+                                SuperAdmin
+                            </b>
+
+                            <small>
+                                Super Admin
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'logout' %}"
+                        class="logout-btn"
+                    >
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        <span>
+                            Logout
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 PAGE CONTENT
+            ====================================== -->
+
+            <div class="content">
+
+                {% block content %}
+
+                    <!-- Child page content will come here -->
+
+                {% endblock %}
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="foot">
+
+                NOU e-Gyan • Functional Learning Management System •
+                Nalanda Open University
+
+            </div>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================
+         DJANGO MESSAGES
+    ========================================== -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div
+                class="message-overlay"
+                id="messagePopup"
+            >
+
+                <div
+                    class="message-popup
+                    {% if message.tags == 'success' %}
+                        success
+                    {% elif message.tags == 'error' %}
+                        error
+                    {% endif %}"
+                >
+
+
+                    {% if message.tags == 'success' %}
+
+                        <div class="message-icon">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </div>
+
+                        <h3>
+                            Success!
+                        </h3>
+
+
+                    {% elif message.tags == 'error' %}
+
+                        <div class="message-icon">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </div>
+
+                        <h3>
+                            Oops!
+                        </h3>
+
+                    {% endif %}
+
+
+                    <p>
+                        {{ message }}
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="message-close-btn"
+                        onclick="closeMessage()"
+                    >
+                        OK
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+
+        /* =========================================
+           CLOSE MESSAGE
+        ========================================== */
+
+        function closeMessage() {
+
+            document
+                .querySelectorAll(".message-overlay")
+                .forEach(function (popup) {
+
+                    popup.style.opacity = "0";
+
+                    popup.style.transform =
+                        "scale(0.80)";
+
+                    setTimeout(function () {
+
+                        popup.remove();
+
+                    }, 250);
+
+                });
+
+        }
+
+
+        /* =========================================
+           AUTO CLOSE MESSAGE
+        ========================================== */
+
+        setTimeout(function () {
+
+            closeMessage();
+
+        }, 3000);
+
+
+        /* =========================================
+           MOBILE SIDEBAR
+        ========================================== */
+
+        function toggleSidebar() {
+
+            const sidebar =
+                document.getElementById("sidebar");
+
+            sidebar.classList.toggle("open");
+
+        }
+
+
+        /* =========================================
+           CLOSE SIDEBAR ON MOBILE
+        ========================================== */
+
+        document
+            .querySelectorAll(".nav-link")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        if (window.innerWidth <= 768) {
+
+                            document
+                                .getElementById("sidebar")
+                                .classList
+                                .remove("open");
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+    </script>
+
+
+    {% block extra_js %}
+
+    {% endblock %}
+
+
+</body>
+
+</html>

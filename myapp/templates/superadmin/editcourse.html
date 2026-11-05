@@ -1,0 +1,732 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Edit Course | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Edit Course{% endblock %}
+
+{% block content %}
+
+<style>
+
+.course-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.course-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    background: #661620;
+    box-shadow: none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.hero-eyebrow span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.12);
+}
+
+.course-hero h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.course-hero p {
+    margin: 8px 0 18px;
+    font-size: 13px;
+    opacity: .85;
+}
+
+.session-tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255,255,255,.14);
+}
+
+.course-card {
+    width: 100%;
+    background: white;
+    border: 1px solid #ece4df;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: none;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #eee7e2;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f8eee9;
+    color: #851f28;
+    font-size: 16px;
+}
+
+.card-title h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #381b1b;
+}
+
+.card-title p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #8b7772;
+}
+
+.form-label-title {
+    margin-bottom: 15px;
+    color: #851f28;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.form-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 23px 24px;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #493532;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ded4cf;
+    border-radius: 6px;
+    background: #fff;
+    padding: 0 13px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #493532;
+    outline: none;
+}
+
+.field input,
+.field select {
+    height: 48px;
+}
+
+.field textarea {
+    min-height: 110px;
+    padding: 13px;
+    resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #9b4a4f;
+    box-shadow: 0 0 0 3px rgba(133,31,40,.07);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 23px;
+    border-top: 1px solid #eee7e2;
+}
+
+.btn {
+    height: 42px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.update-btn {
+    background: #851f28;
+    color: white;
+}
+
+.cancel-btn {
+    background: #f5efec;
+    color: #684f49;
+}
+
+@media (max-width: 700px) {
+
+    .course-hero {
+        padding: 25px;
+    }
+
+    .course-hero h1 {
+        font-size: 24px;
+    }
+
+    .course-card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        justify-content: center;
+    }
+}
+
+/* =========================================
+   CENTER MESSAGE POPUP
+========================================= */
+
+.message-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(30, 20, 20, 0.45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================
+   POPUP BOX
+========================================= */
+
+.message-popup {
+    width: 380px;
+    min-height: 310px;
+
+    padding: 35px 30px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-family: "Poppins", sans-serif;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.20);
+
+    animation: popupShow 0.35s ease;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.message-popup.success {
+    color: #176b3a;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.message-popup.error {
+    color: #a52828;
+}
+
+
+/* =========================================
+   BIG ICON
+========================================= */
+
+.message-icon {
+    width: 90px;
+    height: 90px;
+
+    margin-bottom: 20px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+}
+
+
+.message-popup.success .message-icon {
+    background: #e9f9ef;
+    color: #20a957;
+}
+
+
+.message-popup.error .message-icon {
+    background: #fff0f0;
+    color: #d93636;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.message-popup h3 {
+    margin: 0 0 10px;
+
+    color: #321b1b;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message-popup p {
+    margin: 0;
+
+    max-width: 300px;
+
+    color: #817773;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.message-close-btn {
+    margin-top: 24px;
+
+    width: 100px;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        none;
+
+    transition: 0.2s;
+}
+
+
+.message-close-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes popupShow {
+
+    from {
+        opacity: 0;
+        transform: scale(0.80);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+    .message-popup {
+        width: calc(100% - 40px);
+        min-height: 290px;
+
+        padding: 30px 22px;
+    }
+
+}
+
+</style>
+
+
+<div class="course-page">
+
+    <!-- HERO -->
+
+    <section class="course-hero">
+
+        <div class="hero-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>COURSE MANAGEMENT</span>
+        </div>
+
+        <h1>Edit Course / Programme</h1>
+
+        <p>
+            Update the course and programme information.
+        </p>
+
+        <span class="session-tag">
+            EDIT COURSE
+        </span>
+
+    </section>
+
+
+    <!-- FORM CARD -->
+
+    <section class="course-card">
+
+        <div class="card-head">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+
+            <div class="card-title">
+                <h2>Update Course Information</h2>
+                <p>
+                    Modify the course details below.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="form-label-title">
+            EDIT COURSE
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+
+                <!-- SESSION -->
+
+                <div class="field">
+
+                    <label>Academic Session</label>
+
+                    <select name="session" required>
+
+                        <option value="">
+                            Select Session
+                        </option>
+
+                        {% for session in sessions %}
+
+                        <option value="{{ session.session_name }}"
+                            {% if course.session == session.session_name %}
+                                selected
+                            {% endif %}>
+
+                            {{ session.session_name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- COURSE CODE -->
+
+                <div class="field">
+
+                    <label>Course Code</label>
+
+                    <input
+                        type="text"
+                        name="course_code"
+                        value="{{ course.course_code }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- COURSE NAME -->
+
+                <div class="field">
+
+                    <label>Course Name</label>
+
+                    <input
+                        type="text"
+                        name="course_name"
+                        value="{{ course.course_name }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- LEVEL -->
+
+                <div class="field">
+
+                    <label>Level</label>
+
+                    <select name="level" required>
+
+                        <option value="Undergraduate"
+                            {% if course.level == "Undergraduate" %}selected{% endif %}>
+                            Undergraduate
+                        </option>
+
+                        <option value="Postgraduate"
+                            {% if course.level == "Postgraduate" %}selected{% endif %}>
+                            Postgraduate
+                        </option>
+
+                        <option value="Diploma"
+                            {% if course.level == "Diploma" %}selected{% endif %}>
+                            Diploma
+                        </option>
+
+                        <option value="Certificate"
+                            {% if course.level == "Certificate" %}selected{% endif %}>
+                            Certificate
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DURATION -->
+
+                <div class="field">
+
+                    <label>Duration</label>
+
+                    <input
+                        type="text"
+                        name="duration"
+                        value="{{ course.duration }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="field">
+
+                    <label>Status</label>
+
+                    <select name="status" required>
+
+                        <option value="Active"
+                            {% if course.status == "Active" %}selected{% endif %}>
+                            Active
+                        </option>
+
+                        <option value="Inactive"
+                            {% if course.status == "Inactive" %}selected{% endif %}>
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="field full">
+
+                    <label>Description</label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Enter course description..."
+                    >{{ course.description }}</textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a href="{% url 'viewcourse' %}" class="btn cancel-btn">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn update-btn">
+                    <i class="fa-solid fa-check"></i>
+                    Update Course
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="message-overlay" id="messagePopup">
+
+            <div class="message-popup
+                {% if message.tags == 'success' %}
+                    success
+                {% elif message.tags == 'error' %}
+                    error
+                {% endif %}">
+
+                {% if message.tags == 'success' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <h3>Success!</h3>
+
+                {% elif message.tags == 'error' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <h3>Already Exists!</h3>
+
+                {% endif %}
+
+                <p>{{ message }}</p>
+
+                <button
+                    type="button"
+                    class="message-close-btn"
+                    onclick="closeMessage()">
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<script>
+
+function closeMessage() {
+
+    const popup = document.getElementById("messagePopup");
+
+    if (popup) {
+
+        popup.style.opacity = "0";
+        popup.style.transform = "scale(0.80)";
+
+        setTimeout(function () {
+            popup.remove();
+        }, 250);
+
+    }
+
+}
+
+
+/* Auto close after 3 seconds */
+
+setTimeout(function () {
+
+    closeMessage();
+
+}, 3000);
+
+</script>
+
+{% endblock %}

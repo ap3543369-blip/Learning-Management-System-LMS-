@@ -1,0 +1,1047 @@
+{% extends 'superadmin/base.html' %} {% block title %} Show Sessions | NOU
+e-Gyan {% endblock %} {% block page_title %} Show Sessions {% endblock %} 
+{% block extra_css %}
+
+<style>
+  /* =========================================
+       SHOW SESSION PAGE
+    ========================================= */
+
+  .sessions-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* =========================================
+       HERO
+    ========================================= */
+
+  .session-hero {
+    position: relative;
+
+    padding: 32px 35px;
+
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+  }
+
+  .session-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -100px;
+    top: -140px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .session-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: 70px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .hero-eyebrow {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+  }
+
+  .hero-eyebrow span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    color: #fff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+  }
+
+  .session-hero h1 {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 28px;
+
+    line-height: 1.3;
+
+    font-weight: 600;
+  }
+
+  .session-hero p {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 7px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 13px;
+  }
+
+  .session-tag {
+    position: absolute;
+
+    right: 35px;
+
+    bottom: 30px;
+
+    z-index: 2;
+
+    padding: 8px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    color: #f5d1ad;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+  }
+
+  /* =========================================
+       TABLE SECTION
+    ========================================= */
+
+  .session-section {
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+  }
+
+  /* =========================================
+       SECTION HEADER
+    ========================================= */
+
+  .section-head {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eee7e2;
+
+    margin-bottom: 22px;
+  }
+
+  .section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #fff1e9;
+
+    color: #963029;
+
+    font-size: 16px;
+  }
+
+  .section-title h2 {
+    color: #321b1b;
+
+    font-size: 18px;
+
+    font-weight: 600;
+  }
+
+  .section-title p {
+    margin-top: 3px;
+
+    color: #9b928d;
+
+    font-size: 13px;
+  }
+
+  /* =========================================
+       ADD BUTTON
+    ========================================= */
+
+  .add-btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition: 0.2s;
+  }
+
+  .add-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow: none;
+  }
+
+  /* =========================================
+       TABLE WRAPPER
+    ========================================= */
+
+  .table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 8px;
+  }
+
+  /* =========================================
+       TABLE
+    ========================================= */
+
+  .session-table {
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: collapse;
+
+    background: white;
+  }
+
+  .session-table thead {
+    background: #fbf7f4;
+  }
+
+  .session-table th {
+    padding: 14px 16px;
+
+    text-align: left;
+
+    color: #6d5c58;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-transform: none;
+
+    letter-spacing: 0;
+
+    border-bottom: 1px solid #e9dfda;
+
+    white-space: nowrap;
+  }
+
+  .session-table td {
+    padding: 16px;
+
+    color: #504542;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    border-bottom: 1px solid #f0e9e5;
+
+    white-space: nowrap;
+  }
+
+  .session-table tbody tr {
+    transition: 0.2s;
+  }
+
+  .session-table tbody tr:hover {
+    background: #fffaf7;
+  }
+
+  .session-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Number */
+
+  .session-number {
+    width: 35px;
+  }
+
+  .number-badge {
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #fff1e9;
+
+    color: #923029;
+
+    font-size: 13px;
+
+    font-weight: 600;
+  }
+
+  /* =========================================
+       SESSION NAME
+    ========================================= */
+
+  .session-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  .session-mini-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #f9eee9;
+
+    color: #923029;
+
+    font-size: 13px;
+  }
+
+  .session-name strong {
+    display: block;
+
+    color: #382221;
+
+    font-size: 13px;
+
+    font-weight: 600;
+  }
+
+  .session-name small {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #a09792;
+
+    font-size: 13px;
+  }
+
+  /* =========================================
+       STATUS
+    ========================================= */
+
+  .status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+  }
+
+  .status-active {
+    background: #edf8f0;
+
+    color: #25804b;
+  }
+
+  .status-inactive {
+    background: #f8eeee;
+
+    color: #9b3a35;
+  }
+
+  /* =========================================
+       ACTIONS
+    ========================================= */
+
+  .actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+  }
+
+  .action-btn {
+    height: 32px;
+
+    padding: 0 11px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    border-radius: 6px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+  }
+
+  .edit-btn {
+    border: 1px solid #ead8ce;
+
+    background: #fff9f5;
+
+    color: #91432e;
+  }
+
+  .edit-btn:hover {
+    background: #91432e;
+
+    color: white;
+
+    border-color: #91432e;
+  }
+
+  .delete-btn {
+    border: 1px solid #edd4d1;
+
+    background: #fff7f6;
+
+    color: #a23832;
+  }
+
+  .delete-btn:hover {
+    background: #a23832;
+
+    color: white;
+
+    border-color: #a23832;
+  }
+
+  /* =========================================
+       EMPTY STATE
+    ========================================= */
+
+  .empty-state {
+    padding: 60px 20px;
+
+    text-align: center;
+
+    display: none;
+  }
+
+  .empty-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fff1e9;
+
+    color: #923029;
+
+    font-size: 20px;
+  }
+
+  .empty-state h3 {
+    color: #382221;
+
+    font-size: 16px;
+  }
+
+  .empty-state p {
+    margin-top: 5px;
+
+    color: #9b928d;
+
+    font-size: 13px;
+  }
+
+  /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+  @media (max-width: 700px) {
+    .session-hero {
+      padding: 25px 22px;
+    }
+
+    .session-hero h1 {
+      font-size: 24px;
+    }
+
+    .session-tag {
+      position: static;
+
+      display: inline-flex;
+
+      margin-top: 18px;
+    }
+
+    .session-section {
+      padding: 20px;
+    }
+
+    .section-head {
+      align-items: flex-start;
+
+      flex-direction: column;
+    }
+
+    .add-btn {
+      width: 100%;
+    }
+  }
+
+  /* =========================================
+   CENTER MESSAGE POPUP
+========================================= */
+
+.message-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(30, 20, 20, 0.45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================
+   POPUP BOX
+========================================= */
+
+.message-popup {
+    width: 380px;
+    min-height: 310px;
+
+    padding: 35px 30px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-family: "Poppins", sans-serif;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.20);
+
+    animation: popupShow 0.35s ease;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.message-popup.success {
+    color: #176b3a;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.message-popup.error {
+    color: #a52828;
+}
+
+
+/* =========================================
+   BIG ICON
+========================================= */
+
+.message-icon {
+    width: 90px;
+    height: 90px;
+
+    margin-bottom: 20px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+}
+
+
+.message-popup.success .message-icon {
+    background: #e9f9ef;
+    color: #20a957;
+}
+
+
+.message-popup.error .message-icon {
+    background: #fff0f0;
+    color: #d93636;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.message-popup h3 {
+    margin: 0 0 10px;
+
+    color: #321b1b;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message-popup p {
+    margin: 0;
+
+    max-width: 300px;
+
+    color: #817773;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.message-close-btn {
+    margin-top: 24px;
+
+    width: 100px;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        none;
+
+    transition: 0.2s;
+}
+
+
+.message-close-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes popupShow {
+
+    from {
+        opacity: 0;
+        transform: scale(0.80);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+    .message-popup {
+        width: calc(100% - 40px);
+        min-height: 290px;
+
+        padding: 30px 22px;
+    }
+
+}
+</style>
+
+{% endblock %} 
+
+{% block content %}
+
+<div class="sessions-page">
+  <!-- =====================================
+         HERO
+    ====================================== -->
+
+  <section class="session-hero">
+    <div class="hero-eyebrow">
+      <span> ACADEMIC ERP </span>
+
+      <span> SESSION MANAGEMENT </span>
+    </div>
+
+    <h1>Academic Sessions</h1>
+
+    <p>Review all academic sessions and their current status.</p>
+
+    <span class="session-tag"> SESSION 2026-27 </span>
+  </section>
+
+  <!-- =====================================
+         SESSION LIST
+    ====================================== -->
+
+  <section class="session-section">
+    <div class="section-head">
+      <div class="section-title">
+        <div class="section-icon">
+          <i class="fa-solid fa-calendar-days"></i>
+        </div>
+
+        <div>
+          <h2>Session List</h2>
+
+          <p>View and manage all academic sessions.</p>
+        </div>
+      </div>
+
+      <!-- UI ONLY -->
+
+      <button type="button" class="add-btn">
+        <i class="fa-solid fa-plus"></i>
+
+        Add Session
+      </button>
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-wrap">
+      <table class="session-table">
+        <thead>
+          <tr>
+            <th>#</th>
+
+            <th>Session</th>
+
+            <th>Start</th>
+
+            <th>End</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for session in sessions %}
+
+          <tr>
+            <td>
+              <span class="number-badge"> {{ session.id }} </span>
+            </td>
+
+            <td>
+              <div class="session-name">
+                <div class="session-mini-icon">
+                  <i class="fa-solid fa-calendar"></i>
+                </div>
+
+                <div>
+                  <strong> {{ session.session_name }} </strong>
+
+                  <small> Academic Session </small>
+                </div>
+              </div>
+            </td>
+
+            <td>{{ session.strt_date }}</td>
+
+            <td>{{ session.end_date }}</td>
+
+            <td>
+              {% if session.status == "Active" %}
+
+              <span class="status status-active">
+                <span class="status-dot"></span>
+
+                Active
+              </span>
+
+              {% else %}
+
+              <span class="status status-inactive">
+                <span class="status-dot"></span>
+
+                Inactive
+              </span>
+
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="actions">
+                <a
+                  href="{% url 'editsession' session.id %}"
+                  class="action-btn edit-btn"
+                >
+                  <i class="fa-solid fa-pen"></i>
+
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'deletesession' session.id %}"
+                  class="action-btn delete-btn"
+                  onclick="return confirm('Are you sure you want to delete this session?',);">
+                  <i class="fa-solid fa-trash"></i>
+                  Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="message-overlay" id="messagePopup">
+
+            <div class="message-popup
+                {% if message.tags == 'success' %}
+                    success
+                {% elif message.tags == 'error' %}
+                    error
+                {% endif %}">
+
+                {% if message.tags == 'success' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <h3>Success!</h3>
+
+                {% elif message.tags == 'error' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <h3>Already Exists!</h3>
+
+                {% endif %}
+
+                <p>{{ message }}</p>
+
+                <button
+                    type="button"
+                    class="message-close-btn"
+                    onclick="closeMessage()">
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<script>
+
+function closeMessage() {
+
+    const popup = document.getElementById("messagePopup");
+
+    if (popup) {
+
+        popup.style.opacity = "0";
+        popup.style.transform = "scale(0.80)";
+
+        setTimeout(function () {
+            popup.remove();
+        }, 250);
+
+    }
+
+}
+
+
+/* Auto close after 3 seconds */
+
+setTimeout(function () {
+
+    closeMessage();
+
+}, 3000);
+
+</script>
+
+{% endblock %}

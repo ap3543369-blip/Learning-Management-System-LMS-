@@ -1,0 +1,631 @@
+{% extends "student/base.html" %}
+
+{% block title %}My Subjects | NOU e-Gyan{% endblock %}
+
+{% block page_title %}My Subjects{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* ===============================
+       MY SUBJECTS
+    =============================== */
+
+    .subjects-page {
+        width: 100%;
+    }
+
+
+    /* ===============================
+       HERO
+    =============================== */
+
+    .subjects-hero {
+        background: #130e70;
+
+        border-radius: 10px;
+
+        padding: 26px 28px;
+
+        margin-bottom: 22px;
+
+        color: #fff;
+
+        box-shadow: none;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+    .subjects-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.08);
+    }
+
+    .hero-eyebrow {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        display: inline-flex;
+
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.12);
+
+        border: 1px solid rgba(255,255,255,.15);
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+    .subjects-hero h1 {
+        margin: 0;
+
+        font-size: 24px;
+
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+    .subjects-hero p {
+        margin: 8px 0 15px;
+
+        color: rgba(255,255,255,.78);
+
+        font-size: 13px;
+    }
+
+    .session-tag {
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #130e70;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       SUBJECT SECTION
+    =============================== */
+
+    .subjects-section {
+        background: #fff;
+
+        border: 1px solid #dddcec;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow: none;
+    }
+
+
+    /* ===============================
+       SECTION HEADER
+    =============================== */
+
+    .subjects-head {
+        padding: 18px 20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        border-bottom: 1px solid #ededf3;
+    }
+
+    .subjects-title b {
+        display: block;
+
+        color: #1a1845;
+
+        font-size: 14px;
+
+        font-weight: 600;
+    }
+
+    .subjects-title small {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #899a9e;
+
+        font-size: 13px;
+    }
+
+    .semester-badge {
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #eeedf8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       TABLE
+    =============================== */
+
+    .table-wrap {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+    .subjects-table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 700px;
+    }
+
+    .subjects-table th {
+        padding: 13px 16px;
+
+        text-align: left;
+
+        background: #f5f5fb;
+
+        border-bottom: 1px solid #e0dfef;
+
+        color: #5d777c;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-transform: none;
+
+        letter-spacing: 0;
+
+        white-space: nowrap;
+    }
+
+    .subjects-table td {
+        padding: 15px 16px;
+
+        border-bottom: 1px solid #ededf3;
+
+        color: #516b70;
+
+        font-size: 13px;
+
+        vertical-align: middle;
+    }
+
+    .subjects-table tbody tr {
+        transition: .2s ease;
+    }
+
+    .subjects-table tbody tr:hover {
+        background: #f9f9fd;
+    }
+
+    .subjects-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* ===============================
+       TABLE NUMBER
+    =============================== */
+
+    .subject-number {
+        width: 45px;
+
+        color: #91a2a6 !important;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       SUBJECT CODE
+    =============================== */
+
+    .subject-code {
+        display: inline-flex;
+
+        padding: 5px 8px;
+
+        border-radius: 6px;
+
+        background: #e9e8f8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       SUBJECT NAME
+    =============================== */
+
+    .subject-name {
+        color: #2b294e !important;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       SEMESTER
+    =============================== */
+
+    .semester-text {
+        color: #687f84;
+
+        font-size: 13px;
+    }
+
+
+    /* ===============================
+       CREDITS
+    =============================== */
+
+    .credits-badge {
+        display: inline-flex;
+
+        min-width: 28px;
+
+        justify-content: center;
+
+        padding: 5px 7px;
+
+        border-radius: 6px;
+
+        background: #f1f1f8;
+
+        color: #5f7a80;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       TEACHER
+    =============================== */
+
+    .teacher-name {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        color: #516b70;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+    .teacher-avatar {
+        width: 28px;
+        height: 28px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex: 0 0 28px;
+
+        border-radius: 50%;
+
+        background: #e8e7f7;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       EMPTY STATE
+    =============================== */
+
+    .subjects-empty {
+        padding: 55px 20px;
+
+        text-align: center;
+
+        color: #8d9ea2;
+
+        font-size: 13px;
+    }
+
+    .subjects-empty-icon {
+        width: 48px;
+        height: 48px;
+
+        margin: 0 auto 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #e9e8f8;
+
+        color: #168ea6;
+
+        font-size: 14px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       RESPONSIVE
+    =============================== */
+
+    @media (max-width: 700px) {
+
+        .subjects-hero {
+            padding: 22px;
+        }
+
+        .subjects-hero h1 {
+            font-size: 20px;
+        }
+
+        .subjects-head {
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="subjects-page">
+
+
+    <!-- ===============================
+         HERO
+    =============================== -->
+
+    <section class="subjects-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+        <h1>
+            My Subjects
+        </h1>
+
+        <p>
+            Subjects available for your current course and semester.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- ===============================
+         SUBJECT TABLE
+    =============================== -->
+
+    <section class="subjects-section">
+
+        <div class="subjects-head">
+
+            <div class="subjects-title">
+
+                <b>
+                    My Subjects
+                </b>
+
+                <small>
+                    Subjects assigned to your current course
+                </small>
+
+            </div>
+
+            <span class="semester-badge">
+                SEMESTER I
+            </span>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table class="subjects-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Code
+                        </th>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Semester
+                        </th>
+
+                        <th>
+                            Credits
+                        </th>
+
+                        <th>
+                            Teacher
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for subject in subjects %}
+
+                    <tr>
+
+                        <td class="subject-number">
+                            {{ student.id }}
+                        </td>
+
+                        <td>
+                            <span class="subject-code">
+                                {{ subject.subject_code }}
+                            </span>
+                        </td>
+
+                        <td class="subject-name">
+                            {{ subject.subject_name }}
+                        </td>
+
+                        <td>
+                            <span class="semester-text">
+                                {{ subject.semester }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="credits-badge">
+                                {{ subject.credits }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="teacher-name">
+
+                                <span class="teacher-avatar">
+                                    T
+                                </span>
+
+                                {{ subject.teacher }}
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="6">
+
+                            <div class="subjects-empty">
+
+                                <div class="subjects-empty-icon">
+                                    S
+                                </div>
+
+                                No subjects available.
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                    
+
+                    
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

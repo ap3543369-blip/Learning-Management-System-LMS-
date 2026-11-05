@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>NOU e-Gyan Portal | Login</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(255, 255, 255, 0.9),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(166, 58, 43, 0.08),
+            transparent 30%
+          ),
+          #f8f5ef;
+
+        padding: 30px;
+      }
+
+      /* Main Card */
+
+      .login-container {
+        width: 1060px;
+        min-height: 660px;
+
+        display: grid;
+        grid-template-columns: 45% 55%;
+
+        background: #fff;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow:
+          none;
+      }
+
+      /* =========================
+           LEFT SIDE
+        ========================= */
+
+      .left-panel {
+        position: relative;
+
+        padding: 38px;
+
+        color: white;
+
+        overflow: hidden;
+
+        background: #541817;
+      }
+
+      /* diagonal pattern */
+
+      .left-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+
+        background-image: repeating-rgba(255, 255, 255, 0.04) 0px;
+
+        pointer-events: none;
+      }
+
+      .left-content {
+        position: relative;
+        z-index: 2;
+
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Logo */
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .logo {
+        width: 52px;
+        height: 52px;
+
+        border-radius: 50%;
+
+        background: white;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #8b251e;
+
+        font-size: 20px;
+
+        box-shadow: none;
+      }
+
+      .brand-title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      .brand-subtitle {
+        font-size: 13px;
+        color: #e9bd6b;
+
+        letter-spacing: 0;
+
+        font-weight: 600;
+
+        margin-top: 3px;
+      }
+
+      /* Hero Text */
+
+      .hero-content {
+        margin-top: 48px;
+      }
+
+      .hero-content h1 {
+        font-size: 32px;
+
+        line-height: 1.18;
+
+        font-weight: 600;
+
+        max-width: 380px;
+      }
+
+      .hero-content h1 span {
+        color: #f4c76e;
+      }
+
+      .hero-content p {
+        margin-top: 20px;
+
+        font-size: 14px;
+
+        line-height: 1.8;
+
+        color: rgba(255, 255, 255, 0.88);
+
+        max-width: 390px;
+      }
+
+      /* Features */
+
+      .features {
+        margin-top: 28px;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 16px;
+      }
+
+      .feature {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        font-size: 13px;
+
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .check {
+        width: 27px;
+        height: 27px;
+
+        min-width: 27px;
+
+        border-radius: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border: 1px solid rgba(255, 210, 160, 0.45);
+
+        background: rgba(255, 255, 255, 0.08);
+
+        color: #f4c76e;
+
+        font-size: 13px;
+      }
+
+      /* Support */
+
+      .support {
+        margin-top: auto;
+
+        padding-top: 20px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      /* =========================
+           RIGHT SIDE
+        ========================= */
+
+      .right-panel {
+        padding: 55px 48px 40px;
+
+        display: flex;
+        justify-content: center;
+      }
+
+      .login-box {
+        width: 100%;
+        max-width: 520px;
+      }
+
+      /* Heading */
+
+      .login-box h2 {
+        font-size: 24px;
+
+        color: #161616;
+
+        font-weight: 600;
+      }
+
+      .login-description {
+        margin-top: 5px;
+
+        color: #8a8180;
+
+        font-size: 13px;
+      }
+
+      /* Role Info */
+
+      .role-box {
+        margin-top: 22px;
+
+        height: 44px;
+
+        border: 1px solid #eaded6;
+
+        border-radius: 8px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding: 0 14px;
+
+        font-size: 13px;
+
+        color: #9a918d;
+
+        background: #fffcf9;
+      }
+
+      .role-box strong {
+        color: #76231f;
+
+        font-weight: 600;
+      }
+
+      /* Form */
+
+      form {
+        margin-top: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+
+        font-size: 13px;
+
+        color: #171313;
+
+        font-weight: 600;
+
+        margin-bottom: 7px;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-icon {
+        position: absolute;
+
+        left: 15px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #9e9692;
+
+        font-size: 13px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+
+        height: 49px;
+
+        border-radius: 8px;
+
+        border: 1px solid #e8dcd4;
+
+        outline: none;
+
+        padding: 0 16px 0 45px;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        color: #333;
+
+        background: #fffdfb;
+
+        transition: 0.25s;
+      }
+
+      input:focus {
+        border-color: #8e2b25;
+
+        box-shadow: 0 0 0 3px rgba(142, 43, 37, 0.08);
+
+        background: white;
+      }
+
+      input::placeholder {
+        color: #b7ada8;
+      }
+
+      /* Password eye */
+
+      .password-eye {
+        position: absolute;
+
+        right: 15px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        cursor: pointer;
+
+        color: #999;
+
+        font-size: 13px;
+      }
+
+      /* Remember */
+
+      .form-options {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-top: 4px;
+
+        margin-bottom: 18px;
+      }
+
+      .remember {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 13px;
+
+        color: #807875;
+      }
+
+      .remember input {
+        width: 17px;
+        height: 17px;
+
+        accent-color: #8c2923;
+      }
+
+      .secure-text {
+        color: #7c231f;
+
+        font-size: 13px;
+
+        font-weight: 600;
+      }
+
+      /* Button */
+
+      .login-btn {
+        width: 100%;
+
+        height: 51px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: #85241f;
+
+        color: white;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        box-shadow: none;
+
+        transition: all 0.25s;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow: none;
+      }
+
+      .login-btn:active {
+        transform: translateY(0);
+      }
+
+      /* Divider */
+
+      .divider {
+        display: flex;
+
+        align-items: center;
+
+        gap: 14px;
+
+        margin: 23px 0 27px;
+
+        color: #c1b8b4;
+
+        font-size: 13px;
+
+        font-weight: 600;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+
+        height: 1px;
+
+        flex: 1;
+
+        background: #e8dfda;
+      }
+
+      /* Bottom text */
+
+      .bottom-text {
+        text-align: center;
+
+        color: #8d8581;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+      }
+
+      .admin-btn {
+        display: inline-block;
+
+        margin-top: 12px;
+
+        padding: 8px 15px;
+
+        border-radius: 10px;
+
+        border: 1px solid #e7d7ce;
+
+        background: #fffaf7;
+
+        color: #72221d;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        transition: 0.2s;
+      }
+
+      .admin-btn:hover {
+        background: #8a2822;
+
+        color: white;
+
+        border-color: #8a2822;
+      }
+
+      /* Django Messages */
+
+      .messages {
+        margin-bottom: 15px;
+      }
+
+      .message {
+        padding: 10px 13px;
+
+        border-radius: 6px;
+
+        font-size: 13px;
+
+        background: #fff1f0;
+
+        color: #8a2822;
+
+        border: 1px solid #f0d2ce;
+      }
+
+      /* =========================
+           RESPONSIVE
+        ========================= */
+
+      @media (max-width: 900px) {
+        body {
+          padding: 20px;
+        }
+
+        .login-container {
+          width: 100%;
+
+          grid-template-columns: 1fr;
+
+          max-width: 550px;
+        }
+
+        .left-panel {
+          min-height: 420px;
+        }
+
+        .right-panel {
+          padding: 40px 30px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        body {
+          padding: 10px;
+        }
+
+        .login-container {
+          border-radius: 10px;
+        }
+
+        .left-panel {
+          padding: 28px 24px;
+        }
+
+        .hero-content {
+          margin-top: 35px;
+        }
+
+        .hero-content h1 {
+          font-size: 24px;
+        }
+
+        .right-panel {
+          padding: 35px 22px;
+        }
+
+        .login-box h2 {
+          font-size: 24px;
+        }
+
+        .role-box {
+          height: auto;
+
+          padding: 12px;
+
+          gap: 10px;
+
+          flex-direction: column;
+
+          align-items: flex-start;
+        }
+
+        .form-options {
+          align-items: flex-start;
+
+          gap: 10px;
+
+          flex-direction: column;
+        }
+
+        .secure-text {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login-container">
+      <!-- ================= LEFT ================= -->
+
+      <section class="left-panel">
+        <div class="left-content">
+          <!-- Brand -->
+
+          <div class="brand">
+            <div class="logo">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div>
+              <div class="brand-title">NOU e-Gyan Portal</div>
+
+              <div class="brand-subtitle">NALANDA OPEN UNIVERSITY</div>
+            </div>
+          </div>
+
+          <!-- Hero -->
+
+          <div class="hero-content">
+            <h1>
+              Your degree,<br />
+              <span>on your own time.</span>
+            </h1>
+
+            <p>
+              One secure account for self-learning material, assignments,
+              e-books and your entire academic progress.
+            </p>
+
+            <div class="features">
+              <div class="feature">
+                <div class="check">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span> One simple login form for the complete LMS </span>
+              </div>
+
+              <div class="feature">
+                <div class="check">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span>
+                  Automatic Student, Teacher & Admin dashboard access
+                </span>
+              </div>
+
+              <div class="feature">
+                <div class="check">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span> Secure access to your role-based dashboard </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Support -->
+
+          <div class="support">
+            Need help signing in? Call +91 7080102007 or write to
+            nouegyancamp@gmail.com
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= RIGHT ================= -->
+
+      <section class="right-panel">
+        <div class="login-box">
+          <h2>Welcome back</h2>
+
+          <p class="login-description">
+            Use your Student, Teacher or Super Admin credentials to continue.
+          </p>
+
+          <!-- Role -->
+
+          <div class="role-box">
+            <span> One secure login for </span>
+
+            <strong> Student • Teacher • Super Admin </strong>
+          </div>
+
+          <!-- Django Messages -->
+
+          {% if messages %}
+
+          <div class="messages">
+            {% for message in messages %}
+
+            <div class="message">{{ message }}</div>
+
+            {% endfor %}
+          </div>
+
+          {% endif %}
+
+          <!-- Django Login Form -->
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <!-- Username -->
+
+            <div class="form-group">
+              <label for="username"> Login ID / Email </label>
+
+              <div class="input-wrapper">
+                <i class="fa-regular fa-envelope input-icon"></i>
+
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enrollment No, Employee ID, Username or Email"
+                  autocomplete="username"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Password -->
+
+            <div class="form-group">
+              <label for="password"> Password </label>
+
+              <div class="input-wrapper">
+                <i class="fa-solid fa-lock input-icon"></i>
+
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+
+                <i
+                  class="fa-regular fa-eye password-eye"
+                  onclick="togglePassword()"
+                  id="eyeIcon"
+                >
+                </i>
+              </div>
+            </div>
+
+            <!-- Options -->
+
+            <div class="form-options">
+              <label class="remember">
+                <input type="checkbox" name="remember" />
+
+                <span> Remember me </span>
+              </label>
+
+              <span class="secure-text"> NOU e-Gyan Secure Login </span>
+            </div>
+
+            <!-- Login -->
+
+            <button type="submit" class="login-btn">Sign In</button>
+          </form>
+
+          <!-- Divider -->
+
+          <div class="divider">ONE FORM • THREE PANELS</div>
+
+          <!-- Bottom -->
+
+          <div class="bottom-text">
+            Your dashboard is selected automatically from your login
+            credentials.
+
+            <br />
+
+            <a href="" class="admin-btn"> Open Admin Dashboard </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,394 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}Google Account Connected | NOU e-Gyan{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    /* =====================================================
+       GOOGLE CONNECTED PAGE
+    ====================================================== */
+
+    .google-connected-page {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .google-success-card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #eee5e6;
+        border-radius: 10px;
+        box-shadow: none;
+        text-align: center;
+        padding: 55px 40px 45px;
+    }
+
+    .google-success-card::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: #fdf0f1;
+        top: -155px;
+        left: -120px;
+    }
+
+    .google-success-card::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: #faf0ed;
+        right: -120px;
+        bottom: -130px;
+    }
+
+    .google-success-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    /* =====================================================
+       SUCCESS ICON
+    ====================================================== */
+
+    .google-success-icon {
+        width: 92px;
+        height: 92px;
+        margin: 0 auto 22px;
+        border-radius: 50%;
+        background: #e9f8ef;
+        color: #16803d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        box-shadow:
+            none;
+    }
+
+
+    /* =====================================================
+       GOOGLE LABEL
+    ====================================================== */
+
+    .google-connected-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 13px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        background: #f8e8ea;
+        color: #851f28;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .google-connected-label i {
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       HEADING
+    ====================================================== */
+
+    .google-success-card h1 {
+        margin: 0 0 10px;
+        color: #302527;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .google-success-card .success-description {
+        max-width: 600px;
+        margin: 0 auto;
+        color: #817376;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+
+    /* =====================================================
+       STATUS BOX
+    ====================================================== */
+
+    .google-status-box {
+        max-width: 570px;
+        margin: 30px auto 27px;
+        padding: 17px 19px;
+        border: 1px solid #dcefe3;
+        border-radius: 10px;
+        background: #f7fcf9;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 13px;
+    }
+
+    .google-status-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        border-radius: 8px;
+        background: #e4f6eb;
+        color: #16803d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .google-status-text strong {
+        display: block;
+        color: #28533a;
+        font-size: 13px;
+        margin-bottom: 3px;
+    }
+
+    .google-status-text span {
+        display: block;
+        color: #71907c;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       ACTION BUTTON
+    ====================================================== */
+
+    .google-schedule-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 48px;
+        padding: 12px 22px;
+        border-radius: 8px;
+        background: #661620;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: none;
+        transition: 0.25s;
+    }
+
+    .google-schedule-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: none;
+    }
+
+
+    /* =====================================================
+       BOTTOM INFO
+    ====================================================== */
+
+    .google-info-row {
+        max-width: 570px;
+        margin: 28px auto 0;
+        padding-top: 21px;
+        border-top: 1px solid #eee7e8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .google-info-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #8d7e81;
+        font-size: 13px;
+    }
+
+    .google-info-item i {
+        color: #851f28;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 768px) {
+
+        .google-success-card {
+            padding: 45px 22px 35px;
+            border-radius: 10px;
+        }
+
+        .google-success-icon {
+            width: 78px;
+            height: 78px;
+            font-size: 32px;
+        }
+
+        .google-success-card h1 {
+            font-size: 24px;
+        }
+
+        .google-success-card .success-description {
+            font-size: 13px;
+        }
+
+        .google-status-box {
+            text-align: left;
+        }
+
+        .google-schedule-btn {
+            width: 100%;
+        }
+
+        .google-info-row {
+            gap: 13px;
+            flex-direction: column;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<section class="google-connected-page">
+
+    <div class="google-success-card">
+
+        <div class="google-success-content">
+
+            <!-- SUCCESS ICON -->
+
+            <div class="google-success-icon">
+
+                <i class="fa-solid fa-check"></i>
+
+            </div>
+
+
+            <!-- LABEL -->
+
+            <div class="google-connected-label">
+
+                <i class="fa-brands fa-google"></i>
+
+                Google Account Connected
+
+            </div>
+
+
+            <!-- HEADING -->
+
+            <h1>
+                Google Account Connected Successfully
+            </h1>
+
+
+            <p class="success-description">
+
+                Your Google account has been successfully connected.
+                You can now schedule and manage Google Meet classes
+                directly from the NOU e-Gyan dashboard.
+
+            </p>
+
+
+            <!-- STATUS -->
+
+            <div class="google-status-box">
+
+                <div class="google-status-icon">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+                <div class="google-status-text">
+
+                    <strong>
+                        Connection Active
+                    </strong>
+
+                    <span>
+                        Google Meet integration is ready for scheduling online classes.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <a
+                href="{% url 'schedule_meeting' %}"
+                class="google-schedule-btn"
+            >
+
+                <i class="fa-solid fa-calendar-plus"></i>
+
+                Go to Class Schedule
+
+            </a>
+
+
+            <!-- INFO -->
+
+            <div class="google-info-row">
+
+                <div class="google-info-item">
+
+                    <i class="fa-solid fa-video"></i>
+
+                    <span>
+                        Schedule Google Meet
+                    </span>
+
+                </div>
+
+
+                <div class="google-info-item">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                    <span>
+                        Manage Online Classes
+                    </span>
+
+                </div>
+
+
+                <div class="google-info-item">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <span>
+                        Secure Connection
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

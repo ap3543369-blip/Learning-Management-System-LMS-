@@ -1,0 +1,872 @@
+{% extends "student/base.html" %}
+
+{% block title %}Assignments | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Assignments{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* ===============================
+       ASSIGNMENT PAGE
+    =============================== */
+
+    .assignment-page {
+        width: 100%;
+    }
+
+
+    /* ===============================
+       HERO
+    =============================== */
+
+    .assignment-hero {
+
+        background: #130e70;
+
+        border-radius: 10px;
+
+        padding: 26px 28px;
+
+        margin-bottom: 22px;
+
+        color: #fff;
+
+        box-shadow:
+            none;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    .assignment-hero::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.08);
+    }
+
+
+    .hero-eyebrow {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .hero-eyebrow span {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.12);
+
+        border: 1px solid rgba(255,255,255,.15);
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    .assignment-hero h1 {
+
+        margin: 0;
+
+        font-size: 24px;
+
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+
+    .assignment-hero p {
+
+        margin: 8px 0 15px;
+
+        color: rgba(255,255,255,.78);
+
+        font-size: 13px;
+    }
+
+
+    .session-tag {
+
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #130e70;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       ASSIGNMENT SECTION
+    =============================== */
+
+    .assignment-section {
+
+        background: #fff;
+
+        border: 1px solid #dddcec;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow:
+            none;
+    }
+
+
+    /* ===============================
+       SECTION HEADER
+    =============================== */
+
+    .assignment-head {
+
+        padding: 18px 20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        border-bottom: 1px solid #ededf3;
+    }
+
+
+    .assignment-title b {
+
+        display: block;
+
+        color: #1a1845;
+
+        font-size: 14px;
+
+        font-weight: 600;
+    }
+
+
+    .assignment-title small {
+
+        display: block;
+
+        margin-top: 4px;
+
+        color: #899a9e;
+
+        font-size: 13px;
+    }
+
+
+    .assignment-badge {
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #eeedf8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       TABLE
+    =============================== */
+
+    .table-wrap {
+
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    .assignment-table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 900px;
+    }
+
+
+    .assignment-table th {
+
+        padding: 13px 15px;
+
+        text-align: left;
+
+        background: #f5f5fb;
+
+        border-bottom: 1px solid #e0dfef;
+
+        color: #5d777c;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-transform: none;
+
+        letter-spacing: 0;
+
+        white-space: nowrap;
+    }
+
+
+    .assignment-table td {
+
+        padding: 15px;
+
+        border-bottom: 1px solid #ededf3;
+
+        color: #516b70;
+
+        font-size: 13px;
+
+        vertical-align: middle;
+    }
+
+
+    .assignment-table tbody tr {
+
+        transition: .2s ease;
+    }
+
+
+    .assignment-table tbody tr:hover {
+
+        background: #f9f9fd;
+    }
+
+
+    .assignment-table tbody tr:last-child td {
+
+        border-bottom: none;
+    }
+
+
+    /* ===============================
+       NUMBER
+    =============================== */
+
+    .assignment-number {
+
+        width: 40px;
+
+        color: #91a2a6 !important;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       TITLE
+    =============================== */
+
+    .assignment-name {
+
+        color: #2b294e !important;
+
+        font-weight: 600;
+
+        min-width: 170px;
+    }
+
+
+    /* ===============================
+       SUBJECT
+    =============================== */
+
+    .subject-badge {
+
+        display: inline-flex;
+
+        padding: 5px 8px;
+
+        border-radius: 6px;
+
+        background: #e9e8f8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+    }
+
+
+    /* ===============================
+       DATE
+    =============================== */
+
+    .due-date {
+
+        color: #687f84;
+
+        font-size: 13px;
+
+        white-space: nowrap;
+    }
+
+
+    /* ===============================
+       MARKS
+    =============================== */
+
+    .marks-badge {
+
+        display: inline-flex;
+
+        min-width: 35px;
+
+        justify-content: center;
+
+        padding: 5px 7px;
+
+        border-radius: 6px;
+
+        background: #f1f1f8;
+
+        color: #5f7a80;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       STATUS
+    =============================== */
+
+    .status-badge {
+
+        display: inline-flex;
+
+        padding: 5px 8px;
+
+        border-radius: 6px;
+
+        background: #e9f8ef;
+
+        color: #23824b;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-transform: none;
+    }
+
+
+    /* ===============================
+       ATTACHMENT
+    =============================== */
+
+    .attachment-btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        padding: 7px 10px;
+
+        border-radius: 6px;
+
+        background: #e9e8f8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        white-space: nowrap;
+    }
+
+
+    .attachment-btn:hover {
+
+        color: #130e70;
+
+        background: #deddf4;
+    }
+
+
+    .no-file {
+
+        color: #9aa9ad;
+
+        font-size: 13px;
+    }
+
+
+    /* ===============================
+       ACTION BUTTON
+    =============================== */
+
+    .submit-btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 7px 11px;
+
+        border-radius: 6px;
+
+        background: #130e70;
+
+        color: #fff;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+
+        transition: .2s ease;
+    }
+
+
+    .submit-btn:hover {
+
+        background: #168ea6;
+
+        color: #fff;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* ===============================
+       EMPTY STATE
+    =============================== */
+
+    .assignment-empty {
+
+        padding: 55px 20px;
+
+        text-align: center;
+
+        color: #8d9ea2;
+
+        font-size: 13px;
+    }
+
+
+    .assignment-empty-icon {
+
+        width: 50px;
+
+        height: 50px;
+
+        margin: 0 auto 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #e9e8f8;
+
+        color: #168ea6;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       RESPONSIVE
+    =============================== */
+
+    @media (max-width: 700px) {
+
+        .assignment-hero {
+
+            padding: 22px;
+        }
+
+
+        .assignment-hero h1 {
+
+            font-size: 20px;
+        }
+
+
+        .assignment-head {
+
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="assignment-page">
+
+
+    <!-- ===============================
+         HERO
+    =============================== -->
+
+    <section class="assignment-hero">
+
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION {{ student.session }}
+            </span>
+
+        </div>
+
+
+        <h1>
+            Assignments
+        </h1>
+
+
+        <p>
+            Review assignments assigned to your course and subjects.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION {{ student.session }}
+        </span>
+
+
+    </section>
+
+
+
+    <!-- ===============================
+         ASSIGNMENT SECTION
+    =============================== -->
+
+    <section class="assignment-section">
+
+
+        <div class="assignment-head">
+
+
+            <div class="assignment-title">
+
+                <b>
+                    My Assignments
+                </b>
+
+                <small>
+                    Assignments available for your current course and semester
+                </small>
+
+            </div>
+
+
+            <span class="assignment-badge">
+                ASSIGNMENTS
+            </span>
+
+
+        </div>
+
+
+
+        <div class="table-wrap">
+
+
+            <table class="assignment-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Assignment
+                        </th>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Due Date
+                        </th>
+
+                        <th>
+                            Marks
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Attachment
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for assignment in assignments %}
+
+
+                    <tr>
+
+
+                        <!-- NUMBER -->
+
+                        <td class="assignment-number">
+
+                            {{ forloop.counter }}
+
+                        </td>
+
+
+
+                        <!-- ASSIGNMENT -->
+
+                        <td class="assignment-name">
+
+                            {{ assignment.title }}
+
+                        </td>
+
+
+
+                        <!-- SUBJECT -->
+
+                        <td>
+
+                            <span class="subject-badge">
+
+                                {{ assignment.subject }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- DUE DATE -->
+
+                        <td>
+
+                            <span class="due-date">
+
+                                {{ assignment.due_date|date:"M. d, Y" }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- MARKS -->
+
+                        <td>
+
+                            <span class="marks-badge">
+
+                                {{ assignment.total_marks }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ assignment.status }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- ATTACHMENT -->
+
+                        <td>
+
+                            {% if assignment.attachment %}
+
+                                <a
+                                    href="{{ assignment.attachment.url }}"
+                                    target="_blank"
+                                    class="attachment-btn"
+                                >
+                                    Open
+                                </a>
+
+                            {% else %}
+
+                                <span class="no-file">
+                                    No Attachment
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <a
+                                href="{% url 'submit_assignment' assignment.id %}"
+                                class="submit-btn"
+                            >
+                                Submit
+                            </a>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <tr>
+
+                        <td colspan="8">
+
+
+                            <div class="assignment-empty">
+
+
+                                <div class="assignment-empty-icon">
+                                    A
+                                </div>
+
+
+                                No assignments available for your
+                                current course and semester.
+
+
+                            </div>
+
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

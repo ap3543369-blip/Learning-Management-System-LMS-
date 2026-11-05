@@ -1,0 +1,35 @@
+{# Flash-message popup for pages whose base template did not have one. #}
+{% if messages %}
+<style>
+    .mp-overlay { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15, 23, 42, .45); backdrop-filter: blur(3px); transition: opacity .25s ease; }
+    .mp-box { width: min(400px, 100%); max-height: 85vh; overflow-y: auto; padding: 32px 28px 28px; background: #fff; border-radius: 18px; text-align: center; box-shadow: 0 25px 70px rgba(0, 0, 0, .22); animation: mpShow .3s ease; }
+    .mp-icon { width: 76px; height: 76px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; background: #e9f9ef; color: #20a957; }
+    .mp-box.error .mp-icon { background: #fff0f0; color: #d93636; }
+    .mp-box.warning .mp-icon { background: #fff7e6; color: #d97706; }
+    .mp-box h3 { margin: 0 0 10px; font-size: 20px; font-weight: 700; color: #1e293b; }
+    .mp-box p { margin: 0 0 8px; font-size: 13px; line-height: 1.6; color: #64748b; word-break: break-word; }
+    .mp-btn { margin-top: 14px; min-width: 110px; height: 42px; padding: 0 22px; border: 0; border-radius: 10px; background: #1e293b; color: #fff; font-family: "Poppins", sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+    .mp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15, 23, 42, .25); }
+    @keyframes mpShow { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
+</style>
+<div class="mp-overlay" id="mpOverlay" role="alertdialog" aria-live="assertive">
+    <div class="mp-box {% for message in messages %}{% if forloop.first %}{{ message.tags }}{% endif %}{% endfor %}">
+        <div class="mp-icon">
+            {% for message in messages %}{% if forloop.first %}{% if message.tags == 'error' %}<i class="fa-solid fa-xmark"></i>{% elif message.tags == 'warning' %}<i class="fa-solid fa-exclamation"></i>{% else %}<i class="fa-solid fa-check"></i>{% endif %}{% endif %}{% endfor %}
+        </div>
+        <h3>{% for message in messages %}{% if forloop.first %}{% if message.tags == 'error' %}Oops!{% elif message.tags == 'warning' %}Please note{% else %}Success!{% endif %}{% endif %}{% endfor %}</h3>
+        {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+        <button type="button" class="mp-btn" onclick="closeMpMessage()">OK</button>
+    </div>
+</div>
+<script>
+    function closeMpMessage() {
+        var o = document.getElementById("mpOverlay");
+        if (!o) return;
+        o.style.opacity = "0";
+        setTimeout(function () { o.remove(); }, 250);
+    }
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMpMessage(); });
+    setTimeout(closeMpMessage, 6000);
+</script>
+{% endif %}

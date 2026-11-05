@@ -1,0 +1,1198 @@
+{% extends "superadmin/base.html" %}
+
+{% block title %}Super Admin Dashboard{% endblock %}
+
+{% block page_title %}Super Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   SUPER ADMIN DASHBOARD
+========================================================= */
+
+.erp-dashboard{
+    width:100%;
+    font-family:"Poppins",sans-serif;
+    color:#263238;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.erp-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.erp-summary-item{
+    background:#ffffff;
+    border:1px solid #e8e9ed;
+    border-radius:10px;
+    padding:22px;
+    box-shadow:none;
+    transition:.25s ease;
+}
+
+.erp-summary-item:hover{
+    transform:translateY(-3px);
+    box-shadow:none;
+}
+
+.erp-summary-label{
+    display:block;
+    color:#7a7f87;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.erp-summary-value{
+    display:block;
+    color:#661620;
+    font-size:28px;
+    line-height:1;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.erp-summary-note{
+    color:#9a9fa7;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.erp-card-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.erp-card{
+    background:#fff;
+    border:1px solid #e8e9ed;
+    border-radius:10px;
+    padding:22px;
+    box-shadow:none;
+    transition:.25s ease;
+}
+
+.erp-card:hover{
+    transform:translateY(-3px);
+    box-shadow:none;
+}
+
+.erp-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.erp-card-icon{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f8e8ea;
+    color:#851f28;
+    font-weight:600;
+    font-size:16px;
+}
+
+.erp-card-badge{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+    color:#8b929a;
+}
+
+.erp-card-value{
+    font-size:28px;
+    font-weight:600;
+    color:#24292f;
+    line-height:1;
+    margin-bottom:7px;
+}
+
+.erp-card-label{
+    color:#777e86;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.erp-section-block{
+    background:#fff;
+    border:1px solid #e8e9ed;
+    border-radius:10px;
+    padding:24px;
+    margin-bottom:28px;
+    box-shadow:none;
+}
+
+.erp-section-head{
+    margin-bottom:18px;
+}
+
+.erp-section-head h2{
+    margin:0;
+    font-size:20px;
+    font-weight:600;
+    color:#252a30;
+}
+
+.erp-section-head p{
+    margin:5px 0 0;
+    font-size:13px;
+    color:#8a9199;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.erp-shortcuts{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.erp-shortcut{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-height:75px;
+    padding:15px;
+    text-decoration:none;
+    color:#252a30;
+    background:#fafafa;
+    border:1px solid #eceef1;
+    border-radius:8px;
+    transition:.25s ease;
+}
+
+.erp-shortcut:hover{
+    background:#fff;
+    border-color:#d9b4b8;
+    transform:translateY(-2px);
+    box-shadow:none;
+}
+
+.erp-shortcut-icon{
+    width:38px;
+    height:38px;
+    flex:0 0 38px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#851f28;
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+}
+
+.erp-shortcut-copy{
+    flex:1;
+    min-width:0;
+}
+
+.erp-shortcut-copy b{
+    display:block;
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.erp-shortcut-copy small{
+    display:block;
+    color:#8b9198;
+    font-size:13px;
+    line-height:1.4;
+}
+
+.erp-arrow{
+    color:#851f28;
+    font-size:20px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.erp-two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.erp-panel{
+    background:#fff;
+    border:1px solid #e8e9ed;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:none;
+}
+
+.erp-panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:20px 22px;
+    border-bottom:1px solid #edf0f2;
+}
+
+.erp-panel-title b{
+    display:block;
+    font-size:14px;
+    color:#292e34;
+}
+
+.erp-panel-title small{
+    display:block;
+    margin-top:4px;
+    color:#8a9199;
+    font-size:13px;
+}
+
+.erp-panel-tag{
+    padding:6px 10px;
+    border-radius:30px;
+    background:#f8e8ea;
+    color:#851f28;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+    white-space:nowrap;
+}
+
+.erp-list{
+    padding:6px 20px 18px;
+}
+
+
+/* =========================================================
+   NOTICE / CLASS ITEM
+========================================================= */
+
+.erp-notice{
+    padding:15px 4px;
+    border-bottom:1px solid #f0f1f3;
+}
+
+.erp-notice:last-child{
+    border-bottom:none;
+}
+
+.erp-notice b{
+    display:block;
+    color:#30353b;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.erp-notice p{
+    margin:0 0 7px;
+    color:#777f87;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.erp-notice small{
+    color:#969ca3;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.erp-empty{
+    padding:35px 10px;
+    text-align:center;
+    color:#999fa6;
+    font-size:13px;
+}
+
+.erp-empty i{
+    display:block;
+    font-size:28px;
+    margin-bottom:10px;
+    color:#c2c5c8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1200px){
+
+    .erp-summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .erp-card-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .erp-shortcuts{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:850px){
+
+    .erp-two-col{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .erp-summary{
+        grid-template-columns:1fr;
+    }
+
+    .erp-card-grid{
+        grid-template-columns:1fr;
+    }
+
+    .erp-shortcuts{
+        grid-template-columns:1fr;
+    }
+
+    .erp-section-block{
+        padding:17px;
+    }
+
+    .erp-panel-head{
+        padding:17px;
+    }
+
+    .erp-summary-item,
+    .erp-card{
+        padding:18px;
+    }
+
+}
+
+
+@media(max-width:450px){
+
+    .erp-summary-value,
+    .erp-card-value{
+        font-size:24px;
+    }
+
+    .erp-section-head h2{
+        font-size:16px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="erp-dashboard">
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="erp-summary">
+
+        <!-- Total Students -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Total Students
+            </span>
+
+            <b class="erp-summary-value">
+                {{ total_students }}
+            </b>
+
+            <span class="erp-summary-note">
+                Student records
+            </span>
+
+        </div>
+
+
+        <!-- Academic Sessions -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Academic Sessions
+            </span>
+
+            <b class="erp-summary-value">
+                {{ total_sessions }}
+            </b>
+
+            <span class="erp-summary-note">
+                Configured sessions
+            </span>
+
+        </div>
+
+
+        <!-- Active Courses -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Active Courses
+            </span>
+
+            <b class="erp-summary-value">
+                {{ active_courses }}
+            </b>
+
+            <span class="erp-summary-note">
+                Programme catalogue
+            </span>
+
+        </div>
+
+
+        <!-- Online Classes -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Online Classes
+            </span>
+
+            <b class="erp-summary-value">
+                {{ online_classes }}
+            </b>
+
+            <span class="erp-summary-note">
+                Upcoming Google Meet classes
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ACADEMIC STATISTICS
+    ====================================================== -->
+
+    <section class="erp-card-grid">
+
+
+        <!-- Faculty -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </span>
+
+                <span class="erp-card-badge">
+                    FACULTY
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_teachers }}
+            </div>
+
+            <div class="erp-card-label">
+                Faculty Members
+            </div>
+
+        </article>
+
+
+        <!-- Subjects -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    <i class="fa-solid fa-book"></i>
+                </span>
+
+                <span class="erp-card-badge">
+                    ACADEMIC
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ active_subjects }}
+            </div>
+
+            <div class="erp-card-label">
+                Active Subjects
+            </div>
+
+        </article>
+
+
+        <!-- Assignments -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    <i class="fa-solid fa-file-pen"></i>
+                </span>
+
+                <span class="erp-card-badge">
+                    TASKS
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_assignments }}
+            </div>
+
+            <div class="erp-card-label">
+                Published Assignments
+            </div>
+
+        </article>
+
+
+        <!-- Tests -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    <i class="fa-solid fa-clipboard-question"></i>
+                </span>
+
+                <span class="erp-card-badge">
+                    TESTS
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_assessments }}
+            </div>
+
+            <div class="erp-card-label">
+                Online Assessments
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ASSIGNMENT & TEST OVERVIEW
+    ====================================================== -->
+
+    <section class="erp-section-block">
+
+        <div class="erp-section-head">
+
+            <h2>
+                Assignment & Assessment Overview
+            </h2>
+
+            <p>
+                Current academic task and assessment activity
+            </p>
+
+        </div>
+
+
+        <div class="erp-card-grid">
+
+
+            <!-- Total Submissions -->
+
+            <article class="erp-card">
+
+                <div class="erp-card-top">
+
+                    <span class="erp-card-icon">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </span>
+
+                    <span class="erp-card-badge">
+                        SUBMISSIONS
+                    </span>
+
+                </div>
+
+                <div class="erp-card-value">
+                    {{ total_submissions }}
+                </div>
+
+                <div class="erp-card-label">
+                    Total Submissions
+                </div>
+
+            </article>
+
+
+            <!-- Pending Reviews -->
+
+            <article class="erp-card">
+
+                <div class="erp-card-top">
+
+                    <span class="erp-card-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>
+
+                    <span class="erp-card-badge">
+                        REVIEW
+                    </span>
+
+                </div>
+
+                <div class="erp-card-value">
+                    {{ pending_assignments }}
+                </div>
+
+                <div class="erp-card-label">
+                    Pending Reviews
+                </div>
+
+            </article>
+
+
+            <!-- Evaluated -->
+
+            <article class="erp-card">
+
+                <div class="erp-card-top">
+
+                    <span class="erp-card-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+
+                    <span class="erp-card-badge">
+                        EVALUATED
+                    </span>
+
+                </div>
+
+                <div class="erp-card-value">
+                    {{ evaluated_assignments }}
+                </div>
+
+                <div class="erp-card-label">
+                    Evaluated Assignments
+                </div>
+
+            </article>
+
+
+            <!-- Test Results -->
+
+            <article class="erp-card">
+
+                <div class="erp-card-top">
+
+                    <span class="erp-card-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </span>
+
+                    <span class="erp-card-badge">
+                        RESULTS
+                    </span>
+
+                </div>
+
+                <div class="erp-card-value">
+                    {{ total_test_results }}
+                </div>
+
+                <div class="erp-card-label">
+                    Test Results
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+    ====================================================== -->
+
+    <section class="erp-section-block">
+
+        <div class="erp-section-head">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <p>
+                Frequently used administration tools
+            </p>
+
+        </div>
+
+
+        <div class="erp-shortcuts">
+
+
+            <!-- Add Student -->
+
+            <a class="erp-shortcut"
+               href="{% url 'addstudent' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-user-plus"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Add / Bulk Students
+                    </b>
+
+                    <small>
+                        Create accounts and student records.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Add Teacher -->
+
+            <a class="erp-shortcut"
+               href="{% url 'addteacher' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Add Teacher
+                    </b>
+
+                    <small>
+                        Create and manage faculty profiles.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Add Course -->
+
+            <a class="erp-shortcut"
+               href="{% url 'addcourse' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Add Course
+                    </b>
+
+                    <small>
+                        Configure a programme for a session.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Schedule Class -->
+
+            <a class="erp-shortcut"
+               href="{% url 'schedule_meeting' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-video"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Schedule Google Meet
+                    </b>
+
+                    <small>
+                        Schedule an online class.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- All Submissions -->
+
+            <a class="erp-shortcut"
+               href="{% url 'all_submissions' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-file-circle-check"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Assignment Submissions
+                    </b>
+
+                    <small>
+                        Review student submissions and marks.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Test Results -->
+
+            <a class="erp-shortcut"
+               href="{% url 'all_test_results' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Test Results
+                    </b>
+
+                    <small>
+                        View student online test results.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Announcements -->
+
+            <a class="erp-shortcut"
+               href="{% url 'announcement' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Announcements
+                    </b>
+
+                    <small>
+                        Publish and manage announcements.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- Sessions -->
+
+            <a class="erp-shortcut"
+               href="{% url 'showsession' %}">
+
+                <span class="erp-shortcut-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Academic Sessions
+                    </b>
+
+                    <small>
+                        Manage academic sessions.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPCOMING + NOTICES
+    ====================================================== -->
+
+    <section class="erp-two-col">
+
+
+        <!-- =================================================
+             UPCOMING CLASSES
+        ================================================== -->
+
+        <article class="erp-panel">
+
+            <div class="erp-panel-head">
+
+                <div class="erp-panel-title">
+
+                    <b>
+                        Upcoming Classes
+                    </b>
+
+                    <small>
+                        Next scheduled online sessions
+                    </small>
+
+                </div>
+
+                <span class="erp-panel-tag">
+                    LIVE SCHEDULE
+                </span>
+
+            </div>
+
+
+            <div class="erp-list">
+
+                {% for meeting in upcoming_classes %}
+
+                <div class="erp-notice">
+
+                    <b>
+                        {{ meeting.class_title }}
+                    </b>
+
+                    <p>
+                        {{ meeting.course }}
+                        /
+                        {{ meeting.subject }}
+                    </p>
+
+                    <small>
+
+                        {{ meeting.class_date|date:"d M Y" }}
+
+                        • 
+
+                        {{ meeting.class_time|time:"h:i A" }}
+
+                        • 
+
+                        {% if meeting.teacher.get_full_name %}
+                            {{ meeting.teacher.get_full_name }}
+                        {% else %}
+                            {{ meeting.teacher.username }}
+                        {% endif %}
+
+                    </small>
+
+                </div>
+
+                {% empty %}
+
+                <div class="erp-empty">
+
+                    <i class="fa-solid fa-video-slash"></i>
+
+                    No upcoming classes scheduled.
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             IMPORTANT NOTICES
+        ================================================== -->
+
+        <article class="erp-panel">
+
+            <div class="erp-panel-head">
+
+                <div class="erp-panel-title">
+
+                    <b>
+                        Important Notices
+                    </b>
+
+                    <small>
+                        Latest university communication
+                    </small>
+
+                </div>
+
+                <span class="erp-panel-tag">
+                    LATEST
+                </span>
+
+            </div>
+
+
+            <div class="erp-list">
+
+                {% for notice in latest_announcements %}
+
+                <div class="erp-notice">
+
+                    <b>
+                        {{ notice.title }}
+                    </b>
+
+                    <p>
+                        {{ notice.message|truncatechars:140 }}
+                    </p>
+
+                    <small>
+
+                        {{ notice.publish_date|date:"d M Y" }}
+
+                        •
+
+                        {{ notice.priority }}
+
+                        •
+
+                        {{ notice.audience }}
+
+                    </small>
+
+                </div>
+
+                {% empty %}
+
+                <div class="erp-empty">
+
+                    <i class="fa-solid fa-bullhorn"></i>
+
+                    No announcements published yet.
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+  
+
+</div>
+
+{% endblock %}

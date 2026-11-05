@@ -1,0 +1,822 @@
+{% extends 'superadmin/base.html' %} {% block title %}View Subjects | NOU
+e-Gyan{% endblock %} {% block page_title %}View Subjects{% endblock %} 
+{% block content %}
+
+<style>
+  .subject-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ================= HERO ================= */
+
+  .subject-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+
+    position: relative;
+    overflow: hidden;
+  }
+
+  .subject-hero::after {
+    content: "";
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -180px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+
+    box-shadow:
+      none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .subject-hero h1 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+  }
+
+  .subject-hero p {
+    margin: 8px 0 18px;
+
+    font-size: 13px;
+    opacity: 0.86;
+
+    position: relative;
+    z-index: 2;
+  }
+
+  .session-tag {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ================= SECTION ================= */
+
+  .subject-section {
+    background: white;
+
+    border: 1px solid #ece4df;
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+  }
+
+  .section-head {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+    color: #851f28;
+
+    font-size: 16px;
+  }
+
+  .section-title h2 {
+    margin: 0;
+
+    font-size: 18px;
+    color: #381b1b;
+  }
+
+  .section-title p {
+    margin: 4px 0 0;
+
+    font-size: 13px;
+    color: #8b7772;
+  }
+
+  .add-btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #851f28;
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    transition: 0.2s;
+  }
+
+  .add-btn:hover {
+    background: #6d1820;
+  }
+
+  /* ================= TABLE ================= */
+
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .subject-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    min-width: 1100px;
+
+    overflow: hidden;
+
+    border: 1px solid #eee7e2;
+    border-radius: 8px;
+  }
+
+  .subject-table th {
+    padding: 14px 13px;
+
+    text-align: left;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #806b66;
+
+    text-transform: none;
+    letter-spacing: 0;
+
+    background: #faf7f5;
+
+    border-bottom: 1px solid #eee5e0;
+  }
+
+  .subject-table td {
+    padding: 15px 13px;
+
+    font-size: 13px;
+
+    color: #5c4945;
+
+    border-bottom: 1px solid #f1eae6;
+
+    vertical-align: middle;
+  }
+
+  .subject-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .subject-table tbody tr {
+    transition: 0.2s;
+  }
+
+  .subject-table tbody tr:hover {
+    background: #fffaf8;
+  }
+
+  /* ================= NUMBER ================= */
+
+  .number-badge {
+    width: 29px;
+    height: 29px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #f8eee9;
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ================= CODE ================= */
+
+  .code-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 10px;
+
+    border-radius: 6px;
+
+    background: #fff6e9;
+    color: #795b22;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    border: 1px solid #f4e5cb;
+  }
+
+  /* ================= SUBJECT ================= */
+
+  .subject-name {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 190px;
+  }
+
+  .subject-mini-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+    color: #851f28;
+
+    font-size: 13px;
+  }
+
+  .subject-name strong {
+    display: block;
+
+    color: #382020;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .subject-name small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+  }
+
+  /* ================= COURSE ================= */
+
+  .course-info {
+    min-width: 200px;
+  }
+
+  .course-code {
+    display: inline-block;
+
+    margin-bottom: 4px;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .course-info strong {
+    display: block;
+
+    color: #4d3935;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.45;
+  }
+
+  /* ================= SEMESTER ================= */
+
+  .semester-badge {
+    display: inline-block;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #f5f0ed;
+
+    color: #684f49;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ================= CREDITS ================= */
+
+  .credit-badge {
+    width: 30px;
+    height: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ================= TEACHER ================= */
+
+  .teacher-info {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 150px;
+  }
+
+  .teacher-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f5f0ed;
+    color: #851f28;
+
+    font-size: 13px;
+  }
+
+  .teacher-details strong {
+    display: block;
+
+    color: #493532;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .teacher-details small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+  }
+
+  /* ================= STATUS ================= */
+
+  .status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+  }
+
+  .status-active {
+    color: #24733d;
+    background: #edf8f0;
+  }
+
+  .status-active .status-dot {
+    background: #35a853;
+  }
+
+  .status-inactive {
+    color: #9a3e3e;
+    background: #fff0f0;
+  }
+
+  .status-inactive .status-dot {
+    background: #d95353;
+  }
+
+  /* ================= ACTION ================= */
+
+  .actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+  }
+
+  .action-btn {
+    height: 32px;
+
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: 0.2s;
+  }
+
+  .edit-btn {
+    color: #795b22;
+    background: #fff8e8;
+    border: 1px solid #f4e7ca;
+  }
+
+  .edit-btn:hover {
+    background: #fff0cc;
+  }
+
+  .delete-btn {
+    color: #a13c3c;
+    background: #fff0f0;
+    border: 1px solid #f2dcdc;
+  }
+
+  .delete-btn:hover {
+    background: #ffe1e1;
+  }
+
+  /* ================= EMPTY ================= */
+
+  .empty-box {
+    padding: 50px 20px;
+
+    text-align: center;
+  }
+
+  .empty-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f8eee9;
+    color: #a99690;
+
+    font-size: 24px;
+  }
+
+  .empty-box strong {
+    display: block;
+
+    color: #493532;
+
+    font-size: 13px;
+  }
+
+  .empty-box span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+  }
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 700px) {
+    .subject-hero {
+      padding: 25px;
+    }
+
+    .subject-hero h1 {
+      font-size: 24px;
+    }
+
+    .subject-section {
+      padding: 20px;
+    }
+
+    .section-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .add-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<div class="subject-page">
+  <!-- ================= HERO ================= -->
+
+  <section class="subject-hero">
+    <div class="hero-eyebrow">
+      <span>ACADEMIC ERP</span>
+
+      <span>SUBJECT MANAGEMENT</span>
+    </div>
+
+    <h1>Subject Directory</h1>
+
+    <p>Review course subjects, semesters and faculty allocation.</p>
+
+    <span class="session-tag"> SESSION 2026-27 </span>
+  </section>
+
+  <!-- ================= SUBJECT SECTION ================= -->
+
+  <section class="subject-section">
+    <div class="section-head">
+      <div class="section-title">
+        <div class="section-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+
+        <div>
+          <h2>Subjects</h2>
+
+          <p>View and manage all registered subjects.</p>
+        </div>
+      </div>
+
+      <a href="{% url 'addsubject' %}" class="add-btn">
+        <i class="fa-solid fa-plus"></i>
+
+        Add Subject
+      </a>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+
+    <div class="table-wrap">
+      <table class="subject-table">
+        <thead>
+          <tr>
+            <th>#</th>
+
+            <th>Code</th>
+
+            <th>Subject</th>
+
+            <th>Course</th>
+
+            <th>Semester</th>
+
+            <th>Teacher</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for subject in subjects %} 
+          <tr>
+            <!-- ID -->
+
+            <td>
+              <span class="number-badge"> {{ subject.id }} </span>
+            </td>
+
+            <!-- CODE -->
+
+            <td>
+              <span class="code-badge"> {{ subject.subject_code }} </span>
+            </td>
+
+            <!-- SUBJECT -->
+
+            <td>
+              <div class="subject-name">
+                
+
+                <div>
+                  <strong> {{ subject.subject_name }} </strong>
+
+                  <small> Academic Subject </small>
+                </div>
+              </div>
+            </td>
+
+            <!-- COURSE -->
+
+            <td>
+              <div class="course-info">
+                <span class="course-code"> {{ subject.course }} </span>
+              </div>
+            </td>
+
+            <!-- SEMESTER -->
+
+            <td>
+              <span class="semester-badge"> {{ subject.semester }} </span>
+            </td>
+
+            <!-- TEACHER -->
+
+            <td>
+              {% if subject.teacher %}
+
+              <div class="teacher-info">
+                <div class="teacher-details">
+                  <strong> {{ subject.teacher }} </strong>
+                </div>
+              </div>
+
+              {% else %}
+
+              <span style="color: #a99a95; font-size: 13px">
+                Not Assigned
+              </span>
+
+              {% endif %}
+            </td>
+
+            <!-- STATUS -->
+
+            <td>
+              {% if subject.status == "Active" %}
+
+              <span class="status status-active">
+                <span class="status-dot"></span>
+
+                Active
+              </span>
+
+              {% else %}
+
+              <span class="status status-inactive">
+                <span class="status-dot"></span>
+
+                Inactive
+              </span>
+
+              {% endif %}
+            </td>
+
+            <!-- ACTION -->
+
+            <td>
+              <div class="actions">
+                <a
+                  href="{% url 'editsubject' subject.id %}"
+                  class="action-btn edit-btn"
+                >
+                  <i class="fa-solid fa-pen"></i>
+
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'deletesubject' subject.id %}"
+                  class="action-btn delete-btn"
+                  onclick="
+                    return confirm(
+                      'Are you sure you want to delete this subject?',
+                    );
+                  "
+                >
+                  <i class="fa-solid fa-trash"></i>
+
+                  Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="9">
+              <div class="empty-box">
+                <div class="empty-icon">
+                  <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <strong> No subjects found </strong>
+
+                <span> Add a subject to see it listed here. </span>
+              </div>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,1048 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}
+Edit Session | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Edit Session
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================
+   EDIT SESSION PAGE
+========================================= */
+
+.session-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.session-hero {
+    position: relative;
+
+    padding: 32px 35px;
+
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow:
+        none;
+}
+
+
+.session-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -100px;
+    top: -140px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+
+.session-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: 70px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.06);
+}
+
+
+/* =========================================
+   HERO CONTENT
+========================================= */
+
+.hero-eyebrow {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+
+.hero-eyebrow span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.12);
+
+    border: 1px solid rgba(255,255,255,0.16);
+
+    color: #fff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+
+.session-hero h1 {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 28px;
+
+    line-height: 1.3;
+
+    font-weight: 600;
+}
+
+
+.session-hero p {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 7px;
+
+    color: rgba(255,255,255,0.78);
+
+    font-size: 13px;
+}
+
+
+.session-tag {
+    position: absolute;
+
+    right: 35px;
+    bottom: 30px;
+
+    z-index: 2;
+
+    padding: 8px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.1);
+
+    border: 1px solid rgba(255,255,255,0.14);
+
+    color: #f5d1ad;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+
+/* =========================================
+   FORM CARD
+   SAME SIZE AS SHOW SESSION
+========================================= */
+
+.session-card {
+    width: 100%;
+
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.card-head {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+
+.card-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #fff1e9;
+
+    color: #963029;
+
+    font-size: 16px;
+}
+
+
+.card-title h2 {
+    color: #321b1b;
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+
+.card-title p {
+    margin-top: 3px;
+
+    color: #9b928d;
+
+    font-size: 13px;
+}
+
+
+.session-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 8px 14px;
+
+    border-radius: 10px;
+
+    background: #fff7ef;
+
+    border: 1px solid #f0ddd0;
+
+    color: #a14a26;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 23px 24px;
+}
+
+
+.field {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.field label {
+    margin-bottom: 8px;
+
+    color: #332727;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.field label span {
+    color: #b5322a;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.field input,
+.field select {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border: 1px solid #e6ddd7;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #fffdfb;
+
+    color: #403837;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+
+.field input:focus,
+.field select:focus {
+    background: white;
+
+    border-color: #963029;
+
+    box-shadow:
+        0 0 0 3px rgba(150,48,41,0.07);
+}
+
+
+/* =========================================
+   FORM ACTION
+========================================= */
+
+.form-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 30px;
+
+    padding-top: 23px;
+
+    border-top: 1px solid #eee7e2;
+}
+
+
+.form-note {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #968c87;
+
+    font-size: 13px;
+}
+
+
+.form-note i {
+    color: #9b3028;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   UPDATE BUTTON
+========================================= */
+
+.btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        none;
+
+    transition: 0.2s;
+}
+
+
+.btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .session-hero {
+        padding: 25px 22px;
+    }
+
+
+    .session-hero h1 {
+        font-size: 24px;
+    }
+
+
+    .session-tag {
+        position: static;
+
+        display: inline-flex;
+
+        margin-top: 18px;
+    }
+
+
+    .session-card {
+        padding: 20px;
+    }
+
+
+    .card-head {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-actions {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: 16px;
+    }
+
+
+    .btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================================
+   CENTER MESSAGE POPUP
+========================================= */
+
+.message-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(30, 20, 20, 0.45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================
+   POPUP BOX
+========================================= */
+
+.message-popup {
+    width: 380px;
+    min-height: 310px;
+
+    padding: 35px 30px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-family: "Poppins", sans-serif;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.20);
+
+    animation: popupShow 0.35s ease;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.message-popup.success {
+    color: #176b3a;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.message-popup.error {
+    color: #a52828;
+}
+
+
+/* =========================================
+   BIG ICON
+========================================= */
+
+.message-icon {
+    width: 90px;
+    height: 90px;
+
+    margin-bottom: 20px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+}
+
+
+.message-popup.success .message-icon {
+    background: #e9f9ef;
+    color: #20a957;
+}
+
+
+.message-popup.error .message-icon {
+    background: #fff0f0;
+    color: #d93636;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.message-popup h3 {
+    margin: 0 0 10px;
+
+    color: #321b1b;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message-popup p {
+    margin: 0;
+
+    max-width: 300px;
+
+    color: #817773;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.message-close-btn {
+    margin-top: 24px;
+
+    width: 100px;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        none;
+
+    transition: 0.2s;
+}
+
+
+.message-close-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes popupShow {
+
+    from {
+        opacity: 0;
+        transform: scale(0.80);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+    .message-popup {
+        width: calc(100% - 40px);
+        min-height: 290px;
+
+        padding: 30px 22px;
+    }
+
+}
+
+
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="session-page">
+
+
+    <!-- =====================================
+         HERO
+    ====================================== -->
+
+    <section class="session-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION MANAGEMENT
+            </span>
+
+        </div>
+
+
+        <h1>
+            Edit Academic Session
+        </h1>
+
+
+        <p>
+            Update the academic session details and save your changes.
+        </p>
+
+
+        <span class="session-tag">
+            EDIT SESSION
+        </span>
+
+    </section>
+
+
+
+    <!-- =====================================
+         FORM CARD
+    ====================================== -->
+
+    <section class="session-card">
+
+
+        <div class="card-head">
+
+
+            <div class="card-title">
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Update Session Information
+                    </h2>
+
+                    <p>
+                        Modify the session details below.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <span class="session-label">
+                EDIT SESSION
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================
+             UPDATE FORM
+        ================================== -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- SESSION NAME -->
+
+                <div class="field">
+
+                    <label for="session_name">
+
+                        Session Name
+                        <span>*</span>
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="session_name"
+                        name="session_name"
+                        value="{{ session.session_name }}"
+                        placeholder="2026-27"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="field">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+
+                    <select
+                        id="status"
+                        name="status"
+                    >
+
+                        <option
+                            value="Active"
+                            {% if session.status == "Active" %}
+                            selected
+                            {% endif %}
+                        >
+                            Active
+                        </option>
+
+
+                        <option
+                            value="Inactive"
+                            {% if session.status == "Inactive" %}
+                            selected
+                            {% endif %}
+                        >
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- START DATE -->
+
+                <div class="field">
+
+                    <label for="strt_date">
+
+                        Start Date
+                        <span>*</span>
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="strt_date"
+                        name="strt_date"
+                        value="{{ session.strt_date|date:'Y-m-d' }}"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- END DATE -->
+
+                <div class="field">
+
+                    <label for="end_date">
+
+                        End Date
+                        <span>*</span>
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="end_date"
+                        name="end_date"
+                        value="{{ session.end_date|date:'Y-m-d' }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 ACTION
+            ================================== -->
+
+            <div class="form-actions">
+
+
+                <div class="form-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Update the required session details.
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Update Session
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="message-overlay" id="messagePopup">
+
+            <div class="message-popup
+                {% if message.tags == 'success' %}
+                    success
+                {% elif message.tags == 'error' %}
+                    error
+                {% endif %}">
+
+                {% if message.tags == 'success' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <h3>Success!</h3>
+
+                {% elif message.tags == 'error' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <h3>Already Exists!</h3>
+
+                {% endif %}
+
+                <p>{{ message }}</p>
+
+                <button
+                    type="button"
+                    class="message-close-btn"
+                    onclick="closeMessage()">
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<script>
+
+function closeMessage() {
+
+    const popup = document.getElementById("messagePopup");
+
+    if (popup) {
+
+        popup.style.opacity = "0";
+        popup.style.transform = "scale(0.80)";
+
+        setTimeout(function () {
+            popup.remove();
+        }, 250);
+
+    }
+
+}
+
+
+/* Auto close after 3 seconds */
+
+setTimeout(function () {
+
+    closeMessage();
+
+}, 3000);
+
+</script>
+
+{% endblock %}

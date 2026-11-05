@@ -1,0 +1,657 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}
+Edit Student
+{% endblock %}
+
+{% block page_title %}
+Edit Student
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .student-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .student-hero {
+        background: #7b1e2b;
+
+        color: #fff;
+        border-radius: 10px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+
+        box-shadow: none;
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .hero-eyebrow span {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 6px 10px;
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.14);
+        border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .student-hero h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .student-hero p {
+        margin: 0;
+        color: rgba(255,255,255,.82);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .session-tag {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 7px 13px;
+
+        border-radius: 10px;
+
+        background: #fff;
+        color: #7b1e2b;
+
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+
+    /* FORM CARD */
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #ece4df;
+        border-radius: 10px;
+
+        box-shadow: none;
+
+        overflow: hidden;
+    }
+
+    .section-head {
+        padding: 22px 26px;
+
+        border-bottom: 1px solid #eee7e2;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+    .section-head h2 {
+        margin: 0 0 5px;
+
+        font-size: 20px;
+        color: #241c19;
+        font-weight: 600;
+    }
+
+    .section-head p {
+        margin: 0;
+
+        color: #81766f;
+        font-size: 13px;
+    }
+
+
+    /* FORM */
+
+    .student-form {
+        padding: 28px 26px;
+    }
+
+    .form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .field label {
+        margin-bottom: 8px;
+
+        color: #332925;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .field label small {
+        color: #91857e;
+        font-weight: 500;
+    }
+
+    .field input,
+    .field select {
+
+        width: 100%;
+        box-sizing: border-box;
+
+        min-height: 46px;
+
+        padding: 11px 13px;
+
+        border: 1px solid #ddd4ce;
+        border-radius: 8px;
+
+        background: #fff;
+        color: #29211e;
+
+        font-family: inherit;
+        font-size: 14px;
+
+        outline: none;
+
+        transition: .2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+
+        border-color: #8d2635;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(141,38,53,.08);
+    }
+
+    .field input[readonly] {
+
+        background: #f7f4f2;
+        color: #776d67;
+
+        cursor: not-allowed;
+    }
+
+    .password-note {
+
+        margin-top: 7px;
+
+        color: #91857e;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* ACTIONS */
+
+    .form-actions {
+
+        display: flex;
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 28px;
+        padding-top: 22px;
+
+        border-top: 1px solid #eee7e2;
+    }
+
+    .btn {
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-height: 42px;
+
+        padding: 0 18px;
+
+        border: none;
+        border-radius: 6px;
+
+        background: #7b1e2b;
+        color: #fff;
+
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+    .btn:hover {
+
+        background: #641622;
+
+        transform: translateY(-1px);
+    }
+
+    .btn-light {
+
+        background: #f6f2ef;
+
+        color: #5d514b;
+
+        border: 1px solid #e6ddd7;
+    }
+
+    .btn-light:hover {
+
+        background: #eee8e3;
+
+        color: #332925;
+    }
+
+    .btn-sm {
+
+        min-height: 38px;
+
+        padding: 0 14px;
+
+        font-size: 13px;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
+
+        .student-hero {
+            padding: 23px 20px;
+            border-radius: 10px;
+        }
+
+        .student-hero h1 {
+            font-size: 24px;
+        }
+
+        .section-head {
+
+            padding: 19px 18px;
+
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+        .student-form {
+            padding: 22px 18px;
+        }
+
+        .form-grid {
+
+            grid-template-columns: 1fr;
+
+            gap: 17px;
+        }
+
+        .form-actions {
+
+            flex-direction: column-reverse;
+        }
+
+        .form-actions .btn {
+
+            width: 100%;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="student-page">
+
+    <!-- HERO -->
+
+    <section class="student-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>ACADEMIC ERP</span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+        <h1>
+            Edit Student
+        </h1>
+
+        <p>
+            Update learner profile,
+            academic mapping and login details.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- FORM CARD -->
+
+    <div class="form-card">
+
+        <div class="section-head">
+
+            <div>
+
+                <h2>
+                    Student Information
+                </h2>
+
+                <p>
+                    Course and session must match.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'viewstudent' %}"
+                class="btn btn-light btn-sm"
+            >
+                Back to Students
+            </a>
+
+        </div>
+
+
+        <form
+            method="POST"
+            class="student-form"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- Enrollment -->
+
+                <div class="field">
+
+                    <label>
+                        Enrollment No.
+                    </label>
+
+                    <input
+                        type="text"
+                        name="Enrollment_no"
+                        value="{{ student.Enrollment_no }}"
+                        readonly
+                    >
+
+                </div>
+
+
+                <!-- Name -->
+
+                <div class="field">
+
+                    <label>
+                        Student Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        value="{{ student.name }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="field">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ student.email }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Mobile -->
+
+                <div class="field">
+
+                    <label>
+                        Mobile
+                    </label>
+
+                    <input
+                        type="text"
+                        name="mobile"
+                        value="{{ student.mobile }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Session -->
+
+                <div class="field">
+
+                    <label>
+                        Session
+                    </label>
+
+                    <select
+                        name="session"
+                        required
+                    >
+
+                        {% for session in sessions %}
+
+                            <option
+                                value="{{ session.session_name }}"
+                                {% if student.session == session.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ session.session_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Course -->
+
+                <div class="field">
+
+                    <label>
+                        Course
+                    </label>
+
+                    <select
+                        name="course"
+                        required
+                    >
+
+                        {% for course in courses %}
+
+                            <option
+                                value="{{ course.course_name }}"
+                                {% if student.course_code == course.course_code %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ course.course_code }} - {{ course.course_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Semester -->
+
+                <div class="field">
+
+                    <label>
+                        Semester
+                    </label>
+
+                    <input
+                        type="text"
+                        name="semester"
+                        value="{{ student.sem }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Username -->
+
+                <div class="field">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        value="{{ student.username }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="field">
+
+                    <label>
+                        New Password
+                        <small>
+                            (optional)
+                        </small>
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Leave blank to keep current password"
+                    >
+
+                    <span class="password-note">
+                        Enter a password only if you want to change it.
+                    </span>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="field">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select name="status">
+
+                        <option
+                            value="Active"
+                            {% if student.status == "Active" %}
+                                selected
+                            {% endif %}
+                        >
+                            Active
+                        </option>
+
+                        <option
+                            value="Inactive"
+                            {% if student.status == "Inactive" %}
+                                selected
+                            {% endif %}
+                        >
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'viewstudent' %}"
+                    class="btn btn-light"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

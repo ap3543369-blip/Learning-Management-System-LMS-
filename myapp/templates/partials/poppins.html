@@ -1,0 +1,127 @@
+{# Shared head snippet: loads Poppins and applies it (with a clean weight scale) to every element except icons/code. #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style id="poppins-global">
+    :root {
+        --font-poppins: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --fw-light: 300;
+        --fw-regular: 400;
+        --fw-medium: 500;
+        --fw-semibold: 600;
+        --fw-bold: 700;
+        --fw-extrabold: 800;
+    }
+
+    /* Poppins everywhere. Single-class rules (Font Awesome icons, code editors,
+       <pre>/<code>) are more specific than these element selectors, so they keep
+       their own fonts. */
+    html, body, button, input, select, textarea, optgroup, option,
+    table, caption, th, td, h1, h2, h3, h4, h5, h6, p, a, span, div, label,
+    ul, ol, li, dl, dt, dd, small, strong, b, em, legend, summary, figcaption,
+    blockquote, section, header, footer, nav, main, aside, article, form, fieldset {
+        font-family: var(--font-poppins);
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    body {
+        font-weight: var(--fw-regular);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Keyboard focus ring (mouse clicks are unaffected) */
+    :focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+    }
+
+    input:focus-visible, select:focus-visible, textarea:focus-visible {
+        outline-offset: 0;
+    }
+
+    /* Inline validation feedback once the user has interacted with a field */
+    input:user-invalid, select:user-invalid, textarea:user-invalid {
+        border-color: #dc2626 !important;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, .12) !important;
+    }
+
+    /* Buttons that are locked while a form is being submitted */
+    button[data-locked="1"], input[type="submit"][data-locked="1"] {
+        opacity: .65;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
+<script>
+    /* Front-end validation helpers + double-submit protection (prevents duplicate records). */
+    document.addEventListener("DOMContentLoaded", function () {
+        var rules = {
+            mobile: { pattern: "\\d{10}", maxlength: 10, inputmode: "numeric",
+                      title: "Enter a 10 digit mobile number", digitsOnly: true, force: true },
+            username: { pattern: "[\\w.@+\\-]{3,50}", maxlength: 50,
+                        title: "3-50 characters: letters, digits and @ . + - _" },
+            password: { minlength: 6, maxlength: 16,
+                        title: "Password must be 6-16 characters" }
+        };
+
+        document.querySelectorAll("form[method='post'] input, form[method='POST'] input").forEach(function (el) {
+            var rule = rules[el.name];
+            if (!rule) return;
+            if (rule.pattern && !el.hasAttribute("pattern")) el.setAttribute("pattern", rule.pattern);
+            if (rule.maxlength && (rule.force || !el.hasAttribute("maxlength"))) el.setAttribute("maxlength", rule.maxlength);
+            if (rule.minlength && !el.hasAttribute("minlength")) el.setAttribute("minlength", rule.minlength);
+            if (rule.inputmode && !el.hasAttribute("inputmode")) el.setAttribute("inputmode", rule.inputmode);
+            if (rule.title && !el.hasAttribute("title")) el.setAttribute("title", rule.title);
+            if (rule.digitsOnly) {
+                el.addEventListener("input", function () {
+                    var cleaned = el.value.replace(/\D/g, "");
+                    if (cleaned !== el.value) el.value = cleaned;
+                });
+            }
+        });
+
+        // Trim stray spaces from text fields when leaving them
+        document.querySelectorAll("form[method='post'] input[type='text'], form[method='post'] input[type='email'], form[method='post'] textarea").forEach(function (el) {
+            el.addEventListener("blur", function () { el.value = el.value.trim(); });
+        });
+    });
+
+    document.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (e.defaultPrevented || !form || (form.method || "").toLowerCase() !== "post") return;
+        if (form.dataset.submitting === "1") { e.preventDefault(); return; }
+        form.dataset.submitting = "1";
+        setTimeout(function () {
+            form.querySelectorAll("button[type='submit'], button:not([type]), input[type='submit']").forEach(function (b) {
+                b.setAttribute("data-locked", "1");
+            });
+        }, 0);
+        // Safety net: unlock again if the browser is still on this page (e.g. a download response)
+        setTimeout(function () {
+            form.dataset.submitting = "0";
+            form.querySelectorAll("[data-locked]").forEach(function (b) { b.removeAttribute("data-locked"); });
+        }, 15000);
+    });
+
+    window.addEventListener("pageshow", function (e) {
+        if (!e.persisted) return;
+        document.querySelectorAll("form").forEach(function (f) { f.dataset.submitting = "0"; });
+        document.querySelectorAll("[data-locked]").forEach(function (b) { b.removeAttribute("data-locked"); });
+    });
+</script>

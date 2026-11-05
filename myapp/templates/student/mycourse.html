@@ -1,0 +1,536 @@
+{% extends "student/base.html" %}
+
+{% block title %}My Course | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Course Details{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .course-page {
+        width: 100%;
+    }
+
+
+    /* ===============================
+       HERO
+    =============================== */
+
+    .course-hero {
+        background: #130e70;
+
+        border-radius: 10px;
+
+        padding: 26px 28px;
+
+        margin-bottom: 22px;
+
+        color: #fff;
+
+        box-shadow: none;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+    .course-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.08);
+    }
+
+    .hero-eyebrow {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        display: inline-flex;
+
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.12);
+
+        border: 1px solid rgba(255,255,255,.15);
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+    .course-hero h1 {
+        margin: 0;
+
+        font-size: 24px;
+
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+    .course-hero p {
+        margin: 8px 0 15px;
+
+        color: rgba(255,255,255,.78);
+
+        font-size: 13px;
+    }
+
+    .session-tag {
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #130e70;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       COURSE CARD
+    =============================== */
+
+    .course-card {
+        background: #fff;
+
+        border: 1px solid #dddcec;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow: none;
+    }
+
+
+    /* ===============================
+       CARD HEADER
+    =============================== */
+
+    .course-card-head {
+        padding: 18px 20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        border-bottom: 1px solid #ededf3;
+    }
+
+    .course-title b {
+        display: block;
+
+        color: #1a1845;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+    .course-title small {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #899a9e;
+
+        font-size: 13px;
+    }
+
+    .course-badge {
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #eeedf8;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       COURSE DETAILS
+    =============================== */
+
+    .course-details {
+        padding: 18px;
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 14px;
+    }
+
+    .context-card {
+        min-height: 90px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 16px;
+
+        border: 1px solid #e2e1ef;
+
+        border-radius: 10px;
+
+        background: #fbfbfe;
+
+        transition: .2s ease;
+    }
+
+    .context-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #c7e0e5;
+
+        box-shadow: none;
+    }
+
+    .context-icon {
+        width: 42px;
+
+        height: 42px;
+
+        flex: 0 0 42px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #e8e7f7;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+    .context-card b {
+        display: block;
+
+        color: #2b294e;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+    .context-card small {
+        display: block;
+
+        margin-top: 5px;
+
+        color: #71888c;
+
+        font-size: 13px;
+    }
+
+
+    /* ===============================
+       DESCRIPTION
+    =============================== */
+
+    .course-note {
+        margin: 0 18px 18px;
+
+        padding: 15px 16px;
+
+        border-radius: 8px;
+
+        background: #f6f6fb;
+
+        border: 1px solid #e3e2ef;
+
+        color: #71888c;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .course-note b {
+        color: #2b294e;
+
+        font-weight: 600;
+    }
+
+
+    /* ===============================
+       EMPTY
+    =============================== */
+
+    .course-empty {
+        padding: 45px 20px;
+
+        text-align: center;
+
+        color: #8d9ea2;
+
+        font-size: 13px;
+    }
+
+
+    /* ===============================
+       RESPONSIVE
+    =============================== */
+
+    @media (max-width: 850px) {
+
+        .course-details {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .course-hero {
+            padding: 22px;
+        }
+
+        .course-hero h1 {
+            font-size: 20px;
+        }
+
+        .course-card-head {
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+        .course-details {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="course-page">
+
+
+    <!-- ===============================
+         HERO
+    =============================== -->
+
+    <section class="course-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION {{ student.session }}
+            </span>
+
+        </div>
+
+
+        <h1>
+            My Course
+        </h1>
+
+
+        <p>
+            Your enrolled programme information.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION {{ student.session }}
+        </span>
+
+    </section>
+
+
+
+    <!-- ===============================
+         COURSE CARD
+    =============================== -->
+
+    <section class="course-card">
+
+
+        <div class="course-card-head">
+
+            <div class="course-title">
+
+                <b>
+                    {{ course.course_name }}
+                </b>
+
+                <small>
+                    Your enrolled programme
+                </small>
+
+            </div>
+
+
+            <span class="course-badge">
+                {{ course.course_code }}
+            </span>
+
+        </div>
+
+
+
+        <div class="course-details">
+
+
+            <!-- LEVEL -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    LV
+                </div>
+
+                <div>
+
+                    <b>
+                        Level
+                    </b>
+
+                    <small>
+                        {{ course.level }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DURATION -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    DR
+                </div>
+
+                <div>
+
+                    <b>
+                        Duration
+                    </b>
+
+                    <small>
+                        {{ course.duration }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SESSION -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    SS
+                </div>
+
+                <div>
+
+                    <b>
+                        Session
+                    </b>
+
+                    <small>
+                        {{ student.session }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="course-note">
+
+            <b>
+                Course Description:
+            </b>
+
+            {% if course.description %}
+                {{ course.description }}
+            {% else %}
+                Course description is not available.
+            {% endif %}
+
+        </div>
+
+
+    </section>
+
+</div>
+
+{% endblock %}

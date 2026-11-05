@@ -1,0 +1,780 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}Schedule Google Meet | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Schedule Google Meet Class{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .meet-page {
+        width: 100%;
+    }
+
+
+    /* ===============================
+       HERO
+    =============================== */
+
+    .meet-hero {
+        background: #661620;
+
+        border-radius: 10px;
+
+        padding: 26px 28px;
+
+        margin-bottom: 22px;
+
+        color: #fff;
+
+        box-shadow:
+            none;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    .meet-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.08);
+    }
+
+
+    .hero-eyebrow {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .hero-eyebrow span {
+        display: inline-flex;
+
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.12);
+
+        border: 1px solid rgba(255,255,255,.15);
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    .meet-hero h1 {
+        margin: 0;
+
+        font-size: 28px;
+
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+
+    .meet-hero p {
+        margin: 8px 0 15px;
+
+        color: rgba(255,255,255,.78);
+
+        font-size: 13px;
+    }
+
+
+    .session-tag {
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #661620;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* ===============================
+       CARD
+    =============================== */
+
+    .meet-card {
+        background: #fff;
+
+        border: 1px solid #e5dfe0;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow:
+            none;
+    }
+
+
+    .meet-card-head {
+        padding: 18px 20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        border-bottom: 1px solid #eee7e8;
+    }
+
+
+    .meet-card-title b {
+        display: block;
+
+        color: #33252a;
+
+        font-size: 24px   px;
+
+        font-weight: 600;
+    }
+
+
+    .meet-card-title small {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #899a9e;
+
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+
+    .meet-badge {
+        display: inline-flex;
+
+        padding: 8px 12px;
+
+        border-radius: 10px;
+
+        background: #f8e9e9;
+
+        color: #8b2732;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+    .meet-badge a{
+        text-decoration: none;
+        color: #851f28;
+    }
+
+
+    /* ===============================
+       FORM
+    =============================== */
+
+    .meet-form {
+        padding: 20px;
+    }
+
+
+    .form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 16px;
+    }
+
+
+    .field {
+        display: flex;
+
+        flex-direction: column;
+    }
+
+
+    .field.full {
+        grid-column: 1 / -1;
+    }
+
+
+    .field label {
+        margin-bottom: 7px;
+
+        color: #41353a;
+
+        font-size: 14px;
+
+        font-weight: 600;
+    }
+
+
+    .field input,
+    .field select,
+    .field textarea {
+
+        width: 100%;
+
+        padding: 11px 12px;
+
+        border: 1px solid #ded7d9;
+
+        border-radius: 8px;
+
+        background: #fff;
+
+        color: #45393d;
+
+        font-family: inherit;
+
+        font-size: 14px;
+
+        outline: none;
+
+        transition: .2s ease;
+
+        box-sizing: border-box;
+    }
+
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+
+        border-color: #8b2732;
+
+        box-shadow:
+            0 0 0 3px rgba(139,39,50,.08);
+    }
+
+
+    .field textarea {
+        min-height: 110px;
+
+        resize: vertical;
+    }
+
+
+    /* ===============================
+       ACTION
+    =============================== */
+
+    .meet-actions {
+
+        margin-top: 20px;
+
+        padding-top: 18px;
+
+        border-top: 1px solid #eee7e8;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+    }
+
+
+    .btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 10px 15px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        background: #661620;
+
+        color: #fff;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+
+    .btn:hover {
+        background: #851f28;
+
+        color: #fff;
+
+        transform: translateY(-1px);
+    }
+
+
+    .btn-light {
+        background: #f3f1f2;
+
+        color: #5c4b50;
+    }
+
+
+    .btn-light:hover {
+        background: #e8e4e5;
+
+        color: #3d3035;
+    }
+
+
+    /* ===============================
+       MESSAGE
+    =============================== */
+
+    .alert {
+        margin-bottom: 18px;
+
+        padding: 11px 14px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+    }
+
+
+    .alert-success {
+        background: #e9f8ef;
+
+        color: #23824b;
+
+        border: 1px solid #ccebd8;
+    }
+
+
+    /* ===============================
+       RESPONSIVE
+    =============================== */
+
+    @media (max-width: 700px) {
+
+        .meet-hero {
+            padding: 22px;
+        }
+
+
+        .meet-hero h1 {
+            font-size: 20px;
+        }
+
+
+        .meet-card-head {
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .field.full {
+            grid-column: auto;
+        }
+
+
+        .meet-actions {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="meet-page">
+
+
+    <!-- ===============================
+         HERO
+    =============================== -->
+
+    <section class="meet-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+
+        <h1>
+            Schedule Google Meet Online Class
+        </h1>
+
+
+        <p>
+            Enter class details and schedule an online class
+            for students.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+
+    <!-- ===============================
+         MESSAGE
+    =============================== -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }}">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+
+    <!-- ===============================
+         FORM CARD
+    =============================== -->
+
+    <section class="meet-card">
+
+
+        <div class="meet-card-head">
+
+            <div class="meet-card-title">
+
+                <b>
+                    Google Meet Class Information
+                </b>
+
+                <small>
+                    Create a new online class
+                </small>
+
+            </div>
+
+
+            <span class="meet-badge">
+                <a href="{% url 'google_login' %}">Connect Google Meet</a>
+            </span>
+
+        </div>
+
+
+
+        <div class="meet-form">
+
+
+            <form method="post" action="{% url 'schedule_meeting' %}">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- CLASS TITLE -->
+
+                    <div class="field">
+
+                        <label>
+                            Class Title
+                        </label>
+
+                        <input
+                            type="text"
+                            name="class_title"
+                            placeholder="e.g. Python Functions - Live Class"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- COURSE -->
+
+                    <div class="field">
+
+                        <label>
+                            Course
+                        </label>
+
+                        <select
+                            name="course"
+                            required
+                        >
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+
+                            {% for course in courses %}
+
+                            <option value="{{ course.course_name }}">
+
+                                {{ course.course_code }}
+                                -
+                                {{ course.course_name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="field">
+
+                        <label>
+                            Subject
+                        </label>
+
+                        <select
+                            name="subject"
+                            required
+                        >
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+
+                            {% for subject in subjects %}
+
+                            <option value="{{ subject.subject_name }}">
+
+                                {{ subject.subject_code }}
+                                -
+                                {{ subject.subject_name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- TEACHER -->
+
+                    <div class="field">
+
+                        <label>
+                            Teacher
+                        </label>
+
+                        <select
+                            name="teacher"
+                            required
+                        >
+
+                            <option value="">
+                                Select Teacher
+                            </option>
+
+
+                            {% for teacher in teachers %}
+
+                            <option value="{{ teacher.email }}">
+
+                                {{ teacher.name }}
+                                -
+                                {{ teacher.employee_id }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- CLASS DATE -->
+
+                    <div class="field">
+
+                        <label>
+                            Class Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="class_date"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- CLASS TIME -->
+
+                    <div class="field">
+
+                        <label>
+                            Class Time
+                        </label>
+
+                        <input
+                            type="time"
+                            name="class_time"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- DURATION -->
+
+                    <div class="field">
+
+                        <label>
+                            Duration (Minutes)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="duration"
+                            value="60"
+                            min="15"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- AGENDA -->
+
+                    <div class="field full">
+
+                        <label>
+                            Agenda
+                        </label>
+
+                        <textarea
+                            name="agenda"
+                            placeholder="Topics to be covered..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="meet-actions">
+
+                    <button
+                        class="btn"
+                        type="submit"
+                    >
+                        Schedule Google Meet Class
+                    </button>
+
+
+                    <a
+                        href="{% url 'googlemeet' %}"
+                        class="btn btn-light"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}
+
+{# This page renders its own messages #}
+{% block messages %}{% endblock %}

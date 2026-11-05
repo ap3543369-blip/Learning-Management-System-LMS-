@@ -1,0 +1,411 @@
+{% extends "student/base.html" %}
+{% load static %}
+
+{% block title %}Announcements{% endblock %}
+
+{% block content %}
+
+<style>
+    .student-announcement-page {
+        font-family: "Poppins", sans-serif;
+        color: #202535;
+        padding: 24px;
+    }
+
+    /* HERO */
+    .student-announcement-hero {
+        background: #130e70;
+        border-radius: 10px;
+        padding: 28px 32px;
+        color: #fff;
+        margin-bottom: 24px;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .student-announcement-hero::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        right: -45px;
+        top: -60px;
+    }
+
+    .student-announcement-hero h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+
+    .student-announcement-hero p {
+        margin: 0;
+        font-size: 13px;
+        opacity: .9;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* MAIN CARD */
+    .student-announcement-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 22px;
+        box-shadow: none;
+    }
+
+    .student-announcement-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .student-announcement-heading h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #202535;
+    }
+
+    .student-announcement-count {
+        background: #f0fafc;
+        color: #168ea6;
+        border: 1px solid #dceef2;
+        padding: 7px 13px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* ANNOUNCEMENT ITEM */
+    .student-announcement-item {
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        background: #fff;
+        transition: .25s ease;
+    }
+
+    .student-announcement-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .student-announcement-item:hover {
+        transform: translateY(-2px);
+        border-color: #168ea6;
+        box-shadow: none;
+    }
+
+    .student-announcement-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .student-announcement-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .student-announcement-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 8px;
+        background: #130e70;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+    .student-announcement-title h3 {
+        margin: 1px 0 4px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #202535;
+    }
+
+    .student-announcement-date {
+        font-size: 13px;
+        color: #9097a6;
+    }
+
+    /* PRIORITY */
+    .student-announcement-priority {
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .student-priority-high {
+        color: #b42318;
+        background: #fff1f0;
+        border: 1px solid #ffd5d1;
+    }
+
+    .student-priority-medium {
+        color: #9a6700;
+        background: #fff8e6;
+        border: 1px solid #f6df9b;
+    }
+
+    .student-priority-low {
+        color: #168ea6;
+        background: #f0fafc;
+        border: 1px solid #dceef2;
+    }
+
+    /* MESSAGE */
+    .student-announcement-message {
+        margin: 12px 0 0 51px;
+        color: #5f6675;
+        font-size: 13px;
+        line-height: 1.8;
+        white-space: pre-line;
+    }
+
+    /* META */
+    .student-announcement-meta {
+        margin: 15px 0 0 51px;
+        padding-top: 12px;
+        border-top: 1px solid #edf0f3;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .student-announcement-meta span {
+        font-size: 13px;
+        color: #737b89;
+        background: #f7f9fb;
+        border: 1px solid #e9edf1;
+        padding: 5px 9px;
+        border-radius: 6px;
+    }
+
+    .student-announcement-meta i {
+        color: #168ea6;
+        margin-right: 4px;
+    }
+
+    /* EMPTY */
+    .student-announcement-empty {
+        text-align: center;
+        padding: 55px 20px;
+        border: 1px dashed #dce2e8;
+        border-radius: 10px;
+        background: #fbfcfd;
+    }
+
+    .student-announcement-empty-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0fafc;
+        color: #168ea6;
+        font-size: 20px;
+    }
+
+    .student-announcement-empty h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+        color: #202535;
+    }
+
+    .student-announcement-empty p {
+        margin: 0;
+        font-size: 13px;
+        color: #9097a6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .student-announcement-page {
+            padding: 15px;
+        }
+
+        .student-announcement-hero {
+            padding: 23px;
+        }
+
+        .student-announcement-hero h1 {
+            font-size: 20px;
+        }
+
+        .student-announcement-card {
+            padding: 15px;
+        }
+
+        .student-announcement-top {
+            flex-direction: column;
+        }
+
+        .student-announcement-message,
+        .student-announcement-meta {
+            margin-left: 0;
+        }
+
+        .student-announcement-meta {
+            margin-top: 13px;
+        }
+    }
+</style>
+
+
+<div class="student-announcement-page">
+
+    <!-- HERO -->
+    <div class="student-announcement-hero">
+        <h1>
+            <i class="fa-solid fa-bullhorn"></i>
+            Announcements
+        </h1>
+        <p>
+            Stay updated with the latest announcements and important information.
+        </p>
+    </div>
+
+
+    <!-- ANNOUNCEMENTS -->
+    <div class="student-announcement-card">
+
+        <div class="student-announcement-heading">
+            <h2>
+                <i class="fa-regular fa-bell" style="color:#168ea6;"></i>
+                Latest Announcements
+            </h2>
+
+            <div class="student-announcement-count">
+                {{ announcements|length }} Announcement{{ announcements|length|pluralize }}
+            </div>
+        </div>
+
+
+        {% if announcements %}
+
+            {% for announcement in announcements %}
+
+                <div class="student-announcement-item">
+
+                    <div class="student-announcement-top">
+
+                        <div class="student-announcement-title">
+
+                            <div class="student-announcement-icon">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+
+                            <div>
+                                <h3>{{ announcement.title }}</h3>
+
+                                <div class="student-announcement-date">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    {{ announcement.publish_date|date:"d M Y" }}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        {% if announcement.priority|lower == "high" %}
+
+                            <span class="student-announcement-priority student-priority-high">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                High Priority
+                            </span>
+
+                        {% elif announcement.priority|lower == "medium" %}
+
+                            <span class="student-announcement-priority student-priority-medium">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                Medium Priority
+                            </span>
+
+                        {% else %}
+
+                            <span class="student-announcement-priority student-priority-low">
+                                <i class="fa-solid fa-circle-info"></i>
+                                Low Priority
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+                    <div class="student-announcement-message">
+                        {{ announcement.message }}
+                    </div>
+
+
+                    <!-- META -->
+                    <div class="student-announcement-meta">
+
+                        <span>
+                            <i class="fa-solid fa-users"></i>
+                            {{ announcement.audience }}
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-calendar-check"></i>
+                            Published: {{ announcement.publish_date|date:"d M Y" }}
+                        </span>
+
+                        {% if announcement.expiry_date %}
+                            <span>
+                                <i class="fa-regular fa-calendar-xmark"></i>
+                                Expires: {{ announcement.expiry_date|date:"d M Y" }}
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="student-announcement-empty">
+
+                <div class="student-announcement-empty-icon">
+                    <i class="fa-regular fa-bell-slash"></i>
+                </div>
+
+                <h3>No Announcements</h3>
+
+                <p>
+                    There are currently no announcements available for you.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

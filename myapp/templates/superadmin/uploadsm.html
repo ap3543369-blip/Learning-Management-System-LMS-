@@ -1,0 +1,815 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Upload Study Material | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Upload Study Material{% endblock %}
+
+{% block content %}
+
+<style>
+
+.study-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ================= HERO ================= */
+
+.study-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.study-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -190px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 50%;
+
+    box-shadow:
+        none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.hero-eyebrow span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+.study-hero h1 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+.study-hero p {
+    margin: 8px 0 18px;
+
+    font-size: 13px;
+
+    opacity: .86;
+
+    position: relative;
+    z-index: 2;
+}
+
+.session-tag {
+    display: inline-flex;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.14);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* ================= CARD ================= */
+
+.study-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+}
+
+
+/* ================= CARD HEADER ================= */
+
+.card-head {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 16px;
+}
+
+.card-title h2 {
+    margin: 0;
+
+    color: #381b1b;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-title p {
+    margin: 4px 0 0;
+
+    color: #8b7772;
+
+    font-size: 13px;
+}
+
+
+/* ================= FORM ================= */
+
+.form-label-title {
+    margin-bottom: 15px;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+}
+
+.form-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 23px 24px;
+}
+
+.field {
+    min-width: 0;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #493532;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ded4cf;
+
+    border-radius: 6px;
+
+    background: #fff;
+
+    padding: 0 13px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    color: #493532;
+
+    outline: none;
+
+    transition: .2s ease;
+}
+
+.field input,
+.field select {
+    height: 48px;
+}
+
+.field textarea {
+    min-height: 110px;
+
+    padding: 13px;
+
+    resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #b2a39e;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #9b4a4f;
+
+    box-shadow:
+        0 0 0 3px rgba(133,31,40,.07);
+}
+
+
+/* ================= FILE INPUT ================= */
+
+.field input[type="file"] {
+    height: 48px;
+
+    padding: 8px 10px;
+
+    cursor: pointer;
+
+    background: #faf7f5;
+}
+
+.field input[type="file"]::file-selector-button {
+    height: 32px;
+
+    margin-right: 10px;
+
+    padding: 0 11px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #851f28;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* ================= NOTE ================= */
+
+.form-note {
+    margin-top: 18px;
+
+    padding: 11px 13px;
+
+    border-radius: 6px;
+
+    background: #faf5f2;
+
+    border: 1px solid #eee3de;
+
+    color: #806c66;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.form-note i {
+    margin-right: 6px;
+
+    color: #851f28;
+}
+
+
+/* ================= ACTION ================= */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 30px;
+
+    padding-top: 23px;
+
+    border-top: 1px solid #eee7e2;
+}
+
+.btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    text-decoration: none;
+}
+
+.upload-btn {
+    background: #851f28;
+
+    color: white;
+}
+
+.upload-btn:hover {
+    background: #6d1820;
+}
+
+.cancel-btn {
+    background: #f5efec;
+
+    color: #684f49;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+    .study-hero {
+        padding: 25px;
+    }
+
+    .study-hero h1 {
+        font-size: 24px;
+    }
+
+    .study-card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+
+<div class="study-page">
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="study-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+
+        <h1>
+            Upload Study Material
+        </h1>
+
+
+        <p>
+            Publish PDF, notes, videos or useful learning
+            resources for students.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <section class="study-card">
+
+
+        <div class="card-head">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-file-arrow-up"></i>
+
+            </div>
+
+
+            <div class="card-title">
+
+                <h2>
+                    Material Information
+                </h2>
+
+                <p>
+                    Add and publish learning material for students.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-label-title">
+            STUDY MATERIAL DETAILS
+        </div>
+
+
+
+        <!-- IMPORTANT: multipart/form-data required for file upload -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- ================= TITLE ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter material title"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- ================= MATERIAL TYPE ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Material Type
+                    </label>
+
+                    <select
+                        name="material_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select Material Type
+                        </option>
+
+                        <option value="PDF">
+                            PDF
+                        </option>
+
+                        <option value="Notes">
+                            Notes
+                        </option>
+
+                        <option value="Video">
+                            Video
+                        </option>
+
+                        <option value="Link">
+                            Link
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ================= COURSE ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Course
+                    </label>
+
+                    <select
+                        name="course"
+                        required
+                    >
+
+                        <option value="">
+                            Select Course
+                        </option>
+
+
+                        {% for course in courses %}
+
+                        <option value="{{ course.course_name }}">
+
+                            {{ course.course_code }}
+                            -
+                            {{ course.course_name }}
+
+                        </option>
+
+                        {% empty %}
+
+                        <option value="">
+                            No Course Available
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ================= SUBJECT ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <select
+                        name="subject"
+                        required
+                    >
+
+                        <option value="">
+                            Select Subject
+                        </option>
+
+
+                        {% for subject in subjects %}
+
+                        <option value="{{ subject.subject_name }}">
+
+                            {{ subject.subject_code }}
+                            -
+                            {{ subject.subject_name }}
+
+                        </option>
+
+                        {% empty %}
+
+                        <option value="">
+                            No Subject Available
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ================= FILE ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Upload File
+                    </label>
+
+                    <!-- IMPORTANT:
+                         View uses request.FILES.get("material_file")
+                         so name must be material_file
+                    -->
+
+                    <input
+                        type="file"
+                        name="material_file"
+                    >
+
+                </div>
+
+
+
+                <!-- ================= EXTERNAL URL ================= -->
+
+                <div class="field">
+
+                    <label>
+                        External URL
+                    </label>
+
+                    <input
+                        type="url"
+                        name="external_url"
+                        placeholder="https://example.com/resource"
+                    >
+
+                </div>
+
+
+
+                <!-- ================= STATUS ================= -->
+
+                <div class="field">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                        name="status"
+                        required
+                    >
+
+                        <option value="Published">
+                            Published
+                        </option>
+
+                        <option value="Draft">
+                            Draft
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ================= DESCRIPTION ================= -->
+
+                <div class="field full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Enter a short description about this study material..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= NOTE ================= -->
+
+            <div class="form-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                You can upload a file or provide an external
+                URL. Make sure the selected material is related
+                to the correct course and subject.
+
+            </div>
+
+
+
+            <!-- ================= ACTION ================= -->
+
+            <div class="form-actions">
+
+                <button
+                    type="reset"
+                    class="btn cancel-btn"
+                >
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn upload-btn"
+                >
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    Upload Material
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

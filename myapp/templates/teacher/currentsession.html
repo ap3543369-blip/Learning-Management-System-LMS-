@@ -1,0 +1,805 @@
+{% extends 'teacher/base.html' %}
+
+
+{% block title %}
+Academic Session | NOU e-Gyan
+{% endblock %}
+
+
+{% block page_title %}
+Academic Session
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   CURRENT SESSION PAGE
+========================================================= */
+
+.session-page{
+    width:100%;
+    max-width:1250px;
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.session-hero{
+
+    width:100%;
+
+    padding:30px 34px;
+
+    margin-bottom:20px;
+
+    border-radius:10px;
+
+    background:
+        #64151f;
+
+    color:white;
+
+    box-shadow:
+        none;
+}
+
+
+.hero-eyebrow{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin-bottom:14px;
+}
+
+
+.hero-eyebrow span{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    min-height:27px;
+
+    padding:5px 10px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.13);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    color:#f7dfc5;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing: 0;
+}
+
+
+.session-hero h1{
+
+    margin:0;
+
+    color:white;
+
+    font-size:28px;
+
+    line-height:1.25;
+
+    font-weight:600;
+}
+
+
+.session-hero p{
+
+    margin-top:7px;
+
+    color:
+        rgba(255,255,255,.78);
+
+    font-size:13px;
+}
+
+
+.session-tag{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    margin-top:18px;
+
+    padding:7px 11px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.13);
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing: 0;
+}
+
+
+/* =========================================================
+   TABLE SECTION
+========================================================= */
+
+.session-section{
+
+    width:100%;
+
+    background:white;
+
+    border:
+        1px solid #eee5df;
+
+    border-radius:10px;
+
+    padding:20px;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding-bottom:14px;
+
+    margin-bottom:16px;
+
+    border-bottom:
+        1px solid #eee7e2;
+}
+
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+}
+
+
+.section-icon{
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:6px;
+
+    background:#f7efeb;
+
+    color:#7c241f;
+
+    font-size:14px;
+}
+
+
+.section-title h2{
+
+    color:#351d1d;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+
+.section-title p{
+
+    margin-top:3px;
+
+    color:#978d88;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+
+    width:100%;
+
+    overflow-x:auto;
+}
+
+
+.session-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:700px;
+}
+
+
+.session-table thead th{
+
+    padding:12px 13px;
+
+    background:#faf7f5;
+
+    border-bottom:
+        1px solid #eadfd9;
+
+    color:#7c241f;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    text-align:left;
+
+    text-transform: none;
+
+    letter-spacing: 0;
+}
+
+
+.session-table tbody td{
+
+    padding:14px 13px;
+
+    border-bottom:
+        1px solid #f0eae6;
+
+    color:#625956;
+
+    font-size:13px;
+
+    font-weight:500;
+
+    vertical-align:middle;
+}
+
+
+.session-table tbody tr{
+
+    transition:
+        background .2s ease;
+}
+
+
+.session-table tbody tr:hover{
+
+    background:#fffaf7;
+}
+
+
+.session-table tbody tr:last-child td{
+
+    border-bottom:none;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.number-badge{
+
+    width:27px;
+    height:27px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:6px;
+
+    background:#f7efeb;
+
+    color:#7c241f;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   SESSION NAME
+========================================================= */
+
+.session-name{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+}
+
+
+.session-mini-icon{
+
+    width:32px;
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:6px;
+
+    background:
+        #741b25;
+
+    color:white;
+
+    font-size:13px;
+}
+
+
+.session-name strong{
+
+    display:block;
+
+    color:#3b2422;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+.session-name small{
+
+    display:block;
+
+    margin-top:2px;
+
+    color:#9b918c;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:5px 9px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+.status-dot{
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:currentColor;
+}
+
+
+.status-active{
+
+    background:#edf7ef;
+
+    color:#397548;
+}
+
+
+.status-inactive{
+
+    background:#f8eeee;
+
+    color:#a24747;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state{
+
+    padding:45px 20px;
+
+    text-align:center;
+
+    color:#9b918c;
+
+    font-size:13px;
+}
+
+
+.empty-icon{
+
+    width:42px;
+    height:42px;
+
+    margin:0 auto 10px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:8px;
+
+    background:#f7efeb;
+
+    color:#8a342b;
+
+    font-size:16px;
+}
+
+
+.empty-state b{
+
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#554541;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:700px){
+
+    .session-hero{
+
+        padding:24px 22px;
+
+        border-radius:8px;
+    }
+
+
+    .session-hero h1{
+
+        font-size:24px;
+    }
+
+
+    .session-section{
+
+        padding:14px;
+
+        border-radius:8px;
+    }
+
+
+    .section-head{
+
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="session-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="session-hero">
+
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+
+        <h1>
+            Academic Sessions
+        </h1>
+
+
+        <p>
+            View current and previous academic sessions.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SESSION TABLE
+    ====================================================== -->
+
+    <section class="session-section">
+
+
+        <div class="section-head">
+
+
+            <div class="section-title">
+
+                <div class="section-icon">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Academic Session List
+                    </h2>
+
+                    <p>
+                        View all available academic sessions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="table-wrap">
+
+
+            <table class="session-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Session
+                        </th>
+
+                        <th>
+                            Start
+                        </th>
+
+                        <th>
+                            End
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for session in sessions %}
+
+                    <tr>
+
+
+                        <!-- NUMBER -->
+
+                        <td>
+
+                            <span class="number-badge">
+                                {{ forloop.counter }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- SESSION -->
+
+                        <td>
+
+                            <div class="session-name">
+
+                                <div class="session-mini-icon">
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        {{ session.session_name }}
+                                    </strong>
+
+                                    <small>
+                                        Academic Session
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- START -->
+
+                        <td>
+                            {{ session.strt_date }}
+                        </td>
+
+
+                        <!-- END -->
+
+                        <td>
+                            {{ session.end_date }}
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if session.status == "Active" %}
+
+                            <span class="status status-active">
+
+                                <span class="status-dot"></span>
+
+                                Active
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="status status-inactive">
+
+                                <span class="status-dot"></span>
+
+                                {{ session.status }}
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-regular fa-calendar"></i>
+
+                                </div>
+
+                                <b>
+                                    No academic sessions found
+                                </b>
+
+                                <span>
+                                    Academic session data will appear here.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

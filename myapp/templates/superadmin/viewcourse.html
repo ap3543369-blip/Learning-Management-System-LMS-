@@ -1,0 +1,707 @@
+{% extends 'superadmin/base.html' %} {% block title %}View Courses | NOU
+e-Gyan{% endblock %} {% block page_title %}View Courses{% endblock %} 
+{% block content %}
+
+<style>
+  .course-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* HERO */
+  .course-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    background: #661620;
+    box-shadow: none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .hero-eyebrow span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .course-hero h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  .course-hero p {
+    margin: 8px 0 18px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  .session-tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  /* CARD */
+  .course-section {
+    background: white;
+    border: 1px solid #ece4df;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: none;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #eee7e2;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f8eee9;
+    color: #851f28;
+    font-size: 16px;
+  }
+
+  .section-title h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #381b1b;
+  }
+
+  .section-title p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #8b7772;
+  }
+
+  .add-btn {
+    height: 42px;
+    padding: 0 17px;
+    padding-top:12px;
+    border: none;
+    border-radius: 6px;
+    background: #851f28;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .course-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 950px;
+  }
+
+  .course-table th {
+    padding: 13px 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #806b66;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    background: #faf7f5;
+    border-bottom: 1px solid #eee5e0;
+  }
+
+  .course-table td {
+    padding: 14px 12px;
+    font-size: 13px;
+    color: #5c4945;
+    border-bottom: 1px solid #f1eae6;
+    vertical-align: middle;
+  }
+
+  .course-table tbody tr:hover {
+    background: #fffaf8;
+  }
+
+  .number-badge {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #f7eee9;
+    color: #851f28;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .course-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .course-mini-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #f8eee9;
+    color: #851f28;
+  }
+
+  .course-name strong {
+    display: block;
+    color: #382020;
+    font-size: 13px;
+  }
+
+  .course-name small {
+    display: block;
+    margin-top: 3px;
+    color: #9a8883;
+    font-size: 13px;
+  }
+
+  .code-badge {
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #f5f0ed;
+    color: #6e252b;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 9px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .status-active {
+    color: #24733d;
+    background: #edf8f0;
+  }
+
+  .status-active .status-dot {
+    background: #35a853;
+  }
+
+  .status-inactive {
+    color: #9a3e3e;
+    background: #fff0f0;
+  }
+
+  .status-inactive .status-dot {
+    background: #d95353;
+  }
+
+  .actions {
+    display: flex;
+    gap: 7px;
+  }
+
+  .action-btn {
+    height: 32px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .edit-btn {
+    color: #795b22;
+    background: #fff8e8;
+  }
+
+  .delete-btn {
+    color: #a13c3c;
+    background: #fff0f0;
+  }
+
+  @media (max-width: 700px) {
+    .course-hero {
+      padding: 25px;
+    }
+
+    .course-hero h1 {
+      font-size: 24px;
+    }
+
+    .course-section {
+      padding: 20px;
+    }
+
+    .section-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  /* =========================================
+   CENTER MESSAGE POPUP
+========================================= */
+
+.message-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(30, 20, 20, 0.45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================
+   POPUP BOX
+========================================= */
+
+.message-popup {
+    width: 380px;
+    min-height: 310px;
+
+    padding: 35px 30px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-family: "Poppins", sans-serif;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.20);
+
+    animation: popupShow 0.35s ease;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.message-popup.success {
+    color: #176b3a;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.message-popup.error {
+    color: #a52828;
+}
+
+
+/* =========================================
+   BIG ICON
+========================================= */
+
+.message-icon {
+    width: 90px;
+    height: 90px;
+
+    margin-bottom: 20px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+}
+
+
+.message-popup.success .message-icon {
+    background: #e9f9ef;
+    color: #20a957;
+}
+
+
+.message-popup.error .message-icon {
+    background: #fff0f0;
+    color: #d93636;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.message-popup h3 {
+    margin: 0 0 10px;
+
+    color: #321b1b;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message-popup p {
+    margin: 0;
+
+    max-width: 300px;
+
+    color: #817773;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.message-close-btn {
+    margin-top: 24px;
+
+    width: 100px;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        none;
+
+    transition: 0.2s;
+}
+
+
+.message-close-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes popupShow {
+
+    from {
+        opacity: 0;
+        transform: scale(0.80);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+    .message-popup {
+        width: calc(100% - 40px);
+        min-height: 290px;
+
+        padding: 30px 22px;
+    }
+
+}
+</style>
+
+<div class="course-page">
+  <!-- HERO -->
+  <section class="course-hero">
+    <div class="hero-eyebrow">
+      <span>ACADEMIC ERP</span>
+      <span>COURSE MANAGEMENT</span>
+    </div>
+
+    <h1>Courses & Programmes</h1>
+
+    <p>
+      Review and manage all courses and programmes offered by the university.
+    </p>
+
+    <span class="session-tag"> SESSION 2026-27 </span>
+  </section>
+
+  <!-- COURSE LIST -->
+  <section class="course-section">
+    <div class="section-head">
+      <div class="section-title">
+        <div class="section-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+
+        <div>
+          <h2>Course List</h2>
+          <p>View all courses and programme information.</p>
+        </div>
+      </div>
+
+      <a href="{% url 'addcourse' %}" class="add-btn">
+        <i class="fa-solid fa-plus"></i>
+        Add Course
+      </a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Session</th>
+            <th>Code</th>
+            <th>Level</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for course in courses %}
+
+          <tr>
+            <td>
+              <span class="number-badge"> {{ course.id }} </span>
+            </td>
+
+            <td>
+              <div class="course-name">
+                <div class="course-mini-icon">
+                  <i class="fa-solid fa-book"></i>
+                </div>
+
+                <div>
+                  <strong> {{ course.course_name }} </strong>
+
+                  <small> Course / Programme </small>
+                </div>
+              </div>
+            </td>
+
+            <td>{{ course.session }}</td>
+
+            <td>
+              <span class="code-badge"> {{ course.course_code }} </span>
+            </td>
+
+            <td>{{ course.level }}</td>
+
+            <td>{{ course.duration }}</td>
+
+            <td>
+              {% if course.status == "Active" %}
+
+              <span class="status status-active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+
+              {% else %}
+
+              <span class="status status-inactive">
+                <span class="status-dot"></span>
+                Inactive
+              </span>
+
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="actions">
+                <a
+                  href="{% url 'editcourse' course.id %}"
+                  class="action-btn edit-btn"
+                >
+                  <i class="fa-solid fa-pen"></i>
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'deletecourse' course.id %}"
+                  class="action-btn delete-btn"
+                  onclick="
+                    return confirm(
+                      'Are you sure you want to delete this course?',
+                    );
+                  "
+                >
+                  <i class="fa-solid fa-trash"></i>
+                  Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 35px">
+              No courses available.
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="message-overlay" id="messagePopup">
+
+            <div class="message-popup
+                {% if message.tags == 'success' %}
+                    success
+                {% elif message.tags == 'error' %}
+                    error
+                {% endif %}">
+
+                {% if message.tags == 'success' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <h3>Success!</h3>
+
+                {% elif message.tags == 'error' %}
+
+                    <div class="message-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <h3>Already Exists!</h3>
+
+                {% endif %}
+
+                <p>{{ message }}</p>
+
+                <button
+                    type="button"
+                    class="message-close-btn"
+                    onclick="closeMessage()">
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<script>
+
+function closeMessage() {
+
+    const popup = document.getElementById("messagePopup");
+
+    if (popup) {
+
+        popup.style.opacity = "0";
+        popup.style.transform = "scale(0.80)";
+
+        setTimeout(function () {
+            popup.remove();
+        }, 250);
+
+    }
+
+}
+
+
+/* Auto close after 3 seconds */
+
+setTimeout(function () {
+
+    closeMessage();
+
+}, 3000);
+
+</script>
+{% endblock %}

@@ -1,0 +1,528 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Add Teacher | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Add Teacher{% endblock %}
+
+{% block content %}
+
+<style>
+
+.teacher-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ================= HERO ================= */
+
+.teacher-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    background: #661620;
+    box-shadow: none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.hero-eyebrow span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.12);
+}
+
+.teacher-hero h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.teacher-hero p {
+    margin: 8px 0 18px;
+    font-size: 13px;
+    opacity: .85;
+}
+
+.session-tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255,255,255,.14);
+}
+
+/* ================= CARD ================= */
+
+.teacher-card {
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid #ece4df;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: none;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #eee7e2;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f8eee9;
+    color: #851f28;
+    font-size: 16px;
+}
+
+.card-title h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #381b1b;
+}
+
+.card-title p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #8b7772;
+}
+
+/* ================= FORM ================= */
+
+.form-label-title {
+    margin-bottom: 15px;
+    color: #851f28;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.form-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 23px 24px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #493532;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    border: 1px solid #ded4cf;
+    border-radius: 6px;
+    background: #fff;
+    padding: 0 13px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #493532;
+    outline: none;
+}
+
+.field input::placeholder {
+    color: #b2a39e;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: #9b4a4f;
+    box-shadow: 0 0 0 3px rgba(133,31,40,.07);
+}
+
+/* ================= PASSWORD ================= */
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 13px;
+    bottom: 15px;
+    border: none;
+    background: transparent;
+    color: #8b7772;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* ================= NOTE ================= */
+
+.form-note {
+    margin-top: 18px;
+    padding: 11px 13px;
+    border-radius: 6px;
+    background: #faf5f2;
+    border: 1px solid #eee3de;
+    color: #806c66;
+    font-size: 13px;
+}
+
+.form-note i {
+    margin-right: 6px;
+    color: #851f28;
+}
+
+/* ================= ACTION ================= */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 23px;
+    border-top: 1px solid #eee7e2;
+}
+
+.btn {
+    height: 42px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.save-btn {
+    background: #851f28;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #6d1820;
+}
+
+.cancel-btn {
+    background: #f5efec;
+    color: #684f49;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+    .teacher-hero {
+        padding: 25px;
+    }
+
+    .teacher-hero h1 {
+        font-size: 24px;
+    }
+
+    .teacher-card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+</style>
+
+
+<div class="teacher-page">
+
+    <!-- ================= HERO ================= -->
+
+    <section class="teacher-hero">
+
+        <div class="hero-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>SESSION 2026-27</span>
+        </div>
+
+        <h1>Add Teacher Account</h1>
+
+        <p>
+            Create a new faculty account and add teacher information
+            to the university system.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-27
+        </span>
+
+    </section>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <section class="teacher-card">
+
+        <div class="card-head">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+
+            <div class="card-title">
+
+                <h2>Teacher Information</h2>
+
+                <p>
+                    Enter the faculty account and professional details below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-label-title">
+            TEACHER ACCOUNT
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+
+                <!-- EMPLOYEE ID -->
+
+                <div class="field">
+
+                    <label>Employee ID</label>
+
+                    <input
+                        type="text"
+                        name="employee_id"
+                        placeholder="TCH001"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- TEACHER NAME -->
+
+                <div class="field">
+
+                    <label>Teacher Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter teacher name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="teacher@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- MOBILE -->
+
+                <div class="field">
+
+                    <label>Mobile</label>
+
+                    <input
+                        type="tel"
+                        name="mobile"
+                        placeholder="Enter mobile number"
+                        maxlength="15"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DEPARTMENT -->
+
+                <div class="field">
+
+                    <label>Department</label>
+
+                    <input
+                        type="text"
+                        name="department"
+                        placeholder="Computer Science"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DESIGNATION -->
+
+                <div class="field">
+
+                    <label>Designation</label>
+
+                    <input
+                        type="text"
+                        name="designation"
+                        placeholder="Assistant Professor"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="field">
+
+                    <label>Username</label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label>Password</label>
+
+                    <div class="password-field">
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="teacherPassword"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                        
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="field">
+
+                    <label>Status</label>
+
+                    <select name="status" required>
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTE -->
+
+            <div class="form-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                Teacher account details will be stored after successful
+                submission.
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'viewteacher' %}"
+                    class="btn cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn save-btn"
+                >
+                    <i class="fa-solid fa-user-plus"></i>
+                    Create Teacher
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+
+{% endblock %}

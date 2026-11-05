@@ -1,0 +1,429 @@
+{% extends 'superadmin/base.html' %} {% block title %}Add Subject | NOU e-Gyan
+{% endblock %} {% block page_title %}Add Subject{% endblock %} 
+{% block content %}
+
+<style>
+  .subject-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ================= HERO ================= */
+
+  .subject-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    background: #661620;
+    box-shadow: none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .hero-eyebrow span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .subject-hero h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  .subject-hero p {
+    margin: 8px 0 18px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  .session-tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  /* ================= CARD ================= */
+
+  .subject-card {
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid #ece4df;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: none;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #eee7e2;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f8eee9;
+    color: #851f28;
+    font-size: 16px;
+  }
+
+  .card-title h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #381b1b;
+  }
+
+  .card-title p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #8b7772;
+  }
+
+  /* ================= FORM ================= */
+
+  .form-label-title {
+    margin-bottom: 15px;
+    color: #851f28;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .form-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 23px 24px;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #493532;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ded4cf;
+    border-radius: 6px;
+    background: #fff;
+    padding: 0 13px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #493532;
+    outline: none;
+  }
+
+  .field input,
+  .field select {
+    height: 48px;
+  }
+
+  .field textarea {
+    min-height: 110px;
+    padding: 13px;
+    resize: vertical;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #b2a39e;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: #9b4a4f;
+    box-shadow: 0 0 0 3px rgba(133, 31, 40, 0.07);
+  }
+
+  /* ================= NOTE ================= */
+
+  .form-note {
+    margin-top: 18px;
+    padding: 11px 13px;
+    border-radius: 6px;
+    background: #faf5f2;
+    border: 1px solid #eee3de;
+    color: #806c66;
+    font-size: 13px;
+  }
+
+  .form-note i {
+    margin-right: 6px;
+    color: #851f28;
+  }
+
+  /* ================= ACTION ================= */
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 23px;
+    border-top: 1px solid #eee7e2;
+  }
+
+  .btn {
+    height: 42px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .save-btn {
+    background: #851f28;
+    color: white;
+  }
+
+  .save-btn:hover {
+    background: #6d1820;
+  }
+
+  .cancel-btn {
+    background: #f5efec;
+    color: #684f49;
+  }
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 700px) {
+    .subject-hero {
+      padding: 25px;
+    }
+
+    .subject-hero h1 {
+      font-size: 24px;
+    }
+
+    .subject-card {
+      padding: 20px;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .field.full {
+      grid-column: auto;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="subject-page">
+  <!-- ================= HERO ================= -->
+
+  <section class="subject-hero">
+    <div class="hero-eyebrow">
+      <span>ACADEMIC ERP</span>
+
+      <span>SESSION 2026-27</span>
+    </div>
+
+    <h1>Add Subject</h1>
+
+    <p>Create a subject and assign it to a course and teacher.</p>
+
+    <span class="session-tag"> SESSION 2026-27 </span>
+  </section>
+
+  <!-- ================= FORM CARD ================= -->
+
+  <section class="subject-card">
+    <div class="card-head">
+      <div class="card-icon">
+        <i class="fa-solid fa-book"></i>
+      </div>
+
+      <div class="card-title">
+        <h2>Subject Information</h2>
+
+        <p>Enter the subject details below.</p>
+      </div>
+    </div>
+
+    <div class="form-label-title">SUBJECT DETAILS</div>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-grid">
+        <!-- COURSE -->
+
+        <div class="field">
+          <label>Course</label>
+
+          <select name="course" required>
+            <option value="">Select Course</option>
+
+            {% for course in courses %}
+
+            <option value="{{ course.course_name }}">
+              {{ course.course_code }} - {{ course.course_name }}
+            </option>
+
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- SUBJECT CODE -->
+
+        <div class="field">
+          <label>Subject Code</label>
+
+          <input
+            type="text"
+            name="subject_code"
+            placeholder="BCA101"
+            required
+          />
+        </div>
+
+        <!-- SUBJECT NAME -->
+
+        <div class="field">
+          <label>Subject Name</label>
+
+          <input
+            type="text"
+            name="subject_name"
+            placeholder="Programming Fundamentals"
+            required
+          />
+        </div>
+
+        <!-- SEMESTER -->
+
+        <div class="field">
+          <label>Semester</label>
+
+          <input
+            type="text"
+            name="semester"
+            placeholder="Semester I"
+            required
+          />
+        </div>
+
+        <!-- CREDITS -->
+
+        <div class="field">
+          <label>Credits</label>
+
+          <input type="number" name="credits" value="4" min="1" required />
+        </div>
+
+        <!-- TEACHER -->
+
+        <div class="field">
+          <label>Teacher</label>
+
+          <select name="teacher">
+            <option value="">Not Assigned</option>
+
+            {% for teacher in teachers %}
+
+            <option value="{{ teacher.name }}">
+              {{ teacher.name }} - {{ teacher.employee_id }}
+            </option>
+
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- STATUS -->
+
+        <div class="field">
+          <label>Status</label>
+
+          <select name="status" required>
+            <option value="Active">Active</option>
+
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- DESCRIPTION -->
+
+        <div class="field full">
+          <label>Description</label>
+
+          <textarea
+            name="description"
+            placeholder="Enter subject description..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- NOTE -->
+
+      <div class="form-note">
+        <i class="fa-solid fa-circle-info"></i>
+
+        Course and subject details are required. Teacher assignment is optional.
+      </div>
+
+      <!-- ACTION -->
+
+      <div class="form-actions">
+        <a href="{% url 'viewsubject' %}" class="btn cancel-btn"> Cancel </a>
+
+        <button type="submit" class="btn save-btn">
+          <i class="fa-solid fa-book-medical"></i>
+
+          Save Subject
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+
+{% endblock %}

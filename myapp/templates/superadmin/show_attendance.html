@@ -1,0 +1,1122 @@
+
+{% extends "superadmin/base.html" %}
+
+
+{% block title %}
+Attendance Report | NOU e-Gyan
+{% endblock %}
+
+
+{% block page_title %}
+Attendance Report
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       ATTENDANCE REPORT PAGE
+       Base CSS is not overridden
+    ===================================================== */
+
+    .attendance-report-page {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .attendance-report-hero {
+        position: relative;
+        overflow: hidden;
+
+        background: #661620;
+
+        color: #ffffff;
+
+        border-radius: 10px;
+
+        padding: 28px 30px;
+
+        margin-bottom: 22px;
+
+        box-shadow:
+            none;
+    }
+
+
+    .attendance-report-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 200px;
+        height: 200px;
+
+        border-radius: 50%;
+
+        right: -75px;
+        top: -100px;
+
+        background: rgba(255,255,255,0.08);
+    }
+
+
+    .attendance-report-hero-content {
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .attendance-report-icon {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: rgba(255,255,255,0.15);
+
+        font-size: 18px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .attendance-report-hero h2 {
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 24px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-report-hero p {
+        margin: 6px 0 0;
+
+        color: rgba(255,255,255,0.86);
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       FILTER CARD
+    ===================================================== */
+
+    .attendance-report-filter {
+        background: #ffffff;
+
+        border: 1px solid #e7e7e7;
+
+        border-radius: 10px;
+
+        padding: 24px;
+
+        margin-bottom: 22px;
+
+        box-shadow:
+            none;
+    }
+
+
+    .attendance-report-filter-heading {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .attendance-report-filter-icon {
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 16px;
+    }
+
+
+    .attendance-report-filter-heading h3 {
+        margin: 0;
+
+        color: #222222;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-report-filter-heading p {
+        margin: 3px 0 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       FILTER FORM
+    ===================================================== */
+
+    .attendance-report-form {
+        display: grid;
+
+        grid-template-columns: 1fr 190px;
+
+        gap: 18px;
+
+        align-items: end;
+    }
+
+
+    .attendance-report-field label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #333333;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-report-field select {
+        width: 100%;
+
+        height: 45px;
+
+        padding: 0 13px;
+
+        box-sizing: border-box;
+
+        border: 1px solid #dddddd;
+
+        border-radius: 6px;
+
+        background: #ffffff;
+
+        color: #333333;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-report-field select:focus {
+        border-color: #851f28;
+
+        box-shadow:
+            0 0 0 3px rgba(133,31,40,0.08);
+    }
+
+
+    .attendance-report-btn {
+        width: 100%;
+
+        height: 45px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        background:
+            #661620;
+
+        color: #ffffff;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        box-shadow:
+            none;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-report-btn:hover {
+        background:
+            #851f28;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       REPORT CARD
+    ===================================================== */
+
+    .attendance-report-card {
+        background: #ffffff;
+
+        border: 1px solid #e7e7e7;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow:
+            none;
+    }
+
+
+    /* =====================================================
+       REPORT HEADER
+    ===================================================== */
+
+    .attendance-report-card-header {
+        padding: 20px 24px;
+
+        border-bottom: 1px solid #eeeeee;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+
+    .attendance-report-title {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+    }
+
+
+    .attendance-report-title-icon {
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 16px;
+    }
+
+
+    .attendance-report-title h3 {
+        margin: 0;
+
+        color: #222222;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-report-title p {
+        margin: 3px 0 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    .attendance-course-badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 8px 13px;
+
+        border-radius: 10px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .attendance-report-table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    .attendance-report-table {
+        width: 100%;
+
+        min-width: 760px;
+
+        border-collapse: collapse;
+    }
+
+
+    .attendance-report-table th {
+        padding: 14px 15px;
+
+        background: #faf6f6;
+
+        border-bottom: 1px solid #e8e8e8;
+
+        color: #666666;
+
+        text-align: left;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-transform: none;
+
+        letter-spacing: 0;
+
+        white-space: nowrap;
+    }
+
+
+    .attendance-report-table td {
+        padding: 14px 15px;
+
+        border-bottom: 1px solid #eeeeee;
+
+        color: #444444;
+
+        font-size: 13px;
+
+        vertical-align: middle;
+    }
+
+
+    .attendance-report-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    .attendance-report-table tbody tr:hover {
+        background: #fffafa;
+    }
+
+
+    .report-sr {
+        width: 60px;
+
+        color: #999999 !important;
+
+        font-weight: 600;
+    }
+
+
+    .report-enrollment {
+        color: #851f28 !important;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+    }
+
+
+    .report-name {
+        color: #222222 !important;
+
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       ATTENDANCE NUMBERS
+    ===================================================== */
+
+    .total-badge {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 38px;
+
+        padding: 6px 9px;
+
+        border-radius: 6px;
+
+        background: #f4f4f4;
+
+        color: #555555;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .present-badge {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 38px;
+
+        padding: 6px 9px;
+
+        border-radius: 6px;
+
+        background: #eaf8ef;
+
+        color: #198754;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .absent-badge {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 38px;
+
+        padding: 6px 9px;
+
+        border-radius: 6px;
+
+        background: #fff0f0;
+
+        color: #dc3545;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       PERCENTAGE
+    ===================================================== */
+
+    .percentage-box {
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        min-width: 130px;
+    }
+
+
+    .percentage-value {
+        min-width: 45px;
+
+        color: #851f28;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .percentage-bar {
+        width: 70px;
+
+        height: 6px;
+
+        background: #eeeeee;
+
+        border-radius: 8px;
+
+        overflow: hidden;
+    }
+
+
+    /*
+       Width cannot dynamically use the Django
+       percentage value directly without custom
+       inline style.
+       So the original percent text is preserved.
+    */
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .attendance-report-empty {
+        padding: 55px 25px;
+
+        text-align: center;
+    }
+
+
+    .attendance-report-empty-icon {
+        width: 65px;
+        height: 65px;
+
+        margin: 0 auto 15px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 24px;
+    }
+
+
+    .attendance-report-empty h3 {
+        margin: 0 0 6px;
+
+        color: #333333;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-report-empty p {
+        margin: 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 800px) {
+
+        .attendance-report-form {
+            grid-template-columns: 1fr;
+        }
+
+
+        .attendance-report-card-header {
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .attendance-report-filter {
+            padding: 18px;
+        }
+
+
+        .attendance-report-hero {
+            padding: 22px;
+        }
+
+    }
+
+</style>
+
+
+
+<div class="attendance-report-page">
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <div class="attendance-report-hero">
+
+        <div class="attendance-report-hero-content">
+
+
+            <div class="attendance-report-icon">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+            </div>
+
+
+            <h2>
+                Attendance Report
+            </h2>
+
+
+            <p>
+                View student attendance summary according to course.
+            </p>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         COURSE FILTER
+    ================================================== -->
+
+    <div class="attendance-report-filter">
+
+
+        <div class="attendance-report-filter-heading">
+
+
+            <div class="attendance-report-filter-icon">
+
+                <i class="fa-solid fa-filter"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Select Course
+                </h3>
+
+                <p>
+                    Choose a course to view attendance report
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ORIGINAL GET FORM -->
+
+        <form
+            method="get"
+            action="{% url 'show_attendance' %}"
+        >
+
+            <div class="attendance-report-form">
+
+
+                <!-- COURSE -->
+
+                <div class="attendance-report-field">
+
+
+                    <label>
+                        Course
+                    </label>
+
+
+                    <select
+                        name="course"
+                    >
+
+                        <option value="">
+                            -- Select Course --
+                        </option>
+
+
+                        {% for i in ab %}
+
+                        <option
+                            value="{{ i.course_name }}"
+                            {% if course == i.course_name %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ i.course_name }}
+
+                        </option>
+
+                        {% endfor %}
+
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- BUTTON -->
+
+                <div>
+
+
+                    <button
+                        type="submit"
+                        class="attendance-report-btn"
+                    >
+
+                        <i class="fa-solid fa-chart-simple"></i>
+
+                        &nbsp;
+
+                        Show Attendance
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         REPORT
+    ================================================== -->
+
+    {% if course %}
+
+
+        <div class="attendance-report-card">
+
+
+            <!-- REPORT HEADER -->
+
+            <div class="attendance-report-card-header">
+
+
+                <div class="attendance-report-title">
+
+
+                    <div class="attendance-report-title-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Student Attendance Summary
+                        </h3>
+
+                        <p>
+                            Course-wise attendance overview
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="attendance-course-badge">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    {{ course }}
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- TABLE -->
+
+            <div class="attendance-report-table-wrapper">
+
+
+                <table class="attendance-report-table">
+
+
+                    <thead>
+
+                        <tr>
+
+
+                            <th>
+                                Sr No.
+                            </th>
+
+
+                            <th>
+                                Enrollment No
+                            </th>
+
+
+                            <th>
+                                Student Name
+                            </th>
+
+
+                            <th>
+                                Total Classes
+                            </th>
+
+
+                            <th>
+                                Present
+                            </th>
+
+
+                            <th>
+                                Absent
+                            </th>
+
+
+                            <th>
+                                Present %
+                            </th>
+
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for i in students %}
+
+
+                        <tr>
+
+
+                            <!-- SR NO -->
+
+                            <td class="report-sr">
+
+                                {{ forloop.counter }}
+
+                            </td>
+
+
+
+                            <!-- ENROLLMENT -->
+
+                            <td class="report-enrollment">
+
+                                {{ i.Enrollment_no }}
+
+                            </td>
+
+
+
+                            <!-- NAME -->
+
+                            <td class="report-name">
+
+                                {{ i.name }}
+
+                            </td>
+
+
+
+                            <!-- TOTAL -->
+
+                            <td>
+
+                                <span class="total-badge">
+
+                                    {{ i.total }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- PRESENT -->
+
+                            <td>
+
+                                <span class="present-badge">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                    &nbsp;
+
+                                    {{ i.present }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- ABSENT -->
+
+                            <td>
+
+                                <span class="absent-badge">
+
+                                    <i class="fa-solid fa-xmark"></i>
+
+                                    &nbsp;
+
+                                    {{ i.absent }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- PERCENT -->
+
+                            <td>
+
+
+                                <div class="percentage-box">
+
+
+                                    <span class="percentage-value">
+
+                                        {{ i.percent }}%
+
+                                    </span>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% empty %}
+
+
+                        <tr>
+
+                            <td colspan="7">
+
+
+                                <div class="attendance-report-empty">
+
+
+                                    <div class="attendance-report-empty-icon">
+
+                                        <i class="fa-solid fa-clipboard-list"></i>
+
+                                    </div>
+
+
+                                    <h3>
+                                        No Students Found
+                                    </h3>
+
+
+                                    <p>
+                                        No attendance record found for this course.
+                                    </p>
+
+
+                                </div>
+
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}
+

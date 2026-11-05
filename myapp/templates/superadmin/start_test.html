@@ -1,0 +1,69 @@
+{% extends "student/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>{{ test.test_title }}</h2>
+
+    <p>Duration: {{ test.duration }} Minutes</p>
+    <p>Total Marks: {{ test.total_marks }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {% for q in question %}
+
+            <div class="mb-4">
+
+                <h5>
+                    {{ forloop.counter }}. {{ q.question }}
+                </h5>
+
+                <label>
+                    <input type="radio"
+                           name="q{{ q.id }}"
+                           value="A"
+                           required>
+                    {{ q.option_a }}
+                </label>
+                <br>
+
+                <label>
+                    <input type="radio"
+                           name="q{{ q.id }}"
+                           value="B">
+                    {{ q.option_b }}
+                </label>
+                <br>
+
+                <label>
+                    <input type="radio"
+                           name="q{{ q.id }}"
+                           value="C">
+                    {{ q.option_c }}
+                </label>
+                <br>
+
+                <label>
+                    <input type="radio"
+                           name="q{{ q.id }}"
+                           value="D">
+                    {{ q.option_d }}
+                </label>
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success">
+            Submit Test
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

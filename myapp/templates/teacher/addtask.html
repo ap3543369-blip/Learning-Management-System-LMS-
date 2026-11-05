@@ -1,0 +1,532 @@
+    {% extends 'teacher/base.html' %}
+
+    {% block title %}Add Assignment{% endblock %}
+    {% block page_title %}Add Assignment{% endblock %}
+
+    {% block content %}
+
+    <style>
+        .task-page {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HERO */
+        .task-hero {
+            padding: 32px 35px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            background: #661620;
+            color: #fff;
+            box-shadow: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task-hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -70px;
+            top: -90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.06);
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .hero-eyebrow span {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0;
+            padding: 6px 10px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.16);
+        }
+
+        .task-hero h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .task-hero p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255,255,255,.78);
+        }
+
+        .session-tag {
+            display: inline-flex;
+            margin-top: 18px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            background: #f0c99f;
+            color: #5c2020;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        /* CARD */
+        .task-card {
+            width: 100%;
+            background: #fff;
+            border: 1px solid #ece4df;
+            border-radius: 10px;
+            padding: 28px;
+            box-shadow: none;
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding-bottom: 20px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid #eee7e2;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff4eb;
+            color: #8b2931;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .card-head h2 {
+            margin: 0;
+            color: #382326;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-head p {
+            margin: 4px 0 0;
+            color: #8d7d7a;
+            font-size: 13px;
+        }
+
+        /* FORM */
+        .form-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 23px 24px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #554644;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #e3dad5;
+            border-radius: 6px;
+            background: #fff;
+            color: #463b39;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: .2s ease;
+        }
+
+        .field input,
+        .field select {
+            height: 48px;
+            padding: 0 13px;
+        }
+
+        .field textarea {
+            min-height: 125px;
+            padding: 13px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: #9a3a43;
+            box-shadow: 0 0 0 3px rgba(139,41,49,.07);
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: #b2a7a4;
+        }
+
+        .field input[type="file"] {
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            color: #766966;
+        }
+
+        .field input[type="file"]::file-selector-button {
+            height: 34px;
+            margin-right: 10px;
+            padding: 0 11px;
+            border: 0;
+            border-radius: 6px;
+            background: #f7eee9;
+            color: #7b2029;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .field-note {
+            margin-top: 6px;
+            color: #a0928f;
+            font-size: 13px;
+        }
+
+        /* BUTTON */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 23px;
+            border-top: 1px solid #eee7e2;
+        }
+
+        .btn {
+            height: 42px;
+            padding: 0 17px;
+            border: 0;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .btn-primary {
+            background: #7b2029;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #5f1820;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f7f2ef;
+            color: #6d5d59;
+            border: 1px solid #e8dfda;
+        }
+
+        .btn-secondary:hover {
+            background: #eee7e2;
+            color: #4f4240;
+        }
+
+        @media (max-width: 700px) {
+
+            .task-hero {
+                padding: 26px 22px;
+            }
+
+            .task-hero h1 {
+                font-size: 24px;
+            }
+
+            .task-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+
+    <div class="task-page">
+
+        <!-- HERO -->
+        <section class="task-hero">
+
+            <div class="hero-eyebrow">
+                <span>ACADEMIC ERP</span>
+                <span>SESSION 2026-2027</span>
+            </div>
+
+            <h1>Create Assignment</h1>
+
+            <p>
+                Publish tasks with deadline, marks and instructions.
+            </p>
+
+            <span class="session-tag">
+                SESSION 2026-2027
+            </span>
+
+        </section>
+
+
+        <!-- FORM CARD -->
+        <section class="task-card">
+
+            <div class="card-head">
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+                <div>
+                    <h2>Assignment Information</h2>
+                    <p>Enter assignment details and publish it for students.</p>
+                </div>
+
+            </div>
+
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-grid">
+
+                    <!-- TITLE -->
+                    <div class="field">
+
+                        <label>
+                            Assignment Title
+                        </label>
+
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="Enter assignment title"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DUE DATE -->
+                    <div class="field">
+
+                        <label>
+                            Due Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="due_date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- COURSE -->
+                    <div class="field">
+
+                        <label>
+                            Course
+                        </label>
+
+                        <select name="course" required>
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+                            {% for course in courses %}
+
+                            <option value="{{ course.course_name }}">
+                                {{ course.course_code }} - {{ course.course_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+                    <div class="field">
+
+                        <label>
+                            Subject
+                        </label>
+
+                        <select name="subject" required>
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+                            {% for subject in subjects %}
+
+                            <option value="{{ subject.subject_name }}">
+                                {{ subject.subject_code }} - {{ subject.subject_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TOTAL MARKS -->
+                    <div class="field">
+
+                        <label>
+                            Total Marks
+                        </label>
+
+                        <input
+                            type="number"
+                            name="total_marks"
+                            value="20"
+                            min="1"
+                            placeholder="Enter total marks"
+                        >
+
+                    </div>
+
+
+                    <!-- ATTACHMENT -->
+                    <div class="field">
+
+                        <label>
+                            Attachment
+                        </label>
+
+                        <input
+                            type="file"
+                            name="attachment"
+                        >
+
+                        <div class="field-note">
+                            Optional assignment file or document.
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+                    <div class="field">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select name="status">
+
+                            <option value="Published">
+                                Published
+                            </option>
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Closed">
+                                Closed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- INSTRUCTIONS -->
+                    <div class="field full">
+
+                        <label>
+                            Instructions
+                        </label>
+
+                        <textarea
+                            name="instructions"
+                            placeholder="Write assignment instructions, submission requirements or other important information..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Publish Assignment
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,585 @@
+```html
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Edit Assignment | NOU e-Gyan{% endblock %}
+{% block page_title %}Edit Assignment{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .task-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ================= HERO ================= */
+
+    .task-hero {
+        padding: 32px 35px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        color: white;
+        background: #661620;
+        box-shadow: none;
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .task-hero h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .task-hero p {
+        margin: 8px 0 18px;
+        font-size: 13px;
+        opacity: 0.85;
+    }
+
+    .session-tag {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.14);
+    }
+
+
+    /* ================= CARD ================= */
+
+    .form-card {
+        width: 100%;
+        box-sizing: border-box;
+        background: white;
+        border: 1px solid #ece4df;
+        border-radius: 10px;
+        padding: 28px;
+        box-shadow: none;
+    }
+
+    .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #eee7e2;
+    }
+
+    .section-head h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #381b1b;
+    }
+
+    .section-head p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        color: #8b7772;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .form-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 23px 24px;
+    }
+
+    .field {
+        width: 100%;
+    }
+
+    .field.full {
+        grid-column: 1 / -1;
+    }
+
+    .field label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #493532;
+    }
+
+    .field label small {
+        color: #9b8b86;
+        font-weight: 400;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ded4cf;
+        border-radius: 6px;
+        background: #fff;
+        padding: 0 13px;
+        font-family: inherit;
+        font-size: 13px;
+        color: #493532;
+        outline: none;
+    }
+
+    .field input,
+    .field select {
+        height: 48px;
+    }
+
+    .field textarea {
+        min-height: 110px;
+        padding: 13px;
+        resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+        border-color: #9b4a4f;
+        box-shadow: 0 0 0 3px rgba(133, 31, 40, 0.07);
+    }
+
+
+    /* ================= CURRENT FILE ================= */
+
+    .current-file {
+        margin-top: 8px;
+        padding: 9px 11px;
+        border-radius: 6px;
+        background: #faf5f2;
+        border: 1px solid #eee3de;
+        color: #806c66;
+        font-size: 13px;
+    }
+
+    .current-file i {
+        color: #851f28;
+        margin-right: 5px;
+    }
+
+
+    /* ================= ACTION ================= */
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 30px;
+        padding-top: 23px;
+        border-top: 1px solid #eee7e2;
+    }
+
+    .btn {
+        height: 42px;
+        padding: 0 17px;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+
+    .save-btn {
+        background: #851f28;
+        color: white;
+    }
+
+    .save-btn:hover {
+        background: #6d1820;
+        color: white;
+    }
+
+    .cancel-btn {
+        background: #f5efec;
+        color: #684f49;
+    }
+
+    .cancel-btn:hover {
+        background: #ebe2de;
+        color: #684f49;
+    }
+
+    .btn-light {
+        background: #f5efec;
+        color: #684f49;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 700px) {
+
+        .task-hero {
+            padding: 25px;
+        }
+
+        .task-hero h1 {
+            font-size: 24px;
+        }
+
+        .form-card {
+            padding: 20px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .field.full {
+            grid-column: auto;
+        }
+
+        .section-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="task-page">
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="task-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+        <h1>
+            Edit Assignment
+        </h1>
+
+        <p>
+            Update academic task details, deadline, marks and instructions.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="form-card">
+
+        <div class="section-head">
+
+            <div>
+
+                <h2>
+                    Assignment Information
+                </h2>
+
+                <p>
+                    Keep the current attachment or upload a replacement.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'viewtask' %}"
+                class="btn btn-light"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Assignments
+            </a>
+
+        </div>
+
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- TITLE -->
+
+                <div class="field">
+
+                    <label>
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ task.title }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DUE DATE -->
+
+                <div class="field">
+
+                    <label>
+                        Due Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="due_date"
+                        value="{{ task.due_date|date:'Y-m-d' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- COURSE -->
+
+                <div class="field">
+
+                    <label>
+                        Course
+                    </label>
+
+                    <select
+                        name="course"
+                        required
+                    >
+
+                        {% for course in courses %}
+
+                        <option
+                            value="{{ course.course_name }}"
+                            {% if task.course == course.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ course.course_code }} -
+                            {{ course.course_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="field">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <select
+                        name="subject"
+                        required
+                    >
+
+                        {% for subject in subjects %}
+
+                        <option
+                            value="{{ subject.subject_name }}"
+                            {% if task.subject == subject.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ subject.subject_code }} -
+                            {{ subject.subject_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- TOTAL MARKS -->
+
+                <div class="field">
+
+                    <label>
+                        Total Marks
+                    </label>
+
+                    <input
+                        type="number"
+                        name="total_marks"
+                        value="{{ task.total_marks }}"
+                        min="1"
+                    >
+
+                </div>
+
+
+                <!-- ATTACHMENT -->
+
+                <div class="field">
+
+                    <label>
+                        Replace Attachment
+                        <small>(optional)</small>
+                    </label>
+
+                    <input
+                        type="file"
+                        name="attachment"
+                    >
+
+                    {% if task.attachment %}
+
+                    <div class="current-file">
+
+                        <i class="fa-solid fa-paperclip"></i>
+
+                        Current attachment is available.
+                        Upload a new file only to replace it.
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="field">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select name="status">
+
+                        <option
+                            value="Published"
+                            {% if task.status == "Published" %}
+                                selected
+                            {% endif %}
+                        >
+                            Published
+                        </option>
+
+                        <option
+                            value="Draft"
+                            {% if task.status == "Draft" %}
+                                selected
+                            {% endif %}
+                        >
+                            Draft
+                        </option>
+
+                        <option
+                            value="Closed"
+                            {% if task.status == "Closed" %}
+                                selected
+                            {% endif %}
+                        >
+                            Closed
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- INSTRUCTIONS -->
+
+                <div class="field full">
+
+                    <label>
+                        Instructions
+                    </label>
+
+                    <textarea
+                        name="instructions"
+                    >{{ task.instructions|default:'' }}</textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <button
+                    class="btn save-btn"
+                    type="submit"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Changes
+                </button>
+
+                <a
+                    class="btn cancel-btn"
+                    href="{% url 'viewtask' %}"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

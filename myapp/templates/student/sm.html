@@ -1,0 +1,899 @@
+{% extends 'student/base.html' %}
+
+{% block title %}Study Material | NOU e-Gyan{% endblock %}
+{% block page_title %}Study Material{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .study-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+
+    /* ================= HERO ================= */
+
+    .study-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 30px 32px;
+        margin-bottom: 22px;
+        border-radius: 10px;
+        background: #130e70;
+        color: #fff;
+        box-shadow: none;
+    }
+
+    .study-hero::before {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        right: -70px;
+        top: -95px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.07);
+    }
+
+    .study-hero::after {
+        content: "";
+        position: absolute;
+        width: 110px;
+        height: 110px;
+        right: 150px;
+        bottom: -75px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.05);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .hero-eyebrow span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.16);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .study-hero h1 {
+        margin: 0 0 7px;
+        font-size: 24px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .study-hero p {
+        margin: 0;
+        color: rgba(255,255,255,.82);
+        font-size: 13px;
+    }
+
+    .session-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        padding: 7px 11px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.95);
+        color: #130e70;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+
+    /* ================= MAIN CARD ================= */
+
+    .study-section {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 27px;
+        box-shadow: none;
+    }
+
+
+    /* ================= SECTION HEADER ================= */
+
+    .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 19px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-icon {
+        width: 43px;
+        height: 43px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #eef4ff;
+        color: #130e70;
+        font-size: 16px;
+    }
+
+    .section-title h2 {
+        margin: 0;
+        color: #202535;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .section-title p {
+        margin: 4px 0 0;
+        color: #9097a6;
+        font-size: 13px;
+    }
+
+
+    /* ================= UPLOAD BUTTON ================= */
+
+    .add-btn {
+        height: 40px;
+        padding: 0 15px;
+        border: none;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: #130e70;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: none;
+        transition: .2s ease;
+    }
+
+    .add-btn:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: none;
+    }
+
+
+    /* ================= TABLE ================= */
+
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .study-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: auto;
+    }
+
+    .study-table thead th {
+        padding: 12px 11px;
+        background: #f7f9fc;
+        border-bottom: 1px solid #e7eaf0;
+        color: #737b8d;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: 0;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .study-table tbody td {
+        padding: 14px 11px;
+        border-bottom: 1px solid #edf0f4;
+        color: #51596a;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .study-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .study-table tbody tr {
+        transition: .15s ease;
+    }
+
+    .study-table tbody tr:hover {
+        background: #fafcff;
+    }
+
+
+    /* ================= NUMBER ================= */
+
+    .number-badge {
+        width: 27px;
+        height: 27px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: #eef4ff;
+        color: #130e70;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+
+    /* ================= MATERIAL NAME ================= */
+
+    .material-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 175px;
+    }
+
+    .material-icon {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #eef8fa;
+        color: #168ea6;
+        font-size: 13px;
+    }
+
+    .material-name strong {
+        display: block;
+        color: #272d3d;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .material-name small {
+        display: block;
+        margin-top: 3px;
+        color: #969eae;
+        font-size: 13px;
+    }
+
+
+    /* ================= COURSE / SUBJECT ================= */
+
+    .course-text strong,
+    .subject-text strong {
+        display: block;
+        color: #3e4657;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .course-text small,
+    .subject-text small {
+        display: block;
+        margin-top: 3px;
+        color: #a0a7b4;
+        font-size: 13px;
+    }
+
+
+    /* ================= TYPE ================= */
+
+    .type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 9px;
+        border-radius: 10px;
+        background: #f4f6fb;
+        border: 1px solid #e6eaf2;
+        color: #596174;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    /* ================= STATUS ================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .status-published {
+        background: #eaf8f2;
+        color: #20845b;
+    }
+
+    .status-published .status-dot {
+        background: #31a66a;
+    }
+
+    .status-draft {
+        background: #fff7e8;
+        color: #9a741f;
+    }
+
+    .status-draft .status-dot {
+        background: #d9a22e;
+    }
+
+
+    /* ================= RESOURCE ================= */
+
+    .resource-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 6px;
+        background: #f0fafc;
+        color: #168ea6;
+        text-decoration: none;
+        border: 1px solid #dceef2;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: .2s ease;
+    }
+
+    .resource-btn:hover {
+        background: #e5f6fa;
+        color: #11758a;
+    }
+
+    .no-resource {
+        color: #a2a9b5;
+        font-size: 13px;
+    }
+
+
+    /* ================= EMPTY ================= */
+
+    .empty {
+        padding: 55px 20px;
+        text-align: center;
+        color: #929aaa;
+        font-size: 13px;
+    }
+
+    .empty-icon {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eef8fa;
+        color: #168ea6;
+        font-size: 18px;
+    }
+
+    .empty strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #41495a;
+        font-size: 13px;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 950px) {
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .study-table {
+            min-width: 950px;
+        }
+    }
+
+
+    @media (max-width: 700px) {
+
+        .study-page {
+            width: 100%;
+        }
+
+        .study-hero {
+            padding: 25px 22px;
+        }
+
+        .study-hero h1 {
+            font-size: 20px;
+        }
+
+        .study-section {
+            padding: 20px;
+        }
+
+        .section-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<div class="study-page">
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="study-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-eyebrow">
+
+                <span>
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    STUDENT PORTAL
+                </span>
+
+                <span>
+                    ACADEMIC RESOURCES
+                </span>
+
+            </div>
+
+
+            <h1>
+                Study Material Library
+            </h1>
+
+
+            <p>
+                Access your course notes, videos, documents and other
+                learning resources from one place.
+            </p>
+
+
+            <span class="session-tag">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                SESSION 2026-2027
+
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= MATERIAL CARD ================= -->
+
+    <section class="study-section">
+
+
+        <div class="section-head">
+
+
+            <div class="section-title">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Study Materials
+                    </h2>
+
+                    <p>
+                        Learning resources available for your course.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a href="{% url 'sm' %}" class="add-btn">
+
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                Upload Material
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ================= TABLE ================= -->
+
+        <div class="table-wrap">
+
+            <table class="study-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Title</th>
+
+                        <th>Course</th>
+
+                        <th>Subject</th>
+
+                        <th>Type</th>
+
+                        <th>Uploaded By</th>
+
+                        <th>Status</th>
+
+                        <th>Resource</th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for material in materials %}
+
+                    <tr>
+
+
+                        <!-- NUMBER -->
+
+                        <td>
+
+                            <span class="number-badge">
+
+                                {{ material.id }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- TITLE -->
+
+                        <td>
+
+                            <div class="material-name">
+
+
+                                <div class="material-icon">
+
+
+                                    {% if material.material_type == "PDF" %}
+
+                                        <i class="fa-solid fa-file-pdf"></i>
+
+
+                                    {% elif material.material_type == "Video" %}
+
+                                        <i class="fa-solid fa-video"></i>
+
+
+                                    {% elif material.material_type == "Link" %}
+
+                                        <i class="fa-solid fa-link"></i>
+
+
+                                    {% else %}
+
+                                        <i class="fa-solid fa-file-lines"></i>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <strong>
+                                        {{ material.title }}
+                                    </strong>
+
+                                    <small>
+                                        Study Material
+                                    </small>
+
+                                </div>
+
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- COURSE -->
+
+                        <td>
+
+                            <div class="course-text">
+
+                                <strong>
+                                    {{ material.course }}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- SUBJECT -->
+
+                        <td>
+
+                            <div class="subject-text">
+
+                                <strong>
+                                    {{ material.subject }}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- TYPE -->
+
+                        <td>
+
+                            <span class="type-badge">
+
+
+                                {% if material.material_type == "PDF" %}
+
+                                    <i class="fa-solid fa-file-pdf"></i>
+
+
+                                {% elif material.material_type == "Video" %}
+
+                                    <i class="fa-solid fa-video"></i>
+
+
+                                {% elif material.material_type == "Link" %}
+
+                                    <i class="fa-solid fa-link"></i>
+
+
+                                {% else %}
+
+                                    <i class="fa-solid fa-file"></i>
+
+                                {% endif %}
+
+
+                                {{ material.material_type }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- UPLOADED BY -->
+
+                        <td>
+
+                            <div class="subject-text">
+
+                                <strong>
+                                    {{ material.create_by }}
+                                </strong>
+
+                                <small>
+                                    Uploaded By
+                                </small>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+
+                            {% if material.status == "Published" %}
+
+
+                                <span class="status status-published">
+
+                                    <span class="status-dot"></span>
+
+                                    Published
+
+                                </span>
+
+
+                            {% else %}
+
+
+                                <span class="status status-draft">
+
+                                    <span class="status-dot"></span>
+
+                                    Draft
+
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </td>
+
+
+
+                        <!-- RESOURCE -->
+
+                        <td>
+
+
+                            {% if material.material_file %}
+
+
+                                <a href="{{ material.material_file.url }}"
+                                   target="_blank"
+                                   class="resource-btn">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    View File
+
+                                </a>
+
+
+                            {% elif material.external_url %}
+
+
+                                <a href="{{ material.external_url }}"
+                                   target="_blank"
+                                   class="resource-btn">
+
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                    Open Link
+
+                                </a>
+
+
+                            {% else %}
+
+
+                                <span class="no-resource">
+
+                                    No Resource
+
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <tr>
+
+                        <td colspan="8">
+
+
+                            <div class="empty">
+
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-solid fa-folder-open"></i>
+
+                                </div>
+
+
+                                <strong>
+                                    No study material found.
+                                </strong>
+
+
+                                There are currently no learning resources
+                                available for your course.
+
+
+                            </div>
+
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}

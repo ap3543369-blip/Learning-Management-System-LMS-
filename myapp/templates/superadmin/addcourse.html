@@ -1,0 +1,678 @@
+{% extends 'superadmin/base.html' %} {% block title %} Add Course | NOU e-Gyan
+{% endblock %} {% block page_title %} Add Course {% endblock %} 
+{% block extra_css %}
+
+<style>
+  /* =========================================
+   ADD COURSE PAGE
+========================================= */
+
+  .course-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* =========================================
+   HERO
+========================================= */
+
+  .course-hero {
+    position: relative;
+
+    padding: 32px 35px;
+
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+  }
+
+  .course-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -100px;
+    top: -140px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .course-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: 70px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* =========================================
+   HERO CONTENT
+========================================= */
+
+  .hero-eyebrow {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+  }
+
+  .hero-eyebrow span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    color: #fff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+  }
+
+  .course-hero h1 {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 28px;
+
+    line-height: 1.3;
+
+    font-weight: 600;
+  }
+
+  .course-hero p {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 7px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 13px;
+  }
+
+  .course-tag {
+    position: absolute;
+
+    right: 35px;
+    bottom: 30px;
+
+    z-index: 2;
+
+    padding: 8px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    color: #f5d1ad;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+  }
+
+  /* =========================================
+   COURSE CARD
+========================================= */
+
+  .course-card {
+    width: 100%;
+
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+  }
+
+  /* =========================================
+   CARD HEADER
+========================================= */
+
+  .card-head {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+  }
+
+  .card-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #fff1e9;
+
+    color: #963029;
+
+    font-size: 16px;
+  }
+
+  .card-title h2 {
+    color: #321b1b;
+
+    font-size: 18px;
+
+    font-weight: 600;
+  }
+
+  .card-title p {
+    margin-top: 3px;
+
+    color: #9b928d;
+
+    font-size: 13px;
+  }
+
+  .course-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 8px 14px;
+
+    border-radius: 10px;
+
+    background: #fff7ef;
+
+    border: 1px solid #f0ddd0;
+
+    color: #a14a26;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0;
+  }
+
+  /* =========================================
+   FORM GRID
+========================================= */
+
+  .form-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 23px 24px;
+  }
+
+  .field {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  .field label {
+    margin-bottom: 8px;
+
+    color: #332727;
+
+    font-size: 13px;
+
+    font-weight: 600;
+  }
+
+  .field label span {
+    color: #b5322a;
+  }
+
+  /* =========================================
+   INPUT / SELECT
+========================================= */
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+
+    border: 1px solid #e6ddd7;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #fffdfb;
+
+    color: #403837;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+  }
+
+  .field input,
+  .field select {
+    height: 48px;
+
+    padding: 0 14px;
+  }
+
+  .field textarea {
+    min-height: 105px;
+
+    padding: 13px 14px;
+
+    resize: vertical;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    background: white;
+
+    border-color: #963029;
+
+    box-shadow: 0 0 0 3px rgba(150, 48, 41, 0.07);
+  }
+
+  .field textarea::placeholder,
+  .field input::placeholder {
+    color: #b0a6a1;
+  }
+
+  /* =========================================
+   FORM ACTIONS
+========================================= */
+
+  .form-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 30px;
+
+    padding-top: 23px;
+
+    border-top: 1px solid #eee7e2;
+  }
+
+  .form-note {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #968c87;
+
+    font-size: 13px;
+  }
+
+  .form-note i {
+    color: #9b3028;
+
+    font-size: 13px;
+  }
+
+  /* =========================================
+   SAVE BUTTON
+========================================= */
+
+  .btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #81221f;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition: 0.2s;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow: none;
+  }
+
+  /* =========================================
+   RESPONSIVE
+========================================= */
+
+  @media (max-width: 700px) {
+    .course-hero {
+      padding: 25px 22px;
+    }
+
+    .course-hero h1 {
+      font-size: 24px;
+    }
+
+    .course-tag {
+      position: static;
+
+      display: inline-flex;
+
+      margin-top: 18px;
+    }
+
+    .course-card {
+      padding: 20px;
+    }
+
+    .card-head {
+      align-items: flex-start;
+
+      flex-direction: column;
+
+      gap: 12px;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .field.full {
+      grid-column: auto;
+    }
+
+    .form-actions {
+      align-items: stretch;
+
+      flex-direction: column;
+
+      gap: 16px;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+{% endblock %} {% block content %}
+
+<div class="course-page">
+  <!-- =====================================
+         HERO
+    ====================================== -->
+
+  <section class="course-hero">
+    <div class="hero-eyebrow">
+      <span> ACADEMIC ERP </span>
+
+      <span> SESSION 2026-27 </span>
+    </div>
+
+    <h1>Add Course / Programme</h1>
+
+    <p>Map a programme to an academic session.</p>
+
+    <span class="course-tag"> SESSION 2026-27 </span>
+  </section>
+
+  <!-- =====================================
+         COURSE FORM
+    ====================================== -->
+
+  <section class="course-card">
+    <div class="card-head">
+      <div class="card-title">
+        <div class="card-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+
+        <div>
+          <h2>Course Information</h2>
+
+          <p>Enter the course and programme details below.</p>
+        </div>
+      </div>
+
+      <span class="course-label"> ADD COURSE </span>
+    </div>
+
+    <!-- =================================
+             FORM
+        ================================== -->
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-grid">
+        <!-- ACADEMIC SESSION -->
+
+        <div class="field">
+          <label for="session">
+            Academic Session
+            <span>*</span>
+          </label>
+
+          <select id="session" name="session" required>
+            <option value="">Select Session</option>
+
+            {% for session in sessions %}
+            {% if session.status == "Active" %}
+
+            <option value="{{ session.session_name }}">{{ session.session_name }}</option>
+            {% endif %}
+
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- COURSE CODE -->
+
+        <div class="field">
+          <label for="course_code">
+            Course Code
+            <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            id="course_code"
+            name="course_code"
+            placeholder="BCA"
+            required
+          />
+        </div>
+
+        <!-- COURSE NAME -->
+
+        <div class="field">
+          <label for="course_name">
+            Course Name
+            <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            id="course_name"
+            name="course_name"
+            placeholder="Bachelor of Computer Applications"
+            required
+          />
+        </div>
+
+        <!-- LEVEL -->
+
+        <div class="field">
+          <label for="level"> Level </label>
+
+          <select id="level" name="level">
+            <option value="Undergraduate">Undergraduate</option>
+
+            <option value="Postgraduate">Postgraduate</option>
+
+            <option value="Diploma">Diploma</option>
+
+            <option value="Certificate">Certificate</option>
+          </select>
+        </div>
+
+        <!-- DURATION -->
+
+        <div class="field">
+          <label for="duration">
+            Duration
+            <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            id="duration"
+            name="duration"
+            placeholder="3 Years"
+            required
+          />
+        </div>
+
+        <!-- STATUS -->
+
+        <div class="field">
+          <label for="status"> Status </label>
+
+          <select id="status" name="status">
+            <option value="Active">Active</option>
+
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- DESCRIPTION -->
+
+        <div class="field full">
+          <label for="description"> Description </label>
+
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Enter course description..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- =================================
+                 ACTION
+            ================================== -->
+
+      <div class="form-actions">
+        <div class="form-note">
+          <i class="fa-solid fa-circle-info"></i>
+
+          All marked fields are required.
+        </div>
+
+        <button type="submit" class="btn">
+          <i class="fa-solid fa-floppy-disk"></i>
+
+          Save Course
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,1051 @@
+
+{% extends 'student/base.html' %}
+
+
+
+{% block content %}
+
+
+<style>
+/* ===== Programming Lab ===== */
+
+.compiler-shell {
+    --lab-primary: #0b5965;
+    --lab-dark: #17212b;
+    --lab-border: #dce4eb;
+    --lab-muted: #718096;
+
+    width: 100%;
+    margin: 20px auto 30px;
+    background: #ffffff;
+    border: 1px solid var(--lab-border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: none;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Toolbar */
+
+.compiler-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 20px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--lab-border);
+}
+
+.compiler-brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.compiler-dot {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: var(--lab-primary);
+    position: relative;
+}
+
+.compiler-dot::after {
+    content: "</>";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.compiler-brand b {
+    display: block;
+    color: #172b3a;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.compiler-brand small {
+    display: block;
+    margin-top: 4px;
+    color: var(--lab-muted);
+    font-size: 13px;
+}
+
+/* Toolbar controls */
+
+.compiler-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.compiler-controls select {
+    min-width: 145px;
+    height: 39px;
+    padding: 0 12px;
+    color: #243746;
+    background: #ffffff;
+    border: 1px solid #cbd5df;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.compiler-controls select:focus {
+    border-color: var(--lab-primary);
+    box-shadow: 0 0 0 3px rgba(11, 89, 101, 0.10);
+}
+
+.compiler-controls button {
+    min-height: 39px;
+    padding: 8px 13px;
+    border-radius: 6px !important;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.compiler-controls .btn-light {
+    color: #34495e;
+    background: #ffffff;
+    border: 1px solid #d6e0e8;
+}
+
+.compiler-controls .btn-light:hover {
+    background: #edf4f6;
+    border-color: #aabecb;
+}
+
+.compiler-controls .run-code-btn {
+    color: #ffffff;
+    background: #0b5965;
+    border: 1px solid #0b5965;
+}
+
+.compiler-controls .run-code-btn:hover {
+    background: #084650;
+    transform: translateY(-1px);
+}
+
+.compiler-controls .run-code-btn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+/* Editor and terminal layout */
+
+.compiler-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px;
+    background: #f3f6f9;
+}
+
+.editor-panel,
+.terminal-panel {
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dce4eb;
+    border-radius: 8px;
+}
+
+.panel-title {
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    color: #dce7f0;
+    background: #202b38;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+#fileName {
+    color: #9eb6c9;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+/* Code editor */
+
+#codeEditor {
+    display: block;
+    width: 100%;
+    min-height: 390px;
+    resize: vertical;
+    padding: 20px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    background: #17212b;
+    color: #e7edf5;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    tab-size: 4;
+    white-space: pre;
+    overflow: auto;
+}
+
+#codeEditor:focus {
+    box-shadow: inset 0 0 0 1px #0b5965;
+}
+
+.editor-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 11px 15px;
+    color: #6b7b8a;
+    background: #ffffff;
+    border-top: 1px solid #e5ebf0;
+    font-size: 13px;
+}
+
+/* Terminal */
+
+#outputConsole {
+    min-height: 290px;
+    max-height: 450px;
+    overflow: auto;
+    margin: 0;
+    padding: 20px;
+    color: #dce7f0;
+    background: #111a23;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+#runStatus {
+    padding: 4px 9px;
+    color: #b8f3d1;
+    background: rgba(46, 160, 100, 0.15);
+    border-radius: 10px;
+    font-size: 13px;
+    letter-spacing: 0;
+}
+
+.terminal-input {
+    padding: 16px;
+    color: #334155;
+    background: #f8fafc;
+    border-top: 1px solid #dce4eb;
+}
+
+.terminal-prompt {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prompt-symbol {
+    color: #0b5965;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#terminalInput {
+    min-width: 0;
+    flex: 1;
+    height: 40px;
+    padding: 9px 12px;
+    border: 1px solid #cbd5df;
+    border-radius: 6px;
+    outline: none;
+}
+
+#terminalInput:focus {
+    border-color: #0b5965;
+    box-shadow: 0 0 0 3px rgba(11, 89, 101, 0.08);
+}
+
+#sendInputBtn {
+    height: 40px;
+    padding: 0 17px;
+    color: #ffffff;
+    background: #0b5965;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#inputProgress {
+    display: block;
+    margin-top: 8px;
+    color: #718096;
+    font-size: 13px;
+}
+
+/* Advanced input */
+
+.advanced-stdin {
+    margin: 15px;
+    border: 1px solid #e0e7ee;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.advanced-stdin summary {
+    padding: 12px 14px;
+    color: #45596b;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#stdinBox {
+    display: block;
+    width: calc(100% - 24px);
+    min-height: 85px;
+    margin: 0 12px 12px;
+    padding: 11px;
+    resize: vertical;
+    border: 1px solid #dce4eb;
+    border-radius: 6px;
+    outline: none;
+    font-family: "Consolas", monospace;
+    font-size: 13px;
+}
+
+#stdinBox:focus {
+    border-color: #0b5965;
+}
+
+.execution-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    padding: 13px 16px;
+    color: #637589;
+    background: #f8fafc;
+    border-top: 1px solid #e1e8ef;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+    .compiler-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #codeEditor {
+        min-height: 330px;
+    }
+
+    #outputConsole {
+        min-height: 220px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .compiler-shell {
+        margin: 12px auto 20px;
+        border-radius: 8px;
+    }
+
+    .compiler-toolbar {
+        padding: 16px;
+        align-items: stretch;
+    }
+
+    .compiler-brand b {
+        font-size: 14px;
+    }
+
+    .compiler-brand small {
+        font-size: 13px;
+    }
+
+    .compiler-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .compiler-controls select {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .compiler-controls button {
+        width: 100%;
+        padding: 8px 5px;
+    }
+
+    .compiler-grid {
+        padding: 10px;
+        gap: 12px;
+    }
+
+    #codeEditor {
+        min-height: 280px;
+        padding: 14px;
+        font-size: 13px;
+    }
+
+    #outputConsole {
+        min-height: 200px;
+        padding: 14px;
+        font-size: 13px;
+    }
+
+    .editor-status {
+        gap: 9px;
+        font-size: 13px;
+    }
+
+    .panel-title {
+        padding: 12px;
+    }
+
+    .execution-meta {
+        gap: 12px;
+        font-size: 13px;
+    }
+}
+</style>
+<div class="compiler-shell">
+
+    <div class="compiler-toolbar">
+
+        <div class="compiler-brand">
+            <span class="compiler-dot"></span>
+
+            <div>
+                <b>Multi-Language Code Runner</b>
+                <small>Judge0 CE sandbox • interactive-style input workflow</small>
+            </div>
+        </div>
+
+        <div class="compiler-controls">
+
+            <select id="languageSelect">
+                {% for key, item in languages.items %}
+                <option value="{{ key }}">
+                    {{ item.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="button"
+                    class="btn btn-light btn-sm"
+                    id="exampleBtn">
+                Load Example
+            </button>
+
+            <button type="button"
+                    class="btn btn-light btn-sm"
+                    id="clearBtn">
+                Clear
+            </button>
+
+            <button type="button"
+                    class="btn btn-sm run-code-btn"
+                    id="runBtn">
+                ▶ Run Code
+            </button>
+
+        </div>
+    </div>
+
+
+    <div class="compiler-grid">
+
+        <!-- CODE EDITOR -->
+        <section class="editor-panel">
+
+            <div class="panel-title">
+                <span>CODE EDITOR</span>
+                <span id="fileName">main.py</span>
+            </div>
+
+            <textarea
+                id="codeEditor"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off"></textarea>
+
+            <div class="editor-status">
+                <span id="lineCount">1 line</span>
+                <span>UTF-8</span>
+                <span id="languageStatus">Python 3</span>
+                <span>Ctrl + Enter to run</span>
+            </div>
+
+        </section>
+
+
+        <!-- PROGRAM TERMINAL -->
+        <section class="terminal-panel">
+
+            <div class="panel-title">
+                <span>PROGRAM TERMINAL</span>
+                <span id="runStatus">Ready</span>
+            </div>
+
+            <pre id="outputConsole">Write your program and click ▶ Run Code.
+If your code uses input(), scanf, cin, Scanner, ReadLine, etc., input will be requested here.</pre>
+
+            <div class="terminal-input" id="terminalInputArea" hidden>
+
+                <div class="terminal-prompt" id="terminalPrompt">
+                    Program is waiting for input
+                </div>
+
+                <div class="terminal-input-row">
+
+                    <span class="prompt-symbol">›</span>
+
+                    <input
+                        id="terminalInput"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Type input and press Enter">
+
+                    <button type="button" id="sendInputBtn">
+                        Send
+                    </button>
+
+                </div>
+
+                <small id="inputProgress"></small>
+
+            </div>
+
+
+            <details class="advanced-stdin">
+
+                <summary>
+                    Advanced: pre-load standard input
+                </summary>
+
+                <textarea
+                    id="stdinBox"
+                    placeholder="Optional. Put each stdin line here if you want to skip interactive prompts."></textarea>
+
+            </details>
+
+
+            <div class="execution-meta">
+                <span id="timeMeta">Time: --</span>
+                <span id="memoryMeta">Memory: --</span>
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- CSRF TOKEN -->
+<div style="display:none">
+    {% csrf_token %}
+</div>
+
+{{ starter_code|json_script:"starter-code-data" }}
+
+
+<script>
+(function(){
+
+    const starters = JSON.parse(
+        document.getElementById('starter-code-data').textContent
+    );
+
+    const meta = {
+        python: {name:'Python 3', file:'main.py'},
+        java: {name:'Java', file:'Main.java'},
+        cpp: {name:'C++', file:'main.cpp'},
+        c: {name:'C', file:'main.c'},
+        javascript: {name:'JavaScript', file:'main.js'},
+        php: {name:'PHP', file:'main.php'},
+        csharp: {name:'C#', file:'Main.cs'},
+        go: {name:'Go', file:'main.go'},
+        rust: {name:'Rust', file:'main.rs'},
+        ruby: {name:'Ruby', file:'main.rb'},
+        typescript: {name:'TypeScript', file:'main.ts'},
+        bash: {name:'Bash', file:'main.sh'}
+    };
+
+    const lang = document.getElementById('languageSelect');
+    const editor = document.getElementById('codeEditor');
+    const stdin = document.getElementById('stdinBox');
+    const out = document.getElementById('outputConsole');
+    const run = document.getElementById('runBtn');
+    const status = document.getElementById('runStatus');
+    const file = document.getElementById('fileName');
+    const langStatus = document.getElementById('languageStatus');
+    const lines = document.getElementById('lineCount');
+    const time = document.getElementById('timeMeta');
+    const memory = document.getElementById('memoryMeta');
+
+    const csrf = document.querySelector(
+        '[name=csrfmiddlewaretoken]'
+    );
+
+    const inputArea = document.getElementById('terminalInputArea');
+    const termInput = document.getElementById('terminalInput');
+    const termPrompt = document.getElementById('terminalPrompt');
+    const progress = document.getElementById('inputProgress');
+    const sendInput = document.getElementById('sendInputBtn');
+
+    let pendingPrompts = [];
+    let collected = [];
+    let autoCollected = false;
+
+
+    function updateMeta(){
+
+        const k = lang.value;
+
+        file.textContent = meta[k].file;
+        langStatus.textContent = meta[k].name;
+
+        const n = editor.value.split('\n').length;
+
+        lines.textContent = n + (n === 1 ? ' line' : ' lines');
+    }
+
+
+    function loadExample(){
+
+        editor.value = starters[lang.value] || '';
+        stdin.value = '';
+
+        hideInput();
+        updateMeta();
+
+        editor.focus();
+    }
+
+
+    function inputPrompts(language, code){
+
+        let matches = [];
+        let m;
+
+        if(language === 'python'){
+
+            const r = /\binput\s*\(\s*(?:(["'])(.*?)\1)?\s*\)/g;
+
+            while((m = r.exec(code)) !== null){
+
+                matches.push(
+                    (m[2] || 'Input ' + (matches.length + 1)).trim()
+                );
+            }
+
+        } else {
+
+            const patterns = {
+
+                c: /\b(?:scanf|gets|fgets)\s*\(/g,
+
+                cpp: /\b(?:cin\s*>>|getline\s*\()/g,
+
+                java: /\.(?:next|nextLine|nextInt|nextDouble|nextFloat|nextLong|nextBoolean)\s*\(/g,
+
+                javascript: /\b(?:prompt\s*\(|\.question\s*\()/g,
+
+                typescript: /\b(?:prompt\s*\(|\.question\s*\()/g,
+
+                php: /\bfgets\s*\(\s*STDIN/g,
+
+                csharp: /\bConsole\.ReadLine\s*\(/g,
+
+                go: /\bfmt\.Scan(?:ln|f)?\s*\(/g,
+
+                rust: /\.read_line\s*\(/g,
+
+                ruby: /\bgets(?:\.chomp)?\b/g,
+
+                bash: /\bread\s+(?:-[^\n ]+\s+)*[A-Za-z_]/g
+            };
+
+            const r = patterns[language];
+
+            if(r){
+
+                while((m = r.exec(code)) !== null){
+
+                    matches.push('Input ' + (matches.length + 1));
+                }
+            }
+        }
+
+        return matches.slice(0, 50);
+    }
+
+
+    function hideInput(){
+
+        inputArea.hidden = true;
+
+        pendingPrompts = [];
+        collected = [];
+
+        termInput.value = '';
+    }
+
+
+    function ask(index){
+
+        const label = pendingPrompts[index] || ('Input ' + (index + 1));
+
+        termPrompt.textContent = label;
+
+        progress.textContent =
+            'Input ' + (index + 1) + ' of ' + pendingPrompts.length;
+
+        termInput.value = '';
+        termInput.focus();
+    }
+
+
+    function startInput(prompts){
+
+        pendingPrompts = prompts;
+        collected = [];
+        autoCollected = true;
+
+        inputArea.hidden = false;
+
+        status.textContent = 'Waiting for input';
+
+        out.textContent = 'Program started...\n' + prompts[0];
+
+        ask(0);
+    }
+
+
+    function acceptInput(){
+
+        if(inputArea.hidden) return;
+
+        const value = termInput.value;
+
+        collected.push(value);
+
+        const idx = collected.length - 1;
+
+        out.textContent += '\n> ' + value;
+
+        if(collected.length < pendingPrompts.length){
+
+            out.textContent += '\n' + pendingPrompts[collected.length];
+
+            ask(collected.length);
+
+        } else {
+
+            stdin.value = collected.join('\n');
+
+            inputArea.hidden = true;
+
+            executeCode();
+        }
+    }
+
+
+    sendInput.addEventListener('click', acceptInput);
+
+    termInput.addEventListener('keydown', e => {
+
+        if(e.key === 'Enter'){
+
+            e.preventDefault();
+            acceptInput();
+        }
+    });
+
+
+    function pythonInputPromptLiterals(code){
+
+        const prompts = [];
+
+        const r = /\binput\s*\(\s*(["'])(.*?)\1\s*\)/gs;
+
+        let m;
+
+        while((m = r.exec(code)) !== null){
+
+            let prompt = m[2] || '';
+
+            prompt = prompt
+                .replace(/\\n/g, '\n')
+                .replace(/\\r/g, '\r')
+                .replace(/\\t/g, '\t')
+                .replace(/\\"/g, '"')
+                .replace(/\\'/g, "'")
+                .replace(/\\\\/g, '\\');
+
+            if(prompt) prompts.push(prompt);
+        }
+
+        return prompts;
+    }
+
+
+    function cleanPythonInputPrompts(stdoutText, code){
+
+        let cleaned = stdoutText || '';
+
+        pythonInputPromptLiterals(code).forEach(prompt => {
+
+            const index = cleaned.indexOf(prompt);
+
+            if(index !== -1){
+
+                cleaned = cleaned.slice(0, index)
+                    + cleaned.slice(index + prompt.length);
+            }
+        });
+
+        return cleaned;
+    }
+
+
+    function displayResult(data){
+
+        let stdoutText = data.stdout || '';
+
+        if(lang.value === 'python'){
+
+            stdoutText = cleanPythonInputPrompts(
+                stdoutText,
+                editor.value
+            );
+        }
+
+        const chunks = [];
+
+        if(stdoutText){
+
+            chunks.push(stdoutText.replace(/\s+$/, ''));
+        }
+
+        if(data.compile_output){
+
+            chunks.push(
+                String(data.compile_output).replace(/\s+$/, '')
+            );
+        }
+
+        if(data.stderr){
+
+            chunks.push(
+                String(data.stderr).replace(/\s+$/, '')
+            );
+        }
+
+        if(data.message){
+
+            chunks.push(
+                String(data.message).replace(/\s+$/, '')
+            );
+        }
+
+        return chunks.filter(Boolean).join('\n')
+            || '(Program finished without output)';
+    }
+
+
+    async function executeCode(){
+
+        run.disabled = true;
+        run.textContent = 'Running...';
+
+        status.textContent = 'Executing';
+
+        out.textContent +=
+            (out.textContent ? '\n\n' : '')
+            + 'Executing in Judge0 sandbox...';
+
+        time.textContent = 'Time: --';
+        memory.textContent = 'Memory: --';
+
+        const body = new FormData();
+
+        body.append('language', lang.value);
+        body.append('source_code', editor.value);
+        body.append('stdin', stdin.value);
+
+        if(csrf){
+            body.append('csrfmiddlewaretoken', csrf.value);
+        }
+
+        try{
+
+            const response = await fetch(
+                '{% url "run_student_code" %}',
+                {
+                    method: 'POST',
+                    body: body
+                }
+            );
+
+            const data = await response.json();
+
+            if(!data.ok){
+
+                throw new Error(
+                    data.error || 'Code execution failed.'
+                );
+            }
+
+            out.textContent = displayResult(data);
+
+            status.textContent = data.status || 'Finished';
+
+            time.textContent =
+                'Time: ' + (data.time || '--')
+                + (data.time ? ' s' : '');
+
+            memory.textContent =
+                'Memory: ' + (data.memory || '--')
+                + (data.memory ? ' KB' : '');
+
+        } catch(err){
+
+            out.textContent = err.message;
+            status.textContent = 'Error';
+
+        } finally{
+
+            run.disabled = false;
+            run.textContent = '▶ Run Code';
+
+            if(autoCollected){
+
+                stdin.value = '';
+                autoCollected = false;
+            }
+
+            pendingPrompts = [];
+            collected = [];
+        }
+    }
+
+
+    run.addEventListener('click', function(){
+
+        if(!editor.value.trim()){
+
+            out.textContent = 'Please write some code first.';
+            status.textContent = 'Validation';
+
+            return;
+        }
+
+        hideInput();
+
+        autoCollected = false;
+
+        const preloaded = stdin.value.trim();
+
+        const prompts = inputPrompts(
+            lang.value,
+            editor.value
+        );
+
+        if(prompts.length && !preloaded){
+
+            startInput(prompts);
+
+        } else {
+
+            executeCode();
+        }
+    });
+
+
+    lang.addEventListener('change', loadExample);
+
+    document.getElementById('exampleBtn')
+        .addEventListener('click', loadExample);
+
+
+    document.getElementById('clearBtn')
+        .addEventListener('click', () => {
+
+            editor.value = '';
+            stdin.value = '';
+
+            out.textContent =
+                'Editor cleared. Write code and click Run.';
+
+            status.textContent = 'Ready';
+
+            hideInput();
+            updateMeta();
+        });
+
+
+    editor.addEventListener('input', updateMeta);
+
+
+    editor.addEventListener('keydown', function(e){
+
+        if(e.key === 'Tab'){
+
+            e.preventDefault();
+
+            const a = this.selectionStart;
+            const b = this.selectionEnd;
+
+            this.value =
+                this.value.substring(0, a)
+                + '    '
+                + this.value.substring(b);
+
+            this.selectionStart = this.selectionEnd = a + 4;
+
+            updateMeta();
+        }
+
+        if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+
+            e.preventDefault();
+            run.click();
+        }
+    });
+
+
+    loadExample();
+
+})();
+</script>
+
+{% endblock %}

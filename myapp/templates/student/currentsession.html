@@ -1,0 +1,467 @@
+{% extends "student/base.html" %}
+
+{% block title %}Current Session | NOU e-Gyan{% endblock %}
+
+{% block page_title %}Current Session{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .session-page {
+        width: 100%;
+    }
+
+    /* HERO */
+
+    .session-hero {
+        background: #130e70;
+
+        border-radius: 10px;
+        padding: 26px 28px;
+        margin-bottom: 22px;
+
+        color: #fff;
+
+        box-shadow: none;
+
+        position: relative;
+        overflow: hidden;
+    }
+
+    .session-hero::after {
+        content: "";
+
+        position: absolute;
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.08);
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.12);
+
+        border: 1px solid rgba(255,255,255,.15);
+
+        font-size: 13px;
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+    .session-hero h1 {
+        margin: 0;
+
+        font-size: 24px;
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+    .session-hero p {
+        margin: 8px 0 15px;
+
+        color: rgba(255,255,255,.78);
+
+        font-size: 13px;
+    }
+
+    .session-tag {
+        display: inline-flex;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #130e70;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+
+    /* SESSION CARD */
+
+    .session-card {
+        background: #fff;
+
+        border: 1px solid #dddcec;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow: none;
+    }
+
+
+    /* CARD HEADER */
+
+    .session-card-head {
+        padding: 18px 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border-bottom: 1px solid #ededf3;
+    }
+
+    .session-card-title b {
+        display: block;
+
+        color: #1a1845;
+
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .session-card-title small {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #899a9e;
+
+        font-size: 13px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 6px 10px;
+
+        border-radius: 10px;
+
+        background: #e9f8ef;
+
+        color: #23824b;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        letter-spacing: 0;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+
+        margin-right: 5px;
+
+        border-radius: 50%;
+
+        background: #2eb86b;
+    }
+
+
+    /* SESSION DETAILS */
+
+    .session-details {
+        padding: 18px;
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 14px;
+    }
+
+    .context-card {
+        min-height: 90px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 16px;
+
+        border: 1px solid #e2e1ef;
+
+        border-radius: 10px;
+
+        background: #fbfbfe;
+
+        transition: .2s ease;
+    }
+
+    .context-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #c7e0e5;
+
+        box-shadow: none;
+    }
+
+    .context-icon {
+        width: 42px;
+        height: 42px;
+
+        flex: 0 0 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #e8e7f7;
+
+        color: #168ea6;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+    .context-card b {
+        display: block;
+
+        color: #2b294e;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .context-card small {
+        display: block;
+
+        margin-top: 5px;
+
+        color: #71888c;
+
+        font-size: 13px;
+    }
+
+
+    /* EMPTY */
+
+    .session-empty {
+        padding: 45px 20px;
+
+        text-align: center;
+
+        color: #8d9ea2;
+
+        font-size: 13px;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+        .session-details {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .session-hero {
+            padding: 22px;
+        }
+
+        .session-hero h1 {
+            font-size: 20px;
+        }
+
+        .session-card-head {
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .session-details {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="session-page">
+
+
+    <!-- HERO -->
+
+    <section class="session-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION {{ session.session_name }}
+            </span>
+
+        </div>
+
+
+        <h1>
+            Current Academic Session
+        </h1>
+
+
+        <p>
+            Your enrolled academic session information.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION {{ session.session_name }}
+        </span>
+
+    </section>
+
+
+
+    <!-- SESSION CARD -->
+
+    <section class="session-card">
+
+
+        <div class="session-card-head">
+
+            <div class="session-card-title">
+
+                <b>
+                    {{ session.session_name }}
+                </b>
+
+                <small>
+                    Your current academic session
+                </small>
+
+            </div>
+
+
+            <span class="status-badge">
+
+                <span class="status-dot"></span>
+
+                {{ session.status|upper }}
+
+            </span>
+
+        </div>
+
+
+
+        <div class="session-details">
+
+
+            <!-- START DATE -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    SD
+                </div>
+
+                <div>
+
+                    <b>
+                        Start Date
+                    </b>
+
+                    <small>
+                        {{ session.strt_date|date:"M. d, Y" }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- END DATE -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    ED
+                </div>
+
+                <div>
+
+                    <b>
+                        End Date
+                    </b>
+
+                    <small>
+                        {{ session.end_date|date:"M. d, Y" }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SEMESTER -->
+
+            <div class="context-card">
+
+                <div class="context-icon">
+                    SM
+                </div>
+
+                <div>
+
+                    <b>
+                        Semester
+                    </b>
+
+                    <small>
+                        Semester {{ student.sem }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

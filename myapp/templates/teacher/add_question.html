@@ -1,0 +1,1024 @@
+{% extends 'teacher/base.html' %}
+
+{% block title %}
+Add Single Question | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Add Single Question
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+.question-page{
+    max-width:1200px;
+    margin:0 auto;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.question-hero{
+    position:relative;
+    padding:32px 35px;
+    margin-bottom:25px;
+    border-radius:10px;
+    overflow:hidden;
+    color:white;
+
+    background:#661620;
+
+    box-shadow:none;
+}
+
+.question-hero::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    right:-100px;
+    top:-140px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.question-hero::after{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    right:70px;
+    bottom:-120px;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+}
+
+.question-eyebrow{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.question-eyebrow span{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 11px;
+    border-radius:10px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.16);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+.question-hero h1{
+    position:relative;
+    z-index:2;
+    margin:0;
+    font-size:28px;
+    line-height:1.3;
+    font-weight:600;
+}
+
+.question-hero p{
+    position:relative;
+    z-index:2;
+    margin-top:7px;
+    color:rgba(255,255,255,.78);
+    font-size:13px;
+}
+
+.question-tag{
+    position:absolute;
+    right:35px;
+    bottom:30px;
+    z-index:2;
+    padding:8px 14px;
+    border-radius:10px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.14);
+    color:#f5d1ad;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+
+/* =========================================
+   MAIN TWO COLUMN
+========================================= */
+
+.question-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+    gap:24px;
+    align-items:start;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.question-card,
+.questions-list-card{
+    width:100%;
+    box-sizing:border-box;
+    background:#fff;
+    border:1px solid #ece4df;
+    border-radius:10px;
+    padding:28px;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.question-card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding-bottom:20px;
+    border-bottom:1px solid #eee7e2;
+    margin-bottom:22px;
+}
+
+.question-card-title{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.question-card-icon{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#fff1e9;
+    color:#963029;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+.question-card-title h2{
+    margin:0;
+    color:#321b1b;
+    font-size:18px;
+    font-weight:600;
+}
+
+.question-card-title p{
+    margin-top:3px;
+    color:#9b928d;
+    font-size:13px;
+}
+
+.question-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 14px;
+    border-radius:10px;
+    background:#fff7ef;
+    border:1px solid #f0ddd0;
+    color:#a14a26;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.question-grid{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:23px 24px;
+}
+
+.question-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.question-field.full{
+    grid-column:1 / -1;
+}
+
+.question-field label{
+    margin-bottom:8px;
+    color:#332727;
+    font-size:13px;
+    font-weight:600;
+}
+
+.question-field label span{
+    color:#b5322a;
+}
+
+.question-field input,
+.question-field select,
+.question-field textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #e6ddd7;
+    border-radius:6px;
+    outline:none;
+    background:#fffdfb;
+    color:#403837;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    transition:.2s;
+}
+
+.question-field input,
+.question-field select{
+    height:48px;
+    padding:0 14px;
+}
+
+.question-field textarea{
+    min-height:120px;
+    padding:13px 14px;
+    resize:vertical;
+}
+
+.question-field input:focus,
+.question-field select:focus,
+.question-field textarea:focus{
+    background:#fff;
+    border-color:#963029;
+
+    box-shadow:
+        0 0 0 3px rgba(150,48,41,.07);
+}
+
+
+/* =========================================
+   FORM ACTION
+========================================= */
+
+.question-actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:30px;
+    padding-top:23px;
+    border-top:1px solid #eee7e2;
+}
+
+.question-note{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#968c87;
+    font-size:13px;
+}
+
+.question-note i{
+    color:#9b3028;
+}
+
+.question-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.question-btn{
+    height:42px;
+    padding:0 17px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:none;
+    border-radius:6px;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.question-btn-primary{
+    background:#81221f;
+
+    color:white;
+
+    box-shadow:
+        none;
+}
+
+.question-btn-secondary{
+    background:#f7f0ec;
+    color:#7c241f;
+}
+
+.question-btn:hover{
+    transform:translateY(-2px);
+}
+
+
+/* =========================================
+   RIGHT QUESTION LIST
+========================================= */
+
+.questions-list-card{
+    position:sticky;
+    top:20px;
+}
+
+.questions-list-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:20px;
+    border-bottom:1px solid #eee7e2;
+    margin-bottom:18px;
+}
+
+.questions-list-title{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.questions-list-icon{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#f1f7f7;
+    color:#176b78;
+    font-size:16px;
+}
+
+.questions-list-title h2{
+    margin:0;
+    color:#321b1b;
+    font-size:18px;
+    font-weight:600;
+}
+
+.questions-list-title p{
+    margin-top:3px;
+    color:#9b928d;
+    font-size:13px;
+}
+
+.question-count{
+    min-width:28px;
+    height:28px;
+    padding:0 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:#fff1e9;
+    color:#963029;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* =========================================
+   QUESTION ITEM
+========================================= */
+
+.question-items{
+    max-height:570px;
+    overflow-y:auto;
+    padding-right:4px;
+}
+
+.question-items::-webkit-scrollbar{
+    width:5px;
+}
+
+.question-items::-webkit-scrollbar-track{
+    background:#f7f2ef;
+    border-radius:8px;
+}
+
+.question-items::-webkit-scrollbar-thumb{
+    background:#d9c5bd;
+    border-radius:8px;
+}
+
+.question-item{
+    padding:16px;
+    margin-bottom:12px;
+    border:1px solid #eee5df;
+    border-radius:8px;
+    background:#fffdfb;
+    transition:.2s;
+}
+
+.question-item:hover{
+    border-color:#d9bbb4;
+    box-shadow:none;
+}
+
+.question-item:last-child{
+    margin-bottom:0;
+}
+
+.question-number{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:9px;
+}
+
+.question-no{
+    font-size:13px;
+    font-weight:600;
+    color:#963029;
+    letter-spacing: 0;
+}
+
+.question-marks{
+    padding:4px 8px;
+    border-radius:10px;
+    background:#f7f0ec;
+    color:#7c241f;
+    font-size:13px;
+    font-weight:600;
+}
+
+.question-text{
+    color:#352d2a;
+    font-size:13px;
+    line-height:1.6;
+    font-weight:600;
+    margin-bottom:12px;
+}
+
+.question-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
+
+.question-option{
+    padding:7px 9px;
+    border-radius:6px;
+    border:1px solid #eee5df;
+    background:#fff;
+    color:#716660;
+    font-size:13px;
+}
+
+.question-option.correct{
+    background:#eef8f1;
+    border-color:#cce6d3;
+    color:#287541;
+    font-weight:600;
+}
+
+.question-option b{
+    margin-right:4px;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty-questions{
+    padding:45px 15px;
+    text-align:center;
+}
+
+.empty-question-icon{
+    width:50px;
+    height:50px;
+    margin:0 auto 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#f8eceb;
+    color:#81221f;
+    font-size:18px;
+}
+
+.empty-questions h3{
+    margin:0;
+    color:#3a302c;
+    font-size:13px;
+    font-weight:600;
+}
+
+.empty-questions p{
+    margin:5px 0 0;
+    color:#91847e;
+    font-size:13px;
+    line-height:1.6;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:900px){
+
+    .question-layout{
+        grid-template-columns:1fr;
+    }
+
+    .questions-list-card{
+        position:static;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .question-hero{
+        padding:25px 22px;
+    }
+
+    .question-hero h1{
+        font-size:24px;
+    }
+
+    .question-tag{
+        position:static;
+        display:inline-flex;
+        margin-top:18px;
+    }
+
+    .question-card,
+    .questions-list-card{
+        padding:20px;
+    }
+
+    .question-card-head,
+    .questions-list-head{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .question-grid{
+        grid-template-columns:1fr;
+    }
+
+    .question-field.full{
+        grid-column:auto;
+    }
+
+    .question-actions{
+        align-items:stretch;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .question-buttons{
+        flex-direction:column;
+    }
+
+    .question-btn{
+        width:100%;
+    }
+
+    .question-options{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="question-page">
+
+
+    <!-- =====================================
+         HERO
+    ====================================== -->
+
+    <section class="question-hero">
+
+        <div class="question-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                QUESTION BANK
+            </span>
+
+        </div>
+
+        <h1>
+            Add Single Question
+        </h1>
+
+        <p>
+            Add a new MCQ question manually for the selected online test.
+        </p>
+
+        <span class="question-tag">
+            SINGLE QUESTION
+        </span>
+
+    </section>
+
+
+
+    <!-- =====================================
+         TWO COLUMN CONTENT
+    ====================================== -->
+
+    <div class="question-layout">
+
+
+        <!-- =================================
+             LEFT : ADD QUESTION FORM
+        ================================== -->
+
+        <section class="question-card">
+
+            <div class="question-card-head">
+
+                <div class="question-card-title">
+
+                    <div class="question-card-icon">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Question Information
+                        </h2>
+
+                        <p>
+                            Enter the question and answer details below.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="question-label">
+                    MCQ SETUP
+                </span>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="question-grid">
+
+
+                    <!-- QUESTION -->
+
+                    <div class="question-field full">
+
+                        <label for="question">
+                            Question <span>*</span>
+                        </label>
+
+                        <textarea
+                            id="question"
+                            name="question"
+                            placeholder="Enter question here..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- OPTION A -->
+
+                    <div class="question-field">
+
+                        <label for="option_a">
+                            Option A <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="option_a"
+                            name="option_a"
+                            placeholder="Enter option A"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- OPTION B -->
+
+                    <div class="question-field">
+
+                        <label for="option_b">
+                            Option B <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="option_b"
+                            name="option_b"
+                            placeholder="Enter option B"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- OPTION C -->
+
+                    <div class="question-field">
+
+                        <label for="option_c">
+                            Option C <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="option_c"
+                            name="option_c"
+                            placeholder="Enter option C"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- OPTION D -->
+
+                    <div class="question-field">
+
+                        <label for="option_d">
+                            Option D <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="option_d"
+                            name="option_d"
+                            placeholder="Enter option D"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CORRECT OPTION -->
+
+                    <div class="question-field">
+
+                        <label for="correct_option">
+                            Correct Option <span>*</span>
+                        </label>
+
+                        <select
+                            id="correct_option"
+                            name="correct_option"
+                            required
+                        >
+
+                            <option value="">
+                                Select correct option
+                            </option>
+
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MARKS -->
+
+                    <div class="question-field">
+
+                        <label for="marks">
+                            Marks <span>*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="marks"
+                            name="marks"
+                            value="1"
+                            min="1"
+                            placeholder="Enter marks"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ACTION -->
+
+                <div class="question-actions">
+
+                    <div class="question-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        All marked fields are required.
+
+                    </div>
+
+
+                    <div class="question-buttons">
+
+                        
+
+                        <button
+                            type="submit"
+                            class="question-btn question-btn-primary"
+                        >
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Add Question
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================
+             RIGHT : QUESTIONS LIST
+        ================================== -->
+
+        <section class="questions-list-card">
+
+
+            <div class="questions-list-head">
+
+                <div class="questions-list-title">
+
+                    <div class="questions-list-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Questions Added
+                        </h2>
+
+                        <p>
+                            Questions already added to this test.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question-count">
+                    {{ questions|length }}
+                </div>
+
+            </div>
+
+
+
+            {% if questions %}
+
+            <div class="question-items">
+
+                {% for q in questions %}
+
+                <div class="question-item">
+
+
+                    <div class="question-number">
+
+                        <span class="question-no">
+                            QUESTION {{ forloop.counter }}
+                        </span>
+
+                        <span class="question-marks">
+                            {{ q.marks }} Mark{% if q.marks != 1 %}s{% endif %}
+                        </span>
+
+                    </div>
+
+
+                    <div class="question-text">
+                        {{ q.question }}
+                    </div>
+
+
+                    <div class="question-options">
+
+
+                        <div class="question-option {% if q.correct_option == 'A' %}correct{% endif %}">
+                            <b>A.</b> {{ q.option_a }}
+                        </div>
+
+
+                        <div class="question-option {% if q.correct_option == 'B' %}correct{% endif %}">
+                            <b>B.</b> {{ q.option_b }}
+                        </div>
+
+
+                        <div class="question-option {% if q.correct_option == 'C' %}correct{% endif %}">
+                            <b>C.</b> {{ q.option_c }}
+                        </div>
+
+
+                        <div class="question-option {% if q.correct_option == 'D' %}correct{% endif %}">
+                            <b>D.</b> {{ q.option_d }}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+
+            <div class="empty-questions">
+
+                <div class="empty-question-icon">
+                    <i class="fa-solid fa-circle-question"></i>
+                </div>
+
+                <h3>
+                    No Questions Added
+                </h3>
+
+                <p>
+                    Add your first MCQ using the form on the left.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

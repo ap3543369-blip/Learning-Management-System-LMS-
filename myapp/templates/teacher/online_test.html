@@ -1,0 +1,565 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}
+Add Online Test | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Add Online Test
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+.test-page{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    font-family:"Poppins",sans-serif;
+}
+
+
+/* ===============================
+   HERO
+================================ */
+
+.test-hero{
+    position:relative;
+    overflow:hidden;
+    padding:28px 30px;
+    margin-bottom:22px;
+    border-radius:10px;
+
+    background:
+        #64151f;
+
+    color:#fff;
+    box-shadow:
+        none;
+}
+
+.test-hero::after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    right:-70px;
+    bottom:-100px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:50%;
+}
+
+.test-eyebrow{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.test-eyebrow span{
+    display:inline-flex;
+    padding:6px 10px;
+    border-radius:10px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+.test-hero h1{
+    margin:0;
+    font-size:24px;
+    font-weight:600;
+}
+
+.test-hero p{
+    margin:8px 0 0;
+    color:rgba(255,255,255,.75);
+    font-size:13px;
+    line-height:1.6;
+}
+
+
+/* ===============================
+   FORM CARD
+================================ */
+
+.test-card{
+    background:#fff;
+    border:1px solid #eee5df;
+    border-radius:10px;
+    padding:24px;
+
+    box-shadow:
+        none;
+}
+
+.test-card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:22px;
+    padding-bottom:15px;
+    border-bottom:1px solid #eee7e2;
+}
+
+.test-card-head h2{
+    margin:0;
+    color:#351d1d;
+    font-size:16px;
+    font-weight:600;
+}
+
+.test-card-head p{
+    margin:5px 0 0;
+    color:#968c87;
+    font-size:13px;
+}
+
+.test-status{
+    padding:6px 10px;
+    border-radius:10px;
+    background:#f7f0ec;
+    color:#7c241f;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+/* ===============================
+   FORM GRID
+================================ */
+
+.test-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.test-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.test-field.full{
+    grid-column:1/-1;
+}
+
+.test-field label{
+    margin-bottom:7px;
+    color:#493330;
+    font-size:16px;
+    font-weight:600;
+}
+
+.test-field input,
+.test-field select,
+.test-field textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #e4dcd7;
+    border-radius:6px;
+    background:#fff;
+    color:#332624;
+    padding:11px 12px;
+    outline:none;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    transition:.2s ease;
+}
+
+.test-field input,
+.test-field select{
+    height:42px;
+}
+
+.test-field textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.test-field input:focus,
+.test-field select:focus,
+.test-field textarea:focus{
+    border-color:#9a4935;
+    box-shadow:0 0 0 3px rgba(154,73,53,.08);
+}
+
+.test-field input::placeholder,
+.test-field textarea::placeholder{
+    color:#aaa09b;
+}
+
+
+/* ===============================
+   BUTTON
+================================ */
+
+.test-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid #eee7e2;
+}
+
+.test-btn{
+    border:none;
+    border-radius:6px;
+    padding:11px 20px;
+    background:
+        #741b25;
+    color:#fff;
+    font-family:"Poppins",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:none;
+    transition:.2s ease;
+}
+
+.test-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:none;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media(max-width:700px){
+
+    .test-form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .test-field.full{
+        grid-column:auto;
+    }
+
+    .test-card{
+        padding:18px;
+    }
+
+    .test-hero{
+        padding:22px;
+    }
+
+    .test-hero h1{
+        font-size:20px;
+    }
+
+    .test-card-head{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="test-page">
+
+
+    <!-- ===============================
+         HERO
+    ================================ -->
+
+    <section class="test-hero">
+
+        <div class="test-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+        <h1>
+            Create Online Test
+        </h1>
+
+        <p>
+            Create an MCQ test, configure its schedule,
+            marks and instructions, then add questions
+            using the question bank.
+        </p>
+
+    </section>
+
+
+
+    <!-- ===============================
+         FORM
+    ================================ -->
+
+    <section class="test-card">
+
+
+        <div class="test-card-head">
+
+            <div>
+
+                <h2>
+                    Test Information
+                </h2>
+
+                <p>
+                    Enter the details required to create
+                    the online assessment.
+                </p>
+
+            </div>
+
+            <span class="test-status">
+                NEW TEST
+            </span>
+
+        </div>
+
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="test-form-grid">
+
+
+                <!-- TEST TITLE -->
+
+                <div class="test-field">
+
+                    <label>
+                        Test Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter test title"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- TEST DATE -->
+
+                <div class="test-field">
+
+                    <label>
+                        Test Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="test_date"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- COURSE -->
+
+                <div class="test-field">
+
+                    <label>
+                        Course
+                    </label>
+
+                    <select name="course" required>
+
+                        <option value="">
+                            -- Select Course --
+                        </option>
+
+                        {% for i in courses %}
+
+                        <option value="{{ i.course_name }}">
+                            {{ i.course_code }} - {{ i.course_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- SUBJECT -->
+
+                <div class="test-field">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <select name="subject" required>
+
+                        <option value="">
+                            -- Select Subject --
+                        </option>
+
+                        {% for i in subjects %}
+
+                        <option value="{{ i.subject_name }}">
+                            {{ i.subject_code }} - {{ i.subject_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- START TIME -->
+
+                <div class="test-field">
+
+                    <label>
+                        Start Time
+                    </label>
+
+                    <input
+                        type="time"
+                        name="start_time"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DURATION -->
+
+                <div class="test-field">
+
+                    <label>
+                        Duration (Minutes)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="duration_minutes"
+                        value="30"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- TOTAL MARKS -->
+
+                <div class="test-field">
+
+                    <label>
+                        Total Marks
+                    </label>
+
+                    <input
+                        type="number"
+                        name="total_marks"
+                        value="20"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="test-field">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select name="status">
+
+                        <option value="Published">
+                            Published
+                        </option>
+
+                        <option value="Draft">
+                            Draft
+                        </option>
+
+                        <option value="Closed">
+                            Closed
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- INSTRUCTIONS -->
+
+                <div class="test-field full">
+
+                    <label>
+                        Instructions
+                    </label>
+
+                    <textarea
+                        name="instructions"
+                        placeholder="Enter instructions for students..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACTION -->
+
+            <div class="test-actions">
+
+                <button
+                    type="submit"
+                    class="test-btn"
+                >
+                    Create Test
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

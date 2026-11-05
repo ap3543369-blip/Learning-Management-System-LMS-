@@ -1,0 +1,1103 @@
+{% extends 'teacher/base.html' %}
+
+{% block title %}
+Teacher Dashboard | NOU e-Gyan
+{% endblock %}
+
+{% block page_title %}
+Teacher Dashboard
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   TEACHER DASHBOARD
+========================================================= */
+
+.erp-dashboard{
+    width:100%;
+    max-width:1250px;
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   SUMMARY HERO
+========================================================= */
+
+.erp-summary{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    margin-bottom:20px;
+    overflow:hidden;
+    border-radius:10px;
+
+    background:
+        #64151f;
+
+    box-shadow:
+        none;
+}
+
+
+.erp-summary-item{
+    min-height:135px;
+    padding:22px 23px;
+    position:relative;
+    border-right:1px solid rgba(255,255,255,.13);
+    overflow:hidden;
+}
+
+
+.erp-summary-item:last-child{
+    border-right:none;
+}
+
+
+.erp-summary-item::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    right:-55px;
+    bottom:-65px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+
+.erp-summary-label{
+    display:block;
+    color:#f7dfc5;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+
+.erp-summary-value{
+    display:block;
+    color:white;
+    font-size:32px;
+    font-weight:600;
+    line-height:1;
+    margin-bottom:9px;
+}
+
+
+.erp-summary-note{
+    display:block;
+    color:rgba(255,255,255,.70);
+    font-size:13px;
+    line-height:1.5;
+}
+
+
+.erp-summary-note::before{
+    content:"▲";
+    color:#f2bd76;
+    font-size:13px;
+    margin-right:6px;
+}
+
+
+/* =========================================================
+   METRIC CARDS
+========================================================= */
+
+.erp-card-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:21px;
+}
+
+
+.erp-card{
+    min-height:143px;
+    position:relative;
+    overflow:hidden;
+    background:white;
+    border:1px solid #eee5df;
+    border-radius:10px;
+    padding:18px;
+
+    box-shadow:
+        none;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.erp-card:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+        none;
+}
+
+
+.erp-card::after{
+    content:"";
+    position:absolute;
+    width:90px;
+    height:90px;
+    right:-35px;
+    bottom:-45px;
+    border-radius:50%;
+
+    background:
+        rgba(117,27,37,.04);
+}
+
+
+.erp-card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+
+.erp-card-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+
+    background:
+        #741b25;
+
+    color:white;
+    font-size:13px;
+    font-weight:600;
+
+    box-shadow:
+        none;
+}
+
+
+.erp-card-badge{
+    padding:5px 8px;
+    border-radius:10px;
+    background:#f7f0ec;
+    color:#7c241f;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+
+.erp-card-value{
+    color:#351d1d;
+    font-size:28px;
+    font-weight:600;
+    line-height:1;
+}
+
+
+.erp-card-label{
+    margin-top:7px;
+    color:#746c68;
+    font-size:13px;
+    font-weight:500;
+}
+
+
+/* =========================================================
+   SECTION BLOCK
+========================================================= */
+
+.erp-section-block{
+    background:white;
+    border:1px solid #eee5df;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+
+    box-shadow:
+        none;
+}
+
+
+.erp-section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+
+.erp-section-head h2{
+    margin:0;
+    color:#351d1d;
+    font-size:16px;
+    font-weight:600;
+}
+
+
+.erp-section-head p{
+    margin:3px 0 0;
+    color:#978d88;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.erp-shortcuts{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+
+.erp-shortcut{
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 12px;
+
+    border:1px solid #eee5df;
+    border-radius:8px;
+    background:#fffdfb;
+
+    transition:
+        background .2s ease,
+        border .2s ease,
+        transform .2s ease;
+
+    text-decoration:none;
+}
+
+
+.erp-shortcut:hover{
+    background:#fff8f3;
+    border-color:#e6cfc2;
+    transform:translateY(-2px);
+}
+
+
+.erp-shortcut-icon{
+    width:36px;
+    height:36px;
+    min-width:36px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:6px;
+    background:#f7efeb;
+    color:#7c241f;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+.erp-shortcut-copy{
+    flex:1;
+    min-width:0;
+}
+
+
+.erp-shortcut-copy b{
+    display:block;
+    color:#3b2422;
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+
+.erp-shortcut-copy small{
+    display:block;
+    margin-top:4px;
+    color:#998f8a;
+    font-size:13px;
+    line-height:1.4;
+}
+
+
+.erp-arrow{
+    color:#9b4a39;
+    font-size:14px;
+    transition:.2s ease;
+}
+
+
+.erp-shortcut:hover .erp-arrow{
+    transform:translateX(3px);
+    color:#741b25;
+}
+
+
+/* =========================================================
+   TWO COLUMN PANELS
+========================================================= */
+
+.erp-two-col{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:18px;
+}
+
+
+.erp-panel{
+    min-height:220px;
+    background:white;
+    border:1px solid #eee5df;
+    border-radius:10px;
+    overflow:hidden;
+
+    box-shadow:
+        none;
+}
+
+
+.erp-panel-head{
+    min-height:66px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px 18px;
+    border-bottom:1px solid #eee7e2;
+}
+
+
+.erp-panel-title b{
+    display:block;
+    color:#351d1d;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+.erp-panel-title small{
+    display:block;
+    margin-top:4px;
+    color:#998f8a;
+    font-size:13px;
+}
+
+
+.erp-panel-tag{
+    padding:5px 8px;
+    border-radius:10px;
+    background:#f7f0ec;
+    color:#7c241f;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing: 0;
+}
+
+
+.erp-list{
+    padding:17px;
+}
+
+
+/* =========================================================
+   DYNAMIC ITEM
+========================================================= */
+
+.erp-item{
+    padding:12px 0;
+    border-bottom:1px solid #f1ebe7;
+}
+
+
+.erp-item:last-child{
+    border-bottom:none;
+}
+
+
+.erp-item-title{
+    display:block;
+    color:#3b2422;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+
+.erp-item-info{
+    display:block;
+    color:#8f8580;
+    font-size:13px;
+    line-height:1.6;
+}
+
+
+.erp-item-date{
+    display:inline-block;
+    margin-top:5px;
+    color:#9a4b3a;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+.erp-priority{
+    display:inline-block;
+    margin-left:5px;
+    padding:3px 6px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+}
+
+
+.priority-normal{
+    background:#f1f5f9;
+    color:#64748b;
+}
+
+
+.priority-important{
+    background:#fff7ed;
+    color:#c2410c;
+}
+
+
+.priority-urgent{
+    background:#fef2f2;
+    color:#dc2626;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.erp-empty{
+    min-height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    border:1px dashed #e3d8d1;
+    border-radius:6px;
+    background:#fdfbf9;
+    color:#a29893;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .erp-summary,
+    .erp-card-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .erp-shortcuts{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .erp-two-col{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .erp-summary,
+    .erp-card-grid,
+    .erp-shortcuts{
+        grid-template-columns:1fr;
+    }
+
+    .erp-summary-item{
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.12);
+    }
+
+    .erp-summary-item:last-child{
+        border-bottom:none;
+    }
+
+    .erp-summary{
+        border-radius:8px;
+    }
+
+    .erp-section-block{
+        padding:16px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="erp-dashboard">
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="erp-summary">
+
+
+        <!-- MY COURSES -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                My Courses
+            </span>
+
+            <b class="erp-summary-value">
+                {{ total_courses }}
+            </b>
+
+            <span class="erp-summary-note">
+                Assigned active courses
+            </span>
+
+        </div>
+
+
+        <!-- MY SUBJECTS -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                My Subjects
+            </span>
+
+            <b class="erp-summary-value">
+                {{ total_subjects }}
+            </b>
+
+            <span class="erp-summary-note">
+                Teaching responsibilities
+            </span>
+
+        </div>
+
+
+        <!-- ASSIGNMENTS -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Assignments
+            </span>
+
+            <b class="erp-summary-value">
+                {{ total_assignments|default:"0" }}
+            </b>
+
+            <span class="erp-summary-note">
+                Created academic tasks
+            </span>
+
+        </div>
+
+
+        <!-- ONLINE CLASSES -->
+
+        <div class="erp-summary-item">
+
+            <span class="erp-summary-label">
+                Online Classes
+            </span>
+
+            <b class="erp-summary-value">
+                {{ online_classes }}
+            </b>
+
+            <span class="erp-summary-note">
+                Upcoming Google Meet classes
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         METRIC CARDS
+    ====================================================== -->
+
+    <section class="erp-card-grid">
+
+
+        <!-- SUBMISSIONS -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    ✓
+                </span>
+
+                <span class="erp-card-badge">
+                    REVIEW
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_submissions|default:"0" }}
+            </div>
+
+            <div class="erp-card-label">
+                Submissions to Review
+            </div>
+
+        </article>
+
+
+        <!-- STUDENTS -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    S
+                </span>
+
+                <span class="erp-card-badge">
+                    LEARNERS
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_students }}
+            </div>
+
+            <div class="erp-card-label">
+                Students in My Courses
+            </div>
+
+        </article>
+
+
+        <!-- MATERIAL -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    M
+                </span>
+
+                <span class="erp-card-badge">
+                    CONTENT
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_materials }}
+            </div>
+
+            <div class="erp-card-label">
+                Study Materials
+            </div>
+
+        </article>
+
+
+        <!-- TESTS -->
+
+        <article class="erp-card">
+
+            <div class="erp-card-top">
+
+                <span class="erp-card-icon">
+                    Q
+                </span>
+
+                <span class="erp-card-badge">
+                    TESTS
+                </span>
+
+            </div>
+
+            <div class="erp-card-value">
+                {{ total_tests|default:"0" }}
+            </div>
+
+            <div class="erp-card-label">
+                Online Tests
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+    ====================================================== -->
+
+    <section class="erp-section-block">
+
+
+        <div class="erp-section-head">
+
+            <div>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p>
+                    Teaching and assessment shortcuts
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="erp-shortcuts">
+
+
+            <!-- ATTENDANCE -->
+
+            <a
+                href="{% url 'tattendance' %}"
+                class="erp-shortcut"
+            >
+
+                <span class="erp-shortcut-icon">
+                    ✓
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Mark Attendance
+                    </b>
+
+                    <small>
+                        Record daily attendance for your class.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- GOOGLE MEET -->
+
+            <a
+                href="{% url 'schedule_meeting' %}"
+                class="erp-shortcut"
+            >
+
+                <span class="erp-shortcut-icon">
+                    ▶
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Schedule Google Meet
+                    </b>
+
+                    <small>
+                        Create the next online class.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- STUDY MATERIAL -->
+
+            <a
+                href="{% url 'tuploadsm' %}"
+                class="erp-shortcut"
+            >
+
+                <span class="erp-shortcut-icon">
+                    M
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        Upload Material
+                    </b>
+
+                    <small>
+                        Upload notes and learning resources.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- VIEW MATERIAL -->
+
+            <a
+                href="{% url 'tviewsm' %}"
+                class="erp-shortcut"
+            >
+
+                <span class="erp-shortcut-icon">
+                    R
+                </span>
+
+                <span class="erp-shortcut-copy">
+
+                    <b>
+                        My Study Materials
+                    </b>
+
+                    <small>
+                        View your uploaded learning content.
+                    </small>
+
+                </span>
+
+                <span class="erp-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPCOMING + ANNOUNCEMENTS
+    ====================================================== -->
+
+    <section class="erp-two-col">
+
+
+        <!-- =================================================
+             UPCOMING CLASSES
+        ================================================== -->
+
+        <article class="erp-panel">
+
+
+            <div class="erp-panel-head">
+
+                <div class="erp-panel-title">
+
+                    <b>
+                        Upcoming Classes
+                    </b>
+
+                    <small>
+                        Your teaching schedule
+                    </small>
+
+                </div>
+
+                <span class="erp-panel-tag">
+                    MY SCHEDULE
+                </span>
+
+            </div>
+
+
+            <div class="erp-list">
+
+
+                {% for meeting in upcoming_classes %}
+
+                <div class="erp-item">
+
+                    <span class="erp-item-title">
+                        {{ meeting.class_title }}
+                    </span>
+
+                    <span class="erp-item-info">
+
+                        {{ meeting.course }}
+                        /
+                        {{ meeting.subject }}
+
+                        <br>
+
+                        {% if meeting.teacher.get_full_name %}
+                            {{ meeting.teacher.get_full_name }}
+                        {% else %}
+                            {{ meeting.teacher.username }}
+                        {% endif %}
+
+                    </span>
+
+                    <span class="erp-item-date">
+
+                        {{ meeting.class_date|date:"d M Y" }}
+
+                        •
+                        
+                        {{ meeting.class_time|time:"h:i A" }}
+
+                        •
+
+                        {{ meeting.duration }} min
+
+                    </span>
+
+                </div>
+
+
+                {% empty %}
+
+                <div class="erp-empty">
+                    No upcoming classes scheduled.
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             ANNOUNCEMENTS
+        ================================================== -->
+
+        <article class="erp-panel">
+
+
+            <div class="erp-panel-head">
+
+                <div class="erp-panel-title">
+
+                    <b>
+                        Announcements
+                    </b>
+
+                    <small>
+                        Recent notices for faculty
+                    </small>
+
+                </div>
+
+                <span class="erp-panel-tag">
+                    LATEST
+                </span>
+
+            </div>
+
+
+            <div class="erp-list">
+
+
+                {% for announcement in announcements %}
+
+                <div class="erp-item">
+
+                    <span class="erp-item-title">
+                        {{ announcement.title }}
+                    </span>
+
+                    <span class="erp-item-info">
+
+                        {{ announcement.message|truncatechars:120 }}
+
+                    </span>
+
+                    <span class="erp-item-date">
+
+                        {{ announcement.publish_date|date:"d M Y" }}
+
+                        <span
+                            class="erp-priority
+                            {% if announcement.priority == 'Urgent' %}
+                                priority-urgent
+                            {% elif announcement.priority == 'Important' %}
+                                priority-important
+                            {% else %}
+                                priority-normal
+                            {% endif %}"
+                        >
+
+                            {{ announcement.priority }}
+
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                {% empty %}
+
+                <div class="erp-empty">
+                    No announcements available.
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

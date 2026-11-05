@@ -1,0 +1,1050 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}View Teachers | NOU e-Gyan{% endblock %}
+
+{% block page_title %}View Teachers{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   TEACHER PAGE
+========================================================= */
+
+.teacher-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.teacher-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.teacher-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -190px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 50%;
+
+    box-shadow:
+        none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.hero-eyebrow span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+
+    white-space: nowrap;
+}
+
+.teacher-hero h1 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+.teacher-hero p {
+    margin: 8px 0 18px;
+
+    font-size: 13px;
+
+    opacity: .85;
+
+    position: relative;
+    z-index: 2;
+}
+
+.session-tag {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.14);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.teacher-section {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-head {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 0;
+}
+
+.section-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 16px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    color: #381b1b;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.section-title p {
+    margin: 4px 0 0;
+
+    color: #8b7772;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.add-btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #851f28;
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: .2s ease;
+}
+
+.add-btn:hover {
+    background: #6d1820;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.table-wrap {
+    width: 100%;
+
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.teacher-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    table-layout: auto;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.teacher-table th {
+    padding: 13px 10px;
+
+    text-align: left;
+
+    color: #806b66;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-transform: none;
+
+    letter-spacing: 0;
+
+    background: #faf7f5;
+
+    border-bottom: 1px solid #eee5e0;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.teacher-table td {
+    padding: 14px 10px;
+
+    color: #5c4945;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #f1eae6;
+
+    vertical-align: middle;
+}
+
+.teacher-table tbody tr {
+    transition: background .2s ease;
+}
+
+.teacher-table tbody tr:hover {
+    background: #fffaf8;
+}
+
+.teacher-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   COLUMN WIDTHS
+========================================================= */
+
+/* # */
+.teacher-table th:nth-child(1),
+.teacher-table td:nth-child(1) {
+    width: 45px;
+}
+
+/* Employee ID */
+.teacher-table th:nth-child(2),
+.teacher-table td:nth-child(2) {
+    width: 90px;
+}
+
+/* Teacher */
+.teacher-table th:nth-child(3),
+.teacher-table td:nth-child(3) {
+    width: 155px;
+}
+
+/* Email */
+.teacher-table th:nth-child(4),
+.teacher-table td:nth-child(4) {
+    width: 170px;
+}
+
+/* Mobile */
+.teacher-table th:nth-child(5),
+.teacher-table td:nth-child(5) {
+    width: 105px;
+}
+
+/* Department */
+.teacher-table th:nth-child(6),
+.teacher-table td:nth-child(6) {
+    width: 135px;
+}
+
+/* Designation */
+.teacher-table th:nth-child(7),
+.teacher-table td:nth-child(7) {
+    width: 145px;
+}
+
+/* Status */
+.teacher-table th:nth-child(8),
+.teacher-table td:nth-child(8) {
+    width: 90px;
+}
+
+/* Action */
+.teacher-table th:nth-child(9),
+.teacher-table td:nth-child(9) {
+    width: 145px;
+}
+
+
+/* =========================================================
+   NUMBER BADGE
+========================================================= */
+
+.number-badge {
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #f7eee9;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TEACHER NAME
+========================================================= */
+
+.teacher-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 0;
+}
+
+.teacher-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.teacher-name strong {
+    display: block;
+
+    color: #382020;
+
+    font-size: 13px;
+    font-weight: 600;
+    
+
+    white-space: normal;
+}
+
+.teacher-name small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   EMPLOYEE BADGE
+========================================================= */
+
+.employee-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #f5f0ed;
+
+    color: #6e252b;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMAIL
+========================================================= */
+
+.teacher-table td:nth-child(4) {
+    word-break: normal;
+    overflow-wrap: anywhere;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   MOBILE NUMBER
+========================================================= */
+
+.teacher-table td:nth-child(5) {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   DEPARTMENT / DESIGNATION
+========================================================= */
+
+.teacher-table td:nth-child(6),
+.teacher-table td:nth-child(7) {
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.status-active {
+    color: #24733d;
+    background: #edf8f0;
+}
+
+.status-active .status-dot {
+    background: #35a853;
+}
+
+.status-inactive {
+    color: #9a3e3e;
+    background: #fff0f0;
+}
+
+.status-inactive .status-dot {
+    background: #d95353;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+.action-btn {
+    height: 32px;
+
+    padding: 0 10px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: .2s ease;
+}
+
+.edit-btn {
+    color: #795b22;
+
+    background: #fff8e8;
+
+    border: 1px solid #f4e7ca;
+}
+
+.edit-btn:hover {
+    background: #fff0cc;
+}
+
+.delete-btn {
+    color: #a13c3c;
+
+    background: #fff0f0;
+
+    border: 1px solid #f2dcdc;
+}
+
+.delete-btn:hover {
+    background: #ffe1e1;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-box {
+    padding: 45px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f8eee9;
+
+    color: #a99690;
+
+    font-size: 20px;
+}
+
+.empty-box strong {
+    display: block;
+
+    color: #493532;
+
+    font-size: 13px;
+}
+
+.empty-box span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .teacher-section {
+        padding: 22px;
+    }
+
+    .teacher-table th,
+    .teacher-table td {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .teacher-table {
+        font-size: 13px;
+    }
+
+    .teacher-table td {
+        font-size: 13px;
+    }
+
+    .teacher-name strong {
+        font-size: 13px;
+    }
+
+    .teacher-table th {
+        font-size: 13px;
+    }
+
+    .action-btn {
+        padding: 0 8px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .teacher-page {
+        max-width: 100%;
+    }
+
+    .teacher-hero {
+        padding: 25px;
+    }
+
+    .teacher-hero h1 {
+        font-size: 24px;
+    }
+
+    .teacher-section {
+        padding: 18px;
+    }
+
+    .section-head {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREEN
+========================================================= */
+
+@media (max-width: 550px) {
+
+    .teacher-hero {
+        padding: 22px;
+    }
+
+    .teacher-hero h1 {
+        font-size: 20px;
+    }
+
+    .teacher-hero p {
+        font-size: 13px;
+    }
+
+    .hero-eyebrow {
+        flex-wrap: wrap;
+    }
+
+    .section-title {
+        align-items: flex-start;
+    }
+
+    .section-title h2 {
+        font-size: 16px;
+    }
+
+}
+
+</style>
+
+
+<div class="teacher-page">
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="teacher-hero">
+
+        <div class="hero-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>TEACHER MANAGEMENT</span>
+        </div>
+
+        <h1>Teachers & Faculty</h1>
+
+        <p>
+            Review and manage all teacher and faculty accounts.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-27
+        </span>
+
+    </section>
+
+
+    <!-- ================= TEACHER LIST ================= -->
+
+    <section class="teacher-section">
+
+        <div class="section-head">
+
+            <div class="section-title">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+
+                <div>
+
+                    <h2>Teacher List</h2>
+
+                    <p>
+                        View and manage all registered teachers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a href="{% url 'addteacher' %}" class="add-btn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Teacher
+
+            </a>
+
+        </div>
+
+
+        <!-- ================= TABLE ================= -->
+
+        <div class="table-wrap">
+
+            <table class="teacher-table">
+
+                <thead>
+
+                    <tr>
+
+                        
+
+                        <th>Employee ID</th>
+
+                        <th>Teacher</th>
+
+                        <th>Email</th>
+
+                        <th>Mobile</th>
+
+                        <th>Department</th>
+
+                        <th>Designation</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for teacher in teachers %}
+
+                    <tr>
+
+
+                        <!-- EMPLOYEE ID -->
+
+                        <td>
+
+                            <span class="employee-badge">
+                                {{ teacher.employee_id }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- TEACHER -->
+
+                        <td>
+
+                            <div class="teacher-name">
+
+
+                                <div>
+
+                                    <strong>
+                                        {{ teacher.name }}
+                                    </strong>
+
+
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+                            {{ teacher.email }}
+                        </td>
+
+
+                        <!-- MOBILE -->
+
+                        <td>
+                            {{ teacher.mobile }}
+                        </td>
+
+
+                        <!-- DEPARTMENT -->
+
+                        <td>
+                            {{ teacher.department }}
+                        </td>
+
+
+                        <!-- DESIGNATION -->
+
+                        <td>
+                            {{ teacher.designation }}
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if teacher.status == "Active" %}
+
+                            <span class="status status-active">
+
+                                <span class="status-dot"></span>
+
+                                Active
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="status status-inactive">
+
+                                <span class="status-dot"></span>
+
+                                Inactive
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <a href="{% url 'editteacher' teacher.employee_id %}" class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen"></i>
+
+                                    Edit
+
+                                </a>
+
+
+                                <a href="{% url 'deleteteacher' teacher.employee_id %}" class="action-btn delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this teacher?');">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                    Delete
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="9" style="text-align:center; padding:40px;">
+
+                            <i class="fa-solid fa-user-slash"
+                                style="font-size:24px; color:#b9aaa5; margin-bottom:10px;"></i>
+
+                            <div>
+                                No teachers available.
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

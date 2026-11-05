@@ -1,0 +1,80 @@
+{# Shared design layer: flat shell, one type scale (13/14/16/18/20/24, weights 400/500/600), same colour family per role. #}
+<style id="ds-layer">
+    :root {
+        {% if theme == "student" %}
+        --ds-primary: #130e70; --ds-dark: #0c085a; --ds-tint: #eeeef9; --ds-accent: #168ea6; --ds-bg: #f4f4fa;
+        {% else %}
+        --ds-primary: #741b25; --ds-dark: #4a0c13; --ds-tint: #f8eeee; --ds-accent: #f2c58f; --ds-bg: #f6f4f3;
+        {% endif %}
+        --ds-ink: #1f1b1b; --ds-body: #4a4340; --ds-muted: #6b6663; --ds-line: #e5e0dd; --ds-soft: #f6f2f0;
+    }
+
+    /* ---------- type scale ---------- */
+    body { background: var(--ds-bg) !important; color: var(--ds-ink); font-size: 14px; line-height: 1.5; }
+    h1, h2, h3, h4, h5, h6, b, strong, th { font-weight: 600; }
+    small { font-size: 13px; }
+
+    /* ---------- shell: light sidebar, flat top bar ---------- */
+    body .sidebar { background: #fff !important; color: var(--ds-ink) !important; border-right: 1px solid var(--ds-line); box-shadow: none !important; }
+    body .brand { background: transparent !important; border-bottom: 1px solid var(--ds-line) !important; min-height: 72px; height: 72px; padding: 0 20px; }
+    body .brand b, body .brand-text b { color: var(--ds-primary) !important; font-size: 16px !important; font-weight: 600 !important; }
+    body .brand small, body .brand-text small { color: var(--ds-muted) !important; font-size: 13px !important; font-weight: 400 !important; }
+    body .seal { background: var(--ds-primary) !important; color: #fff !important; width: 40px !important; height: 40px !important; min-width: 40px !important; border-radius: 8px !important; box-shadow: none !important; font-size: 14px !important; font-weight: 600 !important; }
+    body .role, body .role-badge { margin: 14px 16px 6px !important; padding: 7px 12px !important; background: var(--ds-tint) !important; color: var(--ds-primary) !important; border: 0 !important; border-radius: 6px !important; font-size: 13px !important; font-weight: 600 !important; }
+    body .group-title, body .nav-header { color: var(--ds-muted) !important; font-size: 13px !important; font-weight: 500 !important; padding: 14px 12px 4px !important; }
+    body .nav-link { min-height: 38px !important; padding: 8px 12px !important; border-radius: 6px !important; border-left: 0 !important; background: transparent !important; color: var(--ds-body) !important; font-size: 14px !important; font-weight: 500 !important; transform: none !important; box-shadow: none !important; }
+    body .nav-link i { color: var(--ds-muted) !important; width: 18px; text-align: center; font-size: 14px !important; }
+    body .nav-link:hover { background: var(--ds-soft) !important; color: var(--ds-primary) !important; }
+    body .nav-link:hover i { color: var(--ds-primary) !important; }
+    body .nav-link.active { background: var(--ds-tint) !important; color: var(--ds-primary) !important; font-weight: 600 !important; box-shadow: inset 3px 0 0 var(--ds-primary) !important; }
+    body .nav-link.active i { color: var(--ds-primary) !important; }
+
+    body .topbar { height: 64px !important; background: #fff !important; border-bottom: 1px solid var(--ds-line) !important; box-shadow: none !important; }
+    body .page-id b { font-size: 18px !important; font-weight: 600 !important; color: var(--ds-ink) !important; }
+    body .page-id small { font-size: 13px !important; font-weight: 400 !important; color: var(--ds-muted) !important; }
+    body .profile-pill { background: transparent !important; border: 0 !important; padding: 0 !important; border-radius: 0 !important; }
+    body .profile-avatar { background: var(--ds-primary) !important; color: #fff !important; border-radius: 50% !important; box-shadow: none !important; font-size: 14px !important; font-weight: 600 !important; }
+    body .profile-pill b, body .profile-info b, body .profile-name b { font-size: 14px !important; font-weight: 600 !important; color: var(--ds-ink) !important; }
+    body .profile-pill small, body .profile-info small, body .profile-name small { font-size: 13px !important; font-weight: 400 !important; color: var(--ds-muted) !important; }
+    body .logout-btn { background: #fff !important; border: 1px solid var(--ds-line) !important; color: #7f1d1d !important; border-radius: 6px !important; font-size: 13px !important; font-weight: 500 !important; box-shadow: none !important; }
+    body .logout-btn:hover { background: #fef2f2 !important; }
+    body .content { padding: 28px 32px; }
+    body .foot, body .footer { font-size: 13px !important; font-weight: 400 !important; color: var(--ds-muted) !important; background: transparent !important; border-top: 1px solid var(--ds-line); }
+
+    /* ---------- page headers ---------- */
+    body [class$="-hero"] { background: var(--ds-primary) !important; border-radius: 8px !important; box-shadow: none !important; padding: 22px 26px !important; min-height: 0 !important; margin-bottom: 20px; }
+    body [class$="-hero"]::before, body [class$="-hero"]::after { display: none !important; }
+    body .hero-eyebrow { display: none !important; }
+    body [class$="-hero"] h1 { font-size: 24px !important; font-weight: 600 !important; line-height: 1.3 !important; margin: 0 0 6px !important; }
+    body [class$="-hero"] p { font-size: 14px !important; font-weight: 400 !important; line-height: 1.55 !important; margin: 0; max-width: 72ch; }
+
+    /* ---------- cards ---------- */
+    body [class$="-card"], body .card { border-radius: 8px !important; box-shadow: none !important; }
+    body .form-card, body .card, body [class$="table-card"], body [class$="list-card"] { border: 1px solid var(--ds-line) !important; }
+    body .section-head h2, body .section-title, body .card-title, body [class$="-card-title"] { font-size: 18px !important; font-weight: 600 !important; }
+
+    /* ---------- tables ---------- */
+    body [class*="table-wrap"], body [class$="table-card"] { border: 1px solid var(--ds-line) !important; border-radius: 8px !important; box-shadow: none !important; background: #fff; overflow-x: auto; }
+    body table { border-collapse: collapse; width: 100%; }
+    body th { background: var(--ds-soft) !important; color: var(--ds-body) !important; font-size: 13px !important; font-weight: 600 !important; text-align: left; padding: 12px 14px !important; border-bottom: 1px solid var(--ds-line) !important; white-space: nowrap; }
+    body td { font-size: 14px !important; font-weight: 400 !important; color: var(--ds-ink); padding: 12px 14px !important; border-bottom: 1px solid #eee9e6 !important; vertical-align: middle; word-break: normal !important; overflow-wrap: break-word; }
+    body td, body td * { overflow-wrap: normal !important; word-break: normal !important; }
+    body tbody tr:hover td { background: #faf8f7; }
+
+    /* ---------- forms ---------- */
+    body input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]):not([type="submit"]):not(#codeEditor),
+    body select, body textarea:not(#codeEditor):not(#stdinBox) { font-size: 14px !important; font-weight: 400 !important; border: 1px solid #d5cfcb !important; border-radius: 6px !important; min-height: 40px; box-shadow: none; }
+    body input:focus:not(#codeEditor), body select:focus, body textarea:focus:not(#codeEditor) { border-color: var(--ds-primary) !important; box-shadow: 0 0 0 3px var(--ds-tint) !important; outline: none; }
+    body textarea { min-height: 96px; }
+    body ::placeholder { color: #9a928e; font-weight: 400; }
+
+    /* ---------- buttons & badges ---------- */
+    body .btn, body [class$="-btn"]:not(.logout-btn):not(.message-close-btn) { font-size: 13px !important; font-weight: 500 !important; border-radius: 6px !important; box-shadow: none !important; letter-spacing: 0; text-transform: none; }
+    body [class$="-badge"] { font-size: 13px !important; font-weight: 500 !important; }
+
+    @media (max-width: 768px) {
+        body .content { padding: 16px; }
+        body [class$="-hero"] { padding: 18px !important; }
+        body [class$="-hero"] h1 { font-size: 20px !important; }
+    }
+</style>

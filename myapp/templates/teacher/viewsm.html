@@ -1,0 +1,731 @@
+{% extends 'teacher/base.html' %}
+
+{% block title %}View Study Material{% endblock %}
+{% block page_title %}View Study Material{% endblock %}
+
+{% block content %}
+
+<style>
+    .study-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* HERO */
+    .study-hero {
+        padding: 32px 35px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        background: #661620;
+        color: #fff;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .study-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        right: -70px;
+        top: -90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.06);
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .study-hero h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .study-hero p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,.78);
+    }
+
+    .session-tag {
+        display: inline-flex;
+        margin-top: 18px;
+        padding: 7px 12px;
+        border-radius: 10px;
+        background: #f0c99f;
+        color: #5c2020;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    /* CARD */
+    .study-section {
+        background: #fff;
+        border: 1px solid #ece4df;
+        border-radius: 10px;
+        padding: 28px;
+        box-shadow: none;
+    }
+
+    .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #eee7e2;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff4eb;
+        color: #8b2931;
+        font-size: 16px;
+    }
+
+    .section-title h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #382326;
+        font-weight: 600;
+    }
+
+    .section-title p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        color: #8d7d7a;
+    }
+
+    .add-btn {
+        height: 42px;
+        padding: 0 17px;
+        border: none;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #7b2029;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .add-btn:hover {
+        background: #5f1820;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    /* TABLE */
+    .table-wrap {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .study-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: auto;
+    }
+
+    .study-table thead th {
+        padding: 13px 12px;
+        background: #faf7f5;
+        border-bottom: 1px solid #eee6e1;
+        color: #806e6a;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: 0;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .study-table tbody td {
+        padding: 15px 12px;
+        border-bottom: 1px solid #f0eae7;
+        color: #514443;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .study-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .study-table tbody tr:hover {
+        background: #fffaf7;
+    }
+
+    .number-badge {
+        width: 27px;
+        height: 27px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: #f7eee9;
+        color: #7b2029;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .material-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 160px;
+    }
+
+    .material-icon {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff3eb;
+        color: #8b2931;
+        font-size: 14px;
+    }
+
+    .material-name strong {
+        display: block;
+        color: #382326;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .material-name small {
+        display: block;
+        margin-top: 3px;
+        color: #998b88;
+        font-size: 13px;
+    }
+
+    .course-text strong,
+    .subject-text strong {
+        display: block;
+        color: #4b3c3b;
+        font-size: 13px;
+    }
+
+    .course-text small,
+    .subject-text small {
+        display: block;
+        margin-top: 3px;
+        color: #a0928f;
+        font-size: 13px;
+    }
+
+    /* TYPE */
+    .type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 9px;
+        border-radius: 10px;
+        background: #f5f1ef;
+        color: #655553;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* STATUS */
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .status-published {
+        background: #eaf7ef;
+        color: #257545;
+    }
+
+    .status-published .status-dot {
+        background: #35a95f;
+    }
+
+    .status-draft {
+        background: #fff4df;
+        color: #9a6a16;
+    }
+
+    .status-draft .status-dot {
+        background: #d99a25;
+    }
+
+    /* RESOURCE */
+    .resource-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 6px;
+        background: #f4f8fb;
+        color: #24749a;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        border: 1px solid #e0edf3;
+    }
+
+    .resource-btn:hover {
+        background: #e8f3f8;
+        color: #1b607f;
+    }
+
+    .no-resource {
+        color: #aaa09d;
+        font-size: 13px;
+    }
+
+    /* ACTIONS */
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .action-btn {
+        height: 32px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: .2s ease;
+    }
+
+    .edit-btn {
+        color: #80601d;
+        background: #fff7df;
+        border: 1px solid #f2e5b9;
+    }
+
+    .edit-btn:hover {
+        background: #f8edc9;
+        color: #624b16;
+    }
+
+    .delete-btn {
+        color: #a43a3a;
+        background: #fff0f0;
+        border: 1px solid #f3d8d8;
+    }
+
+    .delete-btn:hover {
+        background: #ffe3e3;
+        color: #842727;
+    }
+
+    .empty {
+        padding: 55px 20px;
+        text-align: center;
+        color: #968885;
+        font-size: 13px;
+    }
+
+    .empty-icon {
+        width: 55px;
+        height: 55px;
+        margin: 0 auto 12px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5ee;
+        color: #a24a3b;
+        font-size: 20px;
+    }
+
+    .empty strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #594846;
+        font-size: 13px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .study-table {
+            min-width: 950px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .study-page {
+            width: 100%;
+        }
+
+        .study-hero {
+            padding: 26px 22px;
+        }
+
+        .study-hero h1 {
+            font-size: 24px;
+        }
+
+        .study-section {
+            padding: 20px;
+        }
+
+        .section-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="study-page">
+
+    <!-- HERO -->
+    <section class="study-hero">
+
+        <div class="hero-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>SESSION 2026-2027</span>
+        </div>
+
+        <h1>Study Material Library</h1>
+
+        <p>
+            Review all published and draft learning resources.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- STUDY MATERIAL CARD -->
+    <section class="study-section">
+
+        <div class="section-head">
+
+            <div class="section-title">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <div>
+                    <h2>Study Materials</h2>
+                    <p>View and manage all uploaded learning resources.</p>
+                </div>
+
+            </div>
+
+            <a href="{% url 'uploadsm' %}" class="add-btn">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                Upload Material
+            </a>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table class="study-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Course</th>
+                        <th>Subject</th>
+                        <th>Type</th>
+                        <th>Uploaded By</th>
+                        <th>Status</th>
+                        <th>Resource</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for material in materials %}
+                    
+
+                    <tr>
+
+                        <!-- NUMBER -->
+                        <td>
+                            <span class="number-badge">
+                                {{ forloop.counter }}
+                            </span>
+                        </td>
+
+
+                        <!-- TITLE -->
+                        <td>
+                            <div class="material-name">
+
+                                <div class="material-icon">
+
+                                    {% if material.material_type == "PDF" %}
+                                        <i class="fa-solid fa-file-pdf"></i>
+
+                                    {% elif material.material_type == "Video" %}
+                                        <i class="fa-solid fa-video"></i>
+
+                                    {% elif material.material_type == "Link" %}
+                                        <i class="fa-solid fa-link"></i>
+
+                                    {% else %}
+                                        <i class="fa-solid fa-file-lines"></i>
+                                    {% endif %}
+
+                                </div>
+
+                                <div>
+                                    <strong>{{ material.title }}</strong>
+                                    <small>Study Material</small>
+                                </div>
+
+                            </div>
+                        </td>
+
+
+                        <!-- COURSE -->
+                        <td>
+                            <div class="course-text">
+                                <strong>{{ material.course }}</strong>
+
+                                
+                            </div>
+                        </td>
+
+
+                        <!-- SUBJECT -->
+                        <td>
+                            <div class="subject-text">
+                                <strong>{{ material.subject }}</strong>
+                            </div>
+                        </td>
+
+
+                        <!-- TYPE -->
+                        <td>
+                            <span class="type-badge">
+
+                                {% if material.material_type == "PDF" %}
+                                    <i class="fa-solid fa-file-pdf"></i>
+
+                                {% elif material.material_type == "Video" %}
+                                    <i class="fa-solid fa-video"></i>
+
+                                {% elif material.material_type == "Link" %}
+                                    <i class="fa-solid fa-link"></i>
+
+                                {% else %}
+                                    <i class="fa-solid fa-file"></i>
+                                {% endif %}
+
+                                {{ material.material_type }}
+
+                            </span>
+                        </td>
+
+
+                        <!-- UPLOADED BY -->
+                        <td>
+                            <div class="subject-text">
+                                <strong>
+                                    {{ material.create_by }}
+                                </strong>
+
+                                <small>Teacher</small>
+                            </div>
+                        </td>
+
+
+                        <!-- STATUS -->
+                        <td>
+
+                            {% if material.status == "Published" %}
+
+                                <span class="status status-published">
+                                    <span class="status-dot"></span>
+                                    Published
+                                </span>
+
+                            {% else %}
+
+                                <span class="status status-draft">
+                                    <span class="status-dot"></span>
+                                    Draft
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- RESOURCE -->
+                        <td>
+
+                            {% if material.file %}
+
+                                <a href="{{ material.file.url }}"
+                                   target="_blank"
+                                   class="resource-btn">
+
+                                    <i class="fa-solid fa-eye"></i>
+                                    View File
+
+                                </a>
+
+                            {% elif material.external_url %}
+
+                                <a href="{{ material.external_url }}"
+                                   target="_blank"
+                                   class="resource-btn">
+
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    Open Link
+
+                                </a>
+
+                            {% else %}
+
+                                <span class="no-resource">
+                                    No Resource
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTION -->
+                        <td>
+
+                            <div class="actions">
+
+                                <a href="{% url 'teditsm' material.id %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+
+                                </a>
+
+                                <a href="{% url 'tdeletesm' material.id %}"
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this study material?');">
+
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="9">
+
+                            <div class="empty">
+
+                                <div class="empty-icon">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                </div>
+
+                                <strong>No study material found.</strong>
+
+                                Upload PDF, notes, videos or useful learning links to see them here.
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

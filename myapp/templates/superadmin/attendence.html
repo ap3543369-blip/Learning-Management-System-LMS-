@@ -1,0 +1,1424 @@
+
+{% extends 'superadmin/base.html' %}
+
+
+{% block title %}
+Student Attendance | NOU e-Gyan
+{% endblock %}
+
+
+{% block page_title %}
+Student Attendance
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       STUDENT ATTENDANCE PAGE
+       Only attendance page styling
+    ===================================================== */
+
+    .student-attendance-page {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .attendance-hero {
+        position: relative;
+        overflow: hidden;
+
+        background: #661620;
+
+        border-radius: 10px;
+        padding: 28px 30px;
+        margin-bottom: 22px;
+
+        color: #ffffff;
+
+        box-shadow:
+            none;
+    }
+
+
+    .attendance-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 190px;
+        height: 190px;
+
+        border-radius: 50%;
+
+        right: -70px;
+        top: -90px;
+
+        background: rgba(255,255,255,0.08);
+    }
+
+
+    .attendance-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .attendance-hero-icon {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: rgba(255,255,255,0.15);
+
+        font-size: 18px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .attendance-hero h2 {
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+
+    .attendance-hero p {
+        margin: 6px 0 0;
+
+        color: rgba(255,255,255,0.85);
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    .attendance-message {
+        padding: 12px 15px;
+
+        margin-bottom: 18px;
+
+        border-radius: 6px;
+
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+
+    .attendance-message-success {
+        background: #eaf8ef;
+
+        color: #176b3a;
+
+        border: 1px solid #ccebd9;
+    }
+
+
+    .attendance-message-error {
+        background: #fff0f0;
+
+        color: #a52828;
+
+        border: 1px solid #f1cccc;
+    }
+
+
+    .attendance-message-info {
+        background: #eef7fb;
+
+        color: #246579;
+
+        border: 1px solid #d3eaf1;
+    }
+
+
+    /* =====================================================
+       COURSE FILTER CARD
+    ===================================================== */
+
+    .attendance-filter-card {
+        background: #ffffff;
+
+        border: 1px solid #e7e7e7;
+
+        border-radius: 10px;
+
+        padding: 24px;
+
+        margin-bottom: 22px;
+
+        box-shadow:
+            none;
+    }
+
+
+    .attendance-filter-heading {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .attendance-filter-icon {
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 16px;
+    }
+
+
+    .attendance-filter-heading h3 {
+        margin: 0;
+
+        color: #222222;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-filter-heading p {
+        margin: 3px 0 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       COURSE FORM
+    ===================================================== */
+
+    .attendance-course-form {
+        width: 100%;
+    }
+
+
+    .attendance-course-row {
+        display: grid;
+
+        grid-template-columns: 1fr 200px;
+
+        gap: 18px;
+
+        align-items: end;
+    }
+
+
+    .attendance-field {
+        width: 100%;
+    }
+
+
+    .attendance-field label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #333333;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-required {
+        color: #dc3545;
+    }
+
+
+    .attendance-field select {
+        width: 100%;
+
+        height: 45px;
+
+        padding: 0 13px;
+
+        box-sizing: border-box;
+
+        border: 1px solid #dddddd;
+
+        border-radius: 6px;
+
+        background: #ffffff;
+
+        color: #333333;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-field select:focus {
+        border-color: #851f28;
+
+        box-shadow:
+            0 0 0 3px rgba(133,31,40,0.08);
+    }
+
+
+    .attendance-show-btn {
+        width: 100%;
+
+        height: 45px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        background:
+            #661620;
+
+        color: #ffffff;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        box-shadow:
+            none;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-show-btn:hover {
+        background:
+            #851f28;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       STUDENT LIST CARD
+    ===================================================== */
+
+    .attendance-list-card {
+        background: #ffffff;
+
+        border: 1px solid #e7e7e7;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        box-shadow:
+            none;
+    }
+
+
+    /* =====================================================
+       CARD HEADER
+    ===================================================== */
+
+    .attendance-list-header {
+        padding: 20px 24px;
+
+        border-bottom: 1px solid #eeeeee;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+
+    .attendance-list-title {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+    }
+
+
+    .attendance-list-icon {
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 16px;
+    }
+
+
+    .attendance-list-title h3 {
+        margin: 0;
+
+        color: #222222;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-list-title p {
+        margin: 3px 0 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    .attendance-course-badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 8px 13px;
+
+        border-radius: 10px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       QUICK ACTIONS
+    ===================================================== */
+
+    .attendance-actions {
+        padding: 15px 24px;
+
+        background: #fffdfd;
+
+        border-bottom: 1px solid #eeeeee;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 12px;
+    }
+
+
+    .attendance-action-text {
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    .attendance-action-buttons {
+        display: flex;
+
+        gap: 8px;
+    }
+
+
+    .attendance-present-btn,
+    .attendance-absent-btn {
+        height: 34px;
+
+        padding: 0 14px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        color: #ffffff;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-present-btn {
+        background: #198754;
+    }
+
+
+    .attendance-present-btn:hover {
+        background: #157347;
+    }
+
+
+    .attendance-absent-btn {
+        background: #6c757d;
+    }
+
+
+    .attendance-absent-btn:hover {
+        background: #5c636a;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .attendance-table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    .attendance-table {
+        width: 100%;
+
+        min-width: 760px;
+
+        border-collapse: collapse;
+    }
+
+
+    .attendance-table th {
+        padding: 13px 15px;
+
+        background: #faf6f6;
+
+        border-bottom: 1px solid #e8e8e8;
+
+        color: #666666;
+
+        text-align: left;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-transform: none;
+
+        letter-spacing: 0;
+
+        white-space: nowrap;
+    }
+
+
+    .attendance-table td {
+        padding: 13px 15px;
+
+        border-bottom: 1px solid #eeeeee;
+
+        color: #444444;
+
+        font-size: 13px;
+
+        vertical-align: middle;
+    }
+
+
+    .attendance-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    .attendance-table tbody tr:hover {
+        background: #fffafa;
+    }
+
+
+    .attendance-sr {
+        width: 60px;
+
+        color: #999999 !important;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-enrollment {
+        color: #851f28 !important;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+    }
+
+
+    .attendance-name {
+        color: #222222 !important;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-course {
+        color: #555555 !important;
+    }
+
+
+    .attendance-mobile {
+        color: #666666 !important;
+
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       STATUS SELECT
+    ===================================================== */
+
+    .status-select {
+        width: 115px;
+
+        height: 36px;
+
+        padding: 0 10px;
+
+        border: 1px solid #dddddd;
+
+        border-radius: 6px;
+
+        background: #ffffff;
+
+        color: #333333;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        outline: none;
+
+        cursor: pointer;
+    }
+
+
+    .status-select:focus {
+        border-color: #851f28;
+
+        box-shadow:
+            0 0 0 3px rgba(133,31,40,0.08);
+    }
+
+
+    /* =====================================================
+       SAVE AREA
+    ===================================================== */
+
+    .attendance-save-area {
+        padding: 18px 24px;
+
+        border-top: 1px solid #eeeeee;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+
+    .attendance-save-note {
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    .attendance-save-note i {
+        color: #851f28;
+
+        margin-right: 4px;
+    }
+
+
+    .attendance-save-btn {
+        height: 40px;
+
+        padding: 0 22px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        background:
+            #661620;
+
+        color: #ffffff;
+
+        font-family: "Poppins", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        box-shadow:
+            none;
+
+        transition: 0.2s ease;
+    }
+
+
+    .attendance-save-btn:hover {
+        background:
+            #851f28;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .attendance-empty {
+        background: #ffffff;
+
+        border: 1px solid #e7e7e7;
+
+        border-radius: 10px;
+
+        padding: 60px 25px;
+
+        text-align: center;
+
+        box-shadow:
+            none;
+    }
+
+
+    .attendance-empty-icon {
+        width: 65px;
+        height: 65px;
+
+        margin: 0 auto 15px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #f9e9eb;
+
+        color: #851f28;
+
+        font-size: 24px;
+    }
+
+
+    .attendance-empty h3 {
+        margin: 0 0 6px;
+
+        color: #333333;
+
+        font-size: 16px;
+
+        font-weight: 600;
+    }
+
+
+    .attendance-empty p {
+        margin: 0;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 850px) {
+
+        .attendance-course-row {
+            grid-template-columns: 1fr;
+        }
+
+
+        .attendance-list-header {
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+
+        .attendance-actions {
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+
+        .attendance-action-buttons {
+            width: 100%;
+        }
+
+
+        .attendance-present-btn,
+        .attendance-absent-btn {
+            flex: 1;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .attendance-filter-card {
+            padding: 18px;
+        }
+
+
+        .attendance-hero {
+            padding: 22px;
+        }
+
+
+        .attendance-save-area {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+
+        .attendance-save-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+
+<div class="student-attendance-page">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="attendance-hero">
+
+        <div class="attendance-hero-content">
+
+            <div class="attendance-hero-icon">
+
+                <i class="fa-solid fa-user-check"></i>
+
+            </div>
+
+
+            <h2>
+                Student Attendance
+            </h2>
+
+
+            <p>
+                Select a course to view and mark student attendance.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         MESSAGES
+    ================================================== -->
+
+    {% if messages %}
+
+        {% for m in messages %}
+
+            <div
+                class="
+                    attendance-message
+                    {% if m.tags == 'error' %}
+                        attendance-message-error
+                    {% else %}
+                        attendance-message-success
+                    {% endif %}
+                "
+            >
+
+                {{ m }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% if message %}
+
+        <div class="attendance-message attendance-message-info">
+
+            {{ message }}
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =================================================
+         COURSE SELECTION
+    ================================================== -->
+
+    <div class="attendance-filter-card">
+
+
+        <div class="attendance-filter-heading">
+
+            <div class="attendance-filter-icon">
+
+                <i class="fa-solid fa-filter"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Select Course
+                </h3>
+
+                <p>
+                    Choose a course to display its students
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FORM 1 : STUDENTS DISPLAY -->
+
+        <form
+            method="get"
+            action="{% url 'attendance' %}"
+            class="attendance-course-form"
+        >
+
+            <div class="attendance-course-row">
+
+
+                <!-- COURSE -->
+
+                <div class="attendance-field">
+
+                    <label>
+
+                        Course
+
+                        <span class="attendance-required">
+                            *
+                        </span>
+
+                    </label>
+
+
+                    <select
+                        name="course"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Course --
+                        </option>
+
+
+                        {% for i in ab %}
+
+                        <option
+                            value="{{ i.course_name }}"
+                            {% if course == i.course_name %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ i.course_name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- SHOW STUDENTS -->
+
+                <div>
+
+                    <button
+                        type="submit"
+                        class="attendance-show-btn"
+                    >
+
+                        <i class="fa-solid fa-users"></i>
+
+                        &nbsp;
+
+                        Show Students
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STUDENT LIST
+    ================================================== -->
+
+    {% if data %}
+
+
+        <!-- FORM 2 : ATTENDANCE SAVE -->
+
+        <form
+            method="post"
+            action="{% url 'save_attendance' %}"
+        >
+
+            {% csrf_token %}
+
+
+            <input
+                type="hidden"
+                name="course"
+                value="{{ course }}"
+            >
+
+
+
+            <div class="attendance-list-card">
+
+
+                <!-- =================================================
+                     LIST HEADER
+                ================================================== -->
+
+                <div class="attendance-list-header">
+
+
+                    <div class="attendance-list-title">
+
+
+                        <div class="attendance-list-icon">
+
+                            <i class="fa-solid fa-users"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                Student List
+                            </h3>
+
+                            <p>
+                                Mark attendance for each student
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="attendance-course-badge">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        {{ course }}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     QUICK ACTIONS
+                ================================================== -->
+
+                <div class="attendance-actions">
+
+
+                    <div class="attendance-action-text">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        &nbsp;
+
+                        Quickly mark attendance for all students.
+
+                    </div>
+
+
+                    <div class="attendance-action-buttons">
+
+
+                        <button
+                            type="button"
+                            class="attendance-present-btn"
+                            onclick="markAll('Present')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                            &nbsp;
+
+                            All Present
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="attendance-absent-btn"
+                            onclick="markAll('Absent')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            &nbsp;
+
+                            All Absent
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TABLE
+                ================================================== -->
+
+                <div class="attendance-table-wrapper">
+
+
+                    <table class="attendance-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Sr No.
+                                </th>
+
+                                <th>
+                                    Enrollment Number
+                                </th>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Course
+                                </th>
+
+                                <th>
+                                    Mobile
+                                </th>
+
+                                <th>
+                                    Attendance
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            {% for i in data %}
+
+
+                            <tr>
+
+
+                                <!-- SR NO -->
+
+                                <td class="attendance-sr">
+
+                                    {{ forloop.counter }}
+
+                                </td>
+
+
+
+                                <!-- ENROLLMENT -->
+
+                                <td class="attendance-enrollment">
+
+                                    {{ i.Enrollment_no }}
+
+                                </td>
+
+
+
+                                <!-- NAME -->
+
+                                <td class="attendance-name">
+
+                                    {{ i.name }}
+
+                                </td>
+
+
+
+                                <!-- COURSE -->
+
+                                <td class="attendance-course">
+
+                                    {{ i.course }}
+
+                                </td>
+
+
+
+                                <!-- MOBILE -->
+
+                                <td class="attendance-mobile">
+
+                                    {{ i.mobile }}
+
+                                </td>
+
+
+
+                                <!-- ATTENDANCE -->
+
+                                <td>
+
+
+                                    <select
+                                        name="status_{{ i.Enrollment_no }}"
+                                        class="status-select"
+                                    >
+
+                                        <option value="Present">
+                                            Present
+                                        </option>
+
+                                        <option value="Absent">
+                                            Absent
+                                        </option>
+
+                                    </select>
+
+
+                                </td>
+
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SAVE ATTENDANCE
+                ================================================== -->
+
+                <div class="attendance-save-area">
+
+
+                    <div class="attendance-save-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Please verify all students before saving.
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="attendance-save-btn"
+                    >
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        &nbsp;
+
+                        Save Attendance
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </form>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div class="attendance-empty">
+
+
+            <div class="attendance-empty-icon">
+
+                <i class="fa-solid fa-clipboard-user"></i>
+
+            </div>
+
+
+            <h3>
+                No Students Found
+            </h3>
+
+
+            <p>
+                Select a course above to view students.
+            </p>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+
+<script>
+
+    function markAll(value) {
+
+        document
+            .querySelectorAll(".status-select")
+            .forEach(function(select) {
+
+                select.value = value;
+
+            });
+
+    }
+
+</script>
+
+
+{% endblock %}
+

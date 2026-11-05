@@ -1,0 +1,663 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Student Dashboard | NOU e-Gyan
+        {% endblock %}
+    </title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --side1: #130e70;
+            --side2: #0c085a;
+            --accent: #168ea6;
+            --dash2: #148ba3;
+            --bg: #f4f4fa;
+            --text-main: #181734;
+            --text-muted: #7987a5;
+            --border: #e2e4f0;
+            --card-bg: #ffffff;
+            --sidebar-width: 270px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: var(--side1);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: none;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .brand {
+            height: 80px;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .seal {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: var(--side1);
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: none;
+            letter-spacing: 0;
+        }
+
+        .brand-text b {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0;
+        }
+
+        .brand-text small {
+            display: block;
+            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .role-badge {
+            padding: 20px 22px 10px;
+            color: #9ed7e3;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        /* NAVIGATION */
+        .nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 14px 24px;
+        }
+
+        .nav::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .group {
+            margin-bottom: 18px;
+        }
+
+        .group-title {
+            padding: 0 12px 8px;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .sub {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-link {
+            min-height: 40px;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.78);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-link i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            padding-left: 18px;
+        }
+
+        .nav-link:hover i {
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background: rgba(22, 142, 166, 0.35);
+            color: #ffffff;
+            font-weight: 600;
+            border-left: 3px solid var(--accent);
+        }
+
+        .nav-link.active i {
+            color: var(--accent);
+        }
+
+        /* =========================
+           MAIN WRAPPER
+        ========================== */
+        .main {
+            width: calc(100% - var(--sidebar-width));
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            height: 76px;
+            padding: 0 32px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: none;
+        }
+
+        .page-id {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .page-id b {
+            display: block;
+            color: var(--text-main);
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .page-id small {
+            display: block;
+            margin-top: 2px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .top-tools {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .profile-pill:hover {
+            border-color: #cbd1e6;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: none;
+        }
+
+        .profile-name b {
+            display: block;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .profile-name small {
+            display: block;
+            margin-top: 2px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            padding: 9px 16px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: #4d4a8a;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #f0effc;
+            border-color: #bebce4;
+            color: var(--side1);
+            transform: translateY(-1px);
+        }
+
+        /* CONTENT AREA */
+        .content {
+            flex: 1;
+            padding: 30px 32px 40px;
+        }
+
+        /* FOOTER */
+        .foot {
+            min-height: 54px;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* MOBILE MENU & OVERLAY */
+        .mobile-menu {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 8px;
+            background: #eeedf9;
+            color: var(--side1);
+            font-size: 16px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .mobile-menu:hover {
+            background: #e2e0f7;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(12, 8, 90, 0.4);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        /* =========================
+           RESPONSIVE STYLES
+        ========================== */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .foot {
+                padding: 16px 20px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .topbar {
+                height: 70px;
+            }
+
+            .page-id b {
+                font-size: 14px;
+            }
+
+            .page-id small {
+                display: none;
+            }
+
+            .profile-pill {
+                padding: 0;
+                border: 0;
+                background: transparent;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .logout-btn span {
+                display: none;
+            }
+
+            .logout-btn {
+                padding: 8px 10px;
+            }
+
+            .foot {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+    {% include "partials/poppins.html" %}
+    {% include "partials/ds.html" with theme="student" %}
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+        <aside class="sidebar" id="studentSidebar">
+
+            <!-- BRAND -->
+            <div class="brand">
+                <div class="seal">NOU</div>
+                <div class="brand-text">
+                    <b>NOU e-Gyan</b>
+                    <small>Nalanda Open University</small>
+                </div>
+            </div>
+
+            <!-- ROLE -->
+            <div class="role-badge">Student Zone</div>
+
+            <!-- NAVIGATION -->
+            <nav class="nav">
+
+                <!-- DASHBOARD -->
+                <div class="group">
+                    <div class="group-title">Dashboard</div>
+                    <div class="sub">
+                        <a href="{% url 'sdashboard' %}" class="nav-link active">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ACADEMICS -->
+                <div class="group">
+                    <div class="group-title">Academics</div>
+                    <div class="sub">
+                        <a href="{% url 'scurrentsession' %}" class="nav-link">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            Current Session
+                        </a>
+                        <a href="{% url 'smycourse' %}" class="nav-link">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            Course Details
+                        </a>
+                        <a href="{% url 'smysubject' %}" class="nav-link">
+                            <i class="fa-solid fa-book-open"></i>
+                            My Subjects
+                        </a>
+                    </div>
+                </div>
+
+                <!-- LEARNING -->
+                <div class="group">
+                    <div class="group-title">Learning</div>
+                    <div class="sub">
+                        <a href="{% url 'sm' %}" class="nav-link">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            Study Material
+                        </a>
+                        <a href="{% url 'stu_assignment' %}" class="nav-link">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Assignments
+                        </a>
+                        <a href="{% url 'stu_submission' %}" class="nav-link">
+                            <i class="fa-solid fa-upload"></i>
+                            Submissions
+                        </a>
+                        <a href="{% url 'student_code_lab' %}" class="nav-link">
+                            <i class="fa-solid fa-code"></i>
+                            Programming Lab
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ASSESSMENT -->
+                <div class="group">
+                    <div class="group-title">Assessment</div>
+                    <div class="sub">
+                        <a href="{% url 'Stu_show_test' %}" class="nav-link">
+                            <i class="fa-solid fa-laptop-code"></i>
+                            Online Tests
+                        </a>
+                        <a href="{% url 'show_result' %}" class="nav-link">
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                            My Results
+                        </a>
+                        <a href="{% url 'my_attendance' %}" class="nav-link">
+                            <i class="fa-solid fa-clipboard-user"></i>
+                            Attendance
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ONLINE CLASSES -->
+                <div class="group">
+                    <div class="group-title">Online Classes</div>
+                    <div class="sub">
+                        <a href="{% url 'student_classes' %}" class="nav-link">
+                            <i class="fa-solid fa-video"></i>
+                            Class Schedule
+                        </a>
+                    </div>
+                </div>
+
+                <!-- OTHER -->
+                <div class="group">
+                    <div class="group-title">Other</div>
+                    <div class="sub">
+                        <a href="{% url 'sannouncement' %}" class="nav-link">
+                            <i class="fa-solid fa-bullhorn"></i>
+                            Announcements
+                        </a>
+                    </div>
+                </div>
+
+            </nav>
+        </aside>
+
+        <!-- OVERLAY FOR MOBILE -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- =========================
+             MAIN CONTENT WRAPPER
+        ========================== -->
+        <main class="main">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="page-id">
+                    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <b>
+                            {% block page_title %}
+                            Student Dashboard
+                            {% endblock %}
+                        </b>
+                        <small>NOU e-Gyan • Student Workspace</small>
+                    </div>
+                </div>
+
+                <!-- TOPBAR PROFILE & LOGOUT -->
+                <div class="top-tools">
+                    <div class="profile-pill">
+                        <div class="profile-avatar">
+                            {% if request.user.Student.name %}
+                            {{ request.user.Student.name|first|upper }}
+                            {% else %}
+                            ST
+                            {% endif %}
+                        </div>
+                        <div class="profile-name">
+                            <b>
+                                {% if request.user.Student.name %}
+                                {{ request.user.Student.name }}
+                                {% else %}
+                                Student
+                                {% endif %}
+                            </b>
+                            <small>Student Zone</small>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'logout' %}" class="logout-btn">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- CONTENT BLOCK -->
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="foot">
+                <div>NOU e-Gyan • Nalanda Open University</div>
+                <div>Functional Learning Management System</div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- MOBILE SIDEBAR SCRIPT -->
+    <script>
+        const mobileMenu = document.getElementById("mobileMenu");
+        const sidebar = document.getElementById("studentSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+        }
+
+        mobileMenu.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+    </script>
+
+    {% block messages %}
+        {% include "partials/message_popup.html" %}
+    {% endblock %}
+
+    {% block extra_js %}
+    {% endblock %}
+
+</body>

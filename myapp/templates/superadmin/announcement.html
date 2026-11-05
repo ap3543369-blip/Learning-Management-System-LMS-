@@ -1,0 +1,739 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}Announcements{% endblock %}
+{% block page_title %}Announcements{% endblock %}
+
+{% block content %}
+
+<style>
+    .announcement-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* HERO */
+    .announcement-hero {
+        padding: 32px 35px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        background: #661620;
+        color: #fff;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .announcement-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        right: -70px;
+        top: -90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.06);
+    }
+
+    .hero-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .hero-eyebrow span {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .announcement-hero h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .announcement-hero p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,.78);
+    }
+
+    .session-tag {
+        display: inline-flex;
+        margin-top: 18px;
+        padding: 7px 12px;
+        border-radius: 10px;
+        background: #f0c99f;
+        color: #5c2020;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    /* TWO COLUMN */
+    .communication-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, .85fr);
+        gap: 24px;
+    }
+
+    /* CARD */
+    .form-card {
+        background: #fff;
+        border: 1px solid #ece4df;
+        border-radius: 10px;
+        padding: 28px;
+        box-shadow: none;
+    }
+
+    .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding-bottom: 20px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #eee7e2;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff4eb;
+        color: #8b2931;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .section-head h2 {
+        margin: 0;
+        color: #382326;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .section-head p {
+        margin: 4px 0 0;
+        color: #8d7d7a;
+        font-size: 13px;
+    }
+
+    /* FORM */
+    .field {
+        margin-bottom: 20px;
+    }
+
+    .field:last-child {
+        margin-bottom: 0;
+    }
+
+    .field label {
+        display: block;
+        margin-bottom: 8px;
+        color: #554644;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #e3dad5;
+        border-radius: 6px;
+        background: #fff;
+        color: #463b39;
+        font-family: inherit;
+        font-size: 13px;
+        outline: none;
+        transition: .2s ease;
+    }
+
+    .field input,
+    .field select {
+        height: 48px;
+        padding: 0 13px;
+    }
+
+    .field textarea {
+        min-height: 145px;
+        padding: 13px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+        border-color: #9a3a43;
+        box-shadow: 0 0 0 3px rgba(139,41,49,.07);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+        color: #b2a7a4;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 20px;
+    }
+
+    /* BUTTON */
+    .form-actions {
+        margin-top: 25px;
+        padding-top: 22px;
+        border-top: 1px solid #eee7e2;
+    }
+
+    .btn {
+        height: 42px;
+        padding: 0 17px;
+        border: none;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: #7b2029;
+        color: #fff;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .btn:hover {
+        background: #5f1820;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    /* BADGE */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 11px;
+        border-radius: 10px;
+        background: #f7eee9;
+        color: #7b2029;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* NOTICE LIST */
+    .record-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .notice-card {
+        padding: 15px;
+        border: 1px solid #eee5e1;
+        border-radius: 8px;
+        background: #fffaf7;
+    }
+
+    .notice-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .notice-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .notice-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 6px;
+        background: #fff0e8;
+        color: #8b2931;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 13px;
+    }
+
+    .notice-title strong {
+        display: block;
+        color: #463837;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .notice-title small {
+        display: block;
+        margin-top: 3px;
+        color: #9c8f8b;
+        font-size: 13px;
+    }
+
+    .priority {
+        display: inline-flex;
+        padding: 5px 8px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .priority-normal {
+        background: #f1f3f3;
+        color: #66706f;
+    }
+
+    .priority-important {
+        background: #fff4dc;
+        color: #956a17;
+    }
+
+    .priority-urgent {
+        background: #fff0f0;
+        color: #a63c3c;
+    }
+
+    .notice-message {
+        margin: 12px 0 0 44px;
+        color: #756764;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .notice-footer {
+        margin: 12px 0 0 44px;
+        padding-top: 9px;
+        border-top: 1px solid #eee4df;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .audience {
+        color: #7c6d69;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .notice-date {
+        color: #a19490;
+        font-size: 13px;
+    }
+
+    /* EMPTY */
+    .empty {
+        padding: 55px 20px;
+        text-align: center;
+        color: #968885;
+        font-size: 13px;
+    }
+
+    .empty-icon {
+        width: 55px;
+        height: 55px;
+        margin: 0 auto 12px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5ee;
+        color: #a24a3b;
+        font-size: 20px;
+    }
+
+    .empty strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #594846;
+        font-size: 13px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+        .communication-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+
+        .announcement-hero {
+            padding: 26px 22px;
+        }
+
+        .announcement-hero h1 {
+            font-size: 24px;
+        }
+
+        .form-card {
+            padding: 20px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-head {
+            align-items: flex-start;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="announcement-page">
+
+    <!-- HERO -->
+    <section class="announcement-hero">
+
+        <div class="hero-eyebrow">
+            <span>ACADEMIC ERP</span>
+            <span>SESSION 2026-2027</span>
+        </div>
+
+        <h1>Announcements</h1>
+
+        <p>
+            Publish important academic information to students, teachers or everyone.
+        </p>
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+    <!-- COMMUNICATION GRID -->
+    <div class="communication-grid">
+
+
+        <!-- PUBLISH ANNOUNCEMENT -->
+        <div class="form-card">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <div>
+                        <h2>Publish Announcement</h2>
+                        <p>Create a new notice for the portal.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- TITLE -->
+                <div class="field">
+
+                    <label>
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter announcement title"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- AUDIENCE + PRIORITY -->
+                <div class="form-grid">
+
+                    <div class="field">
+
+                        <label>
+                            Audience
+                        </label>
+
+                        <select name="audience">
+
+                            <option value="All">
+                                All
+                            </option>
+
+                            <option value="Students">
+                                Students
+                            </option>
+
+                            <option value="Teachers">
+                                Teachers
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Priority
+                        </label>
+
+                        <select name="priority">
+
+                            <option value="Normal">
+                                Normal
+                            </option>
+
+                            <option value="Important">
+                                Important
+                            </option>
+
+                            <option value="Urgent">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PUBLISH DATE -->
+                    <div class="field">
+
+                        <label>
+                            Publish Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="publish_date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EXPIRY DATE -->
+                    <div class="field">
+
+                        <label>
+                            Expiry Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="expiry_date"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- MESSAGE -->
+                <div class="field">
+
+                    <label>
+                        Message
+                    </label>
+
+                    <textarea
+                        name="message"
+                        placeholder="Write your announcement here..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- BUTTON -->
+                <div class="form-actions">
+
+                    <button
+                        class="btn"
+                        type="submit">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Publish Announcement
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- PUBLISHED NOTICES -->
+        <div class="form-card">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+
+                    <div>
+                        <h2>Published Notices</h2>
+                        <p>Edit or remove existing announcements.</p>
+                    </div>
+
+                </div>
+
+                <span class="badge">
+                    {{ announcements|length }} Notices
+                </span>
+
+            </div>
+
+
+            <div class="record-list">
+
+
+                {% for announcement in announcements %}
+
+                <div class="notice-card">
+
+                    <div class="notice-top">
+
+                        <div class="notice-title">
+
+                            <div class="notice-icon">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ announcement.title }}
+                                </strong>
+
+                                <small>
+                                    Published: {{ announcement.publish_date|date:"d M Y" }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if announcement.priority == "Urgent" %}
+
+                            <span class="priority priority-urgent">
+                                Urgent
+                            </span>
+
+                        {% elif announcement.priority == "Important" %}
+
+                            <span class="priority priority-important">
+                                Important
+                            </span>
+
+                        {% else %}
+
+                            <span class="priority priority-normal">
+                                Normal
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="notice-message">
+                        {{ announcement.message|truncatechars:140 }}
+                    </div>
+
+
+                    <div class="notice-footer">
+
+                        <span class="audience">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            {{ announcement.audience }}
+
+                        </span>
+
+                        <span class="notice-date">
+
+                            {% if announcement.expiry_date %}
+                                Expires {{ announcement.expiry_date|date:"d M Y" }}
+                            {% else %}
+                                No expiry date
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {% empty %}
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-bell-slash"></i>
+                    </div>
+
+                    <strong>No announcements.</strong>
+
+                    Published notices will appear here.
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "student/base.html" %}
+
+{% block title %}Submit Assignment{% endblock %}
+
+{% block content %}
+
+<style>
+    .student-submit-page {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .student-submit-hero {
+        background: #130e70;
+        color: #fff;
+        padding: 27px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .student-submit-hero h2 {
+        margin: 0 0 5px;
+        font-size: 24px;
+    }
+
+    .student-submit-hero p {
+        margin: 0;
+        font-size: 13px;
+        opacity: .9;
+    }
+
+    .student-submit-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: none;
+    }
+
+    .student-submit-card h3 {
+        color: #130e70;
+        font-size: 16px;
+        margin: 0 0 18px;
+    }
+
+    .student-assignment-grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .student-assignment-info {
+        background: #f4f9fb;
+        border: 1px solid #dceef2;
+        border-radius: 8px;
+        padding: 13px;
+    }
+
+    .student-assignment-info small {
+        display: block;
+        color: #9097a6;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .student-assignment-info strong {
+        color: #202535;
+        font-size: 13px;
+    }
+
+    .student-file-label {
+        display: block;
+        color: #202535;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .student-file-input {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box;
+        border: 1px solid #dfe4eb;
+        border-radius: 6px;
+        font-family: "Poppins", sans-serif;
+        background: #fafbfd;
+    }
+
+    .student-submit-btn {
+        margin-top: 18px;
+        border: none;
+        background: #130e70;
+        color: #fff;
+        padding: 11px 22px;
+        border-radius: 6px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    @media(max-width:600px) {
+        .student-assignment-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="student-submit-page">
+
+    <div class="student-submit-hero">
+        <h2>Submit Assignment</h2>
+        <p>Upload your assignment file before the submission deadline.</p>
+    </div>
+
+    <div class="student-submit-card">
+
+        <h3>
+            <i class="fa-solid fa-file-pen"></i>
+            {{ assignment.title }}
+        </h3>
+
+        <div class="student-assignment-grid">
+
+            <div class="student-assignment-info">
+                <small>Course</small>
+                <strong>{{ assignment.course }}</strong>
+            </div>
+
+            <div class="student-assignment-info">
+                <small>Subject</small>
+                <strong>{{ assignment.subject }}</strong>
+            </div>
+
+            <div class="student-assignment-info">
+                <small>Due Date</small>
+                <strong>{{ assignment.due_date }}</strong>
+            </div>
+
+            <div class="student-assignment-info">
+                <small>Total Marks</small>
+                <strong>{{ assignment.total_marks }}</strong>
+            </div>
+
+        </div>
+
+        {% if assignment.instructions %}
+            <div class="student-assignment-info"
+                 style="margin-bottom:20px;">
+                <small>Instructions</small>
+                <strong>{{ assignment.instructions }}</strong>
+            </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label class="student-file-label">
+                Select Assignment File
+            </label>
+
+            <input
+                type="file"
+                name="submitted_file"
+                class="student-file-input"
+                required
+            >
+
+            <button type="submit" class="student-submit-btn">
+                <i class="fa-solid fa-upload"></i>
+                Submit Assignment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

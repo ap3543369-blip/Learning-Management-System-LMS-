@@ -1,0 +1,273 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}All Submissions{% endblock %}
+
+{% block content %}
+
+<style>
+    .submission-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 0 40px;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .submission-hero {
+        background: #661620;
+        border-radius: 10px;
+        padding: 28px 32px;
+        color: #fff;
+        margin-bottom: 22px;
+        box-shadow: none;
+    }
+
+    .submission-hero h2 {
+        margin: 0 0 6px;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .submission-hero p {
+        margin: 0;
+        font-size: 13px;
+        opacity: .9;
+    }
+
+    .submission-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: none;
+        margin-bottom: 15px;
+    }
+
+    .submission-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .submission-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #661620;
+        margin: 0;
+    }
+
+    .submission-id {
+        font-size: 13px;
+        color: #999;
+    }
+
+    .submission-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    .submission-info {
+        background: #fafafa;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 13px;
+    }
+
+    .submission-info label {
+        display: block;
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 5px;
+        text-transform: none;
+    }
+
+    .submission-info span {
+        font-size: 13px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .submission-bottom {
+        margin-top: 17px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status {
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status-submitted {
+        background: #fff4df;
+        color: #a56a00;
+    }
+
+    .status-evaluated {
+        background: #e8f8ee;
+        color: #198754;
+    }
+
+    .marks {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .review-btn {
+        text-decoration: none;
+        background: #661620;
+        color: #fff;
+        padding: 9px 17px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .review-btn:hover {
+        color: #fff;
+        opacity: .9;
+    }
+
+    .empty-box {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-box i {
+        font-size: 40px;
+        margin-bottom: 12px;
+        color: #bbb;
+    }
+
+    @media(max-width: 900px) {
+        .submission-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media(max-width: 600px) {
+        .submission-page {
+            padding: 15px;
+        }
+
+        .submission-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .submission-top,
+        .submission-bottom {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="submission-page">
+
+    <div class="submission-hero">
+        <h2>Assignment Submissions</h2>
+        <p>View, review and evaluate student assignment submissions.</p>
+    </div>
+
+    {% if submissions %}
+
+        {% for submission in submissions %}
+
+        <div class="submission-card">
+
+            <div class="submission-top">
+                <div>
+                    <h3 class="submission-title">
+                        {{ submission.task.title }}
+                    </h3>
+
+                    <div class="submission-id">
+                        Submission #{{ submission.id }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="submission-grid">
+
+                <div class="submission-info">
+                    <label>Student</label>
+                    <span>
+                        {{ submission.student.get_full_name|default:submission.student.username }}
+                    </span>
+                </div>
+
+                <div class="submission-info">
+                    <label>Course</label>
+                    <span>{{ submission.task.course }}</span>
+                </div>
+
+                <div class="submission-info">
+                    <label>Subject</label>
+                    <span>{{ submission.task.subject }}</span>
+                </div>
+
+                <div class="submission-info">
+                    <label>Submitted On</label>
+                    <span>{{ submission.dos }}</span>
+                </div>
+
+            </div>
+
+            <div class="submission-bottom">
+
+                <div>
+                    {% if submission.status == "Evaluated" %}
+                        <span class="status status-evaluated">
+                            Evaluated
+                        </span>
+                    {% else %}
+                        <span class="status status-submitted">
+                            Submitted
+                        </span>
+                    {% endif %}
+
+                    <span class="marks">
+                        &nbsp; Marks:
+                        {{ submission.marks }}/{{ submission.task.total_marks }}
+                    </span>
+                </div>
+
+                <a href="{% url 'teacher_review_submission' submission.id %}"
+                   class="review-btn">
+                    <i class="fa-solid fa-eye"></i>
+                    Review
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="submission-card">
+            <div class="empty-box">
+                <i class="fa-solid fa-file-circle-xmark"></i>
+                <h3>No Submissions Found</h3>
+                <p>No student has submitted any assignment yet.</p>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

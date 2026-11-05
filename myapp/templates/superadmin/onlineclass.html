@@ -1,0 +1,900 @@
+{% extends "superadmin/base.html" %}
+
+{% block title %}Schedule Google Meet Class | NOU e-Gyan{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    /* =====================================================
+       SCHEDULE MEETING PAGE
+    ====================================================== */
+
+    .schedule-meet-page {
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
+        font-family: "Poppins", sans-serif;
+        color: #302527;
+    }
+
+    /* =====================================================
+       HERO HEADER
+    ====================================================== */
+
+    .schedule-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 28px 30px;
+        margin-bottom: 22px;
+        border-radius: 10px;
+        color: #fff;
+        background: #661620;
+        box-shadow: none;
+    }
+
+    .schedule-hero::before {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        border-radius: 50%;
+        right: -70px;
+        top: -110px;
+        background: rgba(255,255,255,0.06);
+    }
+
+    .schedule-hero::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        right: 150px;
+        bottom: -100px;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .schedule-hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .schedule-hero-icon {
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.14);
+        font-size: 24px;
+    }
+
+    .schedule-hero-text h1 {
+        margin: 0 0 5px;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .schedule-hero-text p {
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.88;
+    }
+
+
+    /* =====================================================
+       GOOGLE CONNECTION CARD
+    ====================================================== */
+
+    .google-connect-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 19px 21px;
+        margin-bottom: 22px;
+        border: 1px solid #eadfe1;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .google-connect-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .google-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        border-radius: 8px;
+        background: #f8e8ea;
+        color: #851f28;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .google-connect-info h3 {
+        margin: 0 0 3px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #302527;
+    }
+
+    .google-connect-info p {
+        margin: 0;
+        font-size: 13px;
+        color: #918286;
+    }
+
+    .google-connect-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 10px 17px;
+        border-radius: 6px;
+        border: 1px solid #d8c5c8;
+        background: #fff;
+        color: #851f28;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.25s;
+        white-space: nowrap;
+    }
+
+    .google-connect-btn:hover {
+        color: #661620;
+        background: #fff7f7;
+        border-color: #bfa0a5;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       FORM CARD
+    ====================================================== */
+
+    .meeting-form-card {
+        background: #fff;
+        border: 1px solid #eee5e6;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: none;
+    }
+
+    .meeting-form-header {
+        padding: 21px 24px;
+        border-bottom: 1px solid #eee7e8;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .meeting-form-header-icon {
+        width: 43px;
+        height: 43px;
+        border-radius: 8px;
+        background: #f8e8ea;
+        color: #851f28;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .meeting-form-header h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #302527;
+    }
+
+    .meeting-form-header p {
+        margin: 3px 0 0;
+        font-size: 13px;
+        color: #918286;
+    }
+
+
+    /* =====================================================
+       FORM BODY
+    ====================================================== */
+
+    .meeting-form-body {
+        padding: 26px 27px 28px;
+    }
+
+    .meeting-form-body *,
+    .meeting-form-body *::before,
+    .meeting-form-body *::after {
+        box-sizing: border-box;
+    }
+
+    .meeting-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 22px;
+        row-gap: 19px;
+    }
+
+    .meeting-form-group {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meeting-form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .meeting-form-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 8px;
+        color: #493b3e;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .required-star {
+        color: #b4232f;
+        font-size: 13px;
+    }
+
+    .meeting-input,
+    .meeting-select,
+    .meeting-textarea {
+        width: 100%;
+        min-width: 0;
+        outline: none;
+        border: 1px solid #ddd1d3;
+        border-radius: 8px;
+        background: #fff;
+        color: #35292b;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        transition: 0.22s;
+    }
+
+    .meeting-input,
+    .meeting-select {
+        height: 48px;
+        padding: 0 14px;
+    }
+
+    .meeting-textarea {
+        min-height: 130px;
+        padding: 13px 14px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .meeting-input::placeholder,
+    .meeting-textarea::placeholder {
+        color: #a09598;
+    }
+
+    .meeting-input:hover,
+    .meeting-select:hover,
+    .meeting-textarea:hover {
+        border-color: #cbb9bc;
+    }
+
+    .meeting-input:focus,
+    .meeting-select:focus,
+    .meeting-textarea:focus {
+        border-color: #851f28;
+        box-shadow: 0 0 0 3px rgba(133,31,40,0.08);
+    }
+
+    .meeting-input[readonly] {
+        background: #faf7f7;
+        color: #66575a;
+        cursor: default;
+    }
+
+    .field-hint {
+        margin-top: 6px;
+        color: #988a8d;
+        font-size: 13px;
+    }
+
+
+    
+
+
+    /* =====================================================
+       FORM FOOTER
+    ====================================================== */
+
+    .meeting-form-footer {
+        margin-top: 26px;
+        padding-top: 21px;
+        border-top: 1px solid #eee7e8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .form-footer-note {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #928487;
+        font-size: 13px;
+    }
+
+    .form-footer-note i {
+        color: #851f28;
+    }
+
+    .meeting-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .meeting-btn {
+        min-height: 43px;
+        padding: 10px 17px;
+        border-radius: 6px;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: 0.22s;
+    }
+
+    .meeting-btn-primary {
+        border: none;
+        color: #fff;
+        background: #661620;
+        box-shadow: none;
+    }
+
+    .meeting-btn-primary:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: none;
+    }
+
+    .meeting-btn-secondary {
+        border: 1px solid #ded2d4;
+        color: #6d5d60;
+        background: #fff;
+    }
+
+    .meeting-btn-secondary:hover {
+        color: #661620;
+        background: #fff8f8;
+        border-color: #cbb5b8;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 850px) {
+
+        .meeting-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .meeting-form-group.full-width {
+            grid-column: auto;
+        }
+
+    }
+
+
+    @media (max-width: 768px) {
+
+        .schedule-hero {
+            padding: 23px 20px;
+        }
+
+        .schedule-hero-icon {
+            width: 49px;
+            height: 49px;
+            min-width: 49px;
+            font-size: 20px;
+        }
+
+        .schedule-hero-text h1 {
+            font-size: 20px;
+        }
+
+        .schedule-hero-text p {
+            line-height: 1.5;
+        }
+
+        .google-connect-card {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 17px;
+        }
+
+        .google-connect-btn {
+            width: 100%;
+        }
+
+        .meeting-form-header {
+            padding: 18px;
+        }
+
+        .meeting-form-body {
+            padding: 20px 18px 22px;
+        }
+
+        .meeting-form-footer {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .form-footer-note {
+            align-items: flex-start;
+        }
+
+        .meeting-actions {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .meeting-btn {
+            width: 100%;
+        }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+        .schedule-hero-content {
+            align-items: flex-start;
+        }
+
+        .meeting-form-grid {
+            row-gap: 16px;
+        }
+
+        .meeting-input,
+        .meeting-select {
+            height: 46px;
+        }
+
+        .meeting-textarea {
+            min-height: 115px;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<section class="schedule-meet-page">
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <div class="schedule-hero">
+
+        <div class="schedule-hero-content">
+
+            <div class="schedule-hero-icon">
+                <i class="fa-solid fa-video"></i>
+            </div>
+
+            <div class="schedule-hero-text">
+
+                <h1>Schedule Google Meet Class</h1>
+
+                <p>
+                    Create and schedule an online class for students and teachers.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         GOOGLE MEET CONNECTION
+    ================================================== -->
+
+    <div class="google-connect-card">
+
+        <div class="google-connect-info">
+
+            <div class="google-icon">
+                <i class="fa-brands fa-google"></i>
+            </div>
+
+            <div>
+
+                <h3>Connect Google Meet</h3>
+
+                <p>
+                    Connect your Google account before scheduling an online class.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'google_login' %}"
+            class="google-connect-btn"
+        >
+
+            <i class="fa-solid fa-link"></i>
+
+            Connect Google Meet
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         FORM CARD
+    ================================================== -->
+
+    <div class="meeting-form-card">
+
+        <!-- FORM HEADER -->
+
+        <div class="meeting-form-header">
+
+            <div class="meeting-form-header-icon">
+                <i class="fa-solid fa-calendar-plus"></i>
+            </div>
+
+            <div>
+
+                <h2>Class Information</h2>
+
+                <p>
+                    Enter the details required to schedule your online class.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM BODY -->
+
+        <div class="meeting-form-body">
+
+            <form
+                method="POST"
+                action="{% url 'schedule_meeting' %}"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="meeting-form-grid">
+
+                    <!-- CLASS TITLE -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="class_title"
+                        >
+                            
+                            Class Title
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            class="meeting-input"
+                            type="text"
+                            id="class_title"
+                            name="class_title"
+                            maxlength="200"
+                            placeholder="e.g. Python Functions - Live Class"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- COURSE -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="course"
+                        >
+                            Course
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            class="meeting-select"
+                            id="course"
+                            name="course"
+                            required
+                        >
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+                            {% for item in courses %}
+
+                            <option value="{{ item.course_name }}">
+                                {{ item.course_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="subject"
+                        >
+                            Subject
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            class="meeting-select"
+                            id="subject"
+                            name="subject"
+                            required
+                        >
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+                            {% for item in subjects %}
+
+                            <option value="{{ item.subject_name }}">
+                                {{ item.subject_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TEACHER -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="teacher"
+                        >
+                            Teacher
+                            <span class="required-star">*</span>
+                        </label>
+
+
+                        {% if fixed_teacher %}
+
+                            <input
+                                class="meeting-input"
+                                type="text"
+                                id="teacher_display"
+                                value="{{ fixed_teacher.get_full_name|default:fixed_teacher.username }}"
+                                readonly
+                            />
+
+                            <span class="field-hint">
+                                Teacher is automatically assigned.
+                            </span>
+
+                        {% else %}
+
+                            <select
+                                class="meeting-select"
+                                id="teacher"
+                                name="teacher"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Teacher
+                                </option>
+
+                                {% for item in teachers %}
+
+                                <option value="{{ item.user_id }}">
+                                    {{ item.user.username }}
+                                    ({{ item.user.email|default:item.email }})
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="class_date"
+                        >
+                            Class Date
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            class="meeting-input"
+                            type="date"
+                            id="class_date"
+                            name="class_date"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- TIME -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="class_time"
+                        >
+                            Class Time
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            class="meeting-input"
+                            type="time"
+                            id="class_time"
+                            name="class_time"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- DURATION -->
+
+                    <div class="meeting-form-group">
+
+                        <label
+                            class="meeting-form-label"
+                            for="duration"
+                        >
+                            Duration
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            class="meeting-input"
+                            type="number"
+                            id="duration"
+                            name="duration"
+                            value="60"
+                            min="1"
+                            placeholder="Enter duration"
+                            required
+                        />
+
+                        <span class="field-hint">
+                            Duration in minutes.
+                        </span>
+
+                    </div>
+
+
+                    <!-- AGENDA -->
+
+                    <div class="meeting-form-group full-width">
+
+                        <label
+                            class="meeting-form-label"
+                            for="agenda"
+                        >
+                            Class Agenda
+                        </label>
+
+                        <textarea
+                            class="meeting-textarea"
+                            id="agenda"
+                            name="agenda"
+                            placeholder="Enter the topics or activities to be covered in this class..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORM FOOTER -->
+
+                <div class="meeting-form-footer">
+
+                    <div class="form-footer-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            Please verify the class date, time and teacher before scheduling.
+                        </span>
+
+                    </div>
+
+
+                    <div class="meeting-actions">
+
+                        <button
+                            type="submit"
+                            class="meeting-btn meeting-btn-primary"
+                        >
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                            Schedule Google Meet Class
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

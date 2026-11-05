@@ -1,0 +1,223 @@
+{% extends "student/base.html" %}
+
+{% block title %}My Submissions{% endblock %}
+
+{% block content %}
+
+<style>
+    .student-my-submission {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .student-my-hero {
+        background: #130e70;
+        color: #fff;
+        padding: 27px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .student-my-hero h2 {
+        margin: 0 0 5px;
+        font-size: 24px;
+    }
+
+    .student-my-hero p {
+        margin: 0;
+        font-size: 13px;
+        opacity: .9;
+    }
+
+    .student-submission-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 14px;
+        box-shadow: none;
+    }
+
+    .student-submission-card h3 {
+        margin: 0;
+        color: #130e70;
+        font-size: 16px;
+    }
+
+    .student-submission-grid {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 13px;
+        margin-top: 15px;
+    }
+
+    .student-submission-info {
+        background: #f4f9fb;
+        border: 1px solid #dceef2;
+        border-radius: 6px;
+        padding: 12px;
+    }
+
+    .student-submission-info small {
+        display: block;
+        color: #9097a6;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .student-submission-info strong {
+        color: #202535;
+        font-size: 13px;
+    }
+
+    .student-status {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .student-pending {
+        background: #fff4df;
+        color: #a56a00;
+    }
+
+    .student-evaluated {
+        background: #e7f8ee;
+        color: #198754;
+    }
+
+    .student-file-link {
+        float: right;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #168ea6;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .student-empty {
+        text-align: center;
+        padding: 60px 20px;
+        color: #9097a6;
+    }
+
+    .student-empty i {
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
+
+    @media(max-width:800px) {
+        .student-submission-grid {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @media(max-width:550px) {
+        .student-submission-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="student-my-submission">
+
+    <div class="student-my-hero">
+        <h2>My Submissions</h2>
+        <p>View your submitted assignments, marks and evaluation status.</p>
+    </div>
+
+    {% if submissions %}
+
+        {% for submission in submissions %}
+
+        <div class="student-submission-card">
+
+            <h3>
+                {{ submission.task.title }}
+            </h3>
+
+            <div class="student-submission-grid">
+
+                <div class="student-submission-info">
+                    <small>Course</small>
+                    <strong>{{ submission.task.course }}</strong>
+                </div>
+
+                <div class="student-submission-info">
+                    <small>Subject</small>
+                    <strong>{{ submission.task.subject }}</strong>
+                </div>
+
+                <div class="student-submission-info">
+                    <small>Submitted On</small>
+                    <strong>{{ submission.dos }}</strong>
+                </div>
+
+                <div class="student-submission-info">
+                    <small>Marks</small>
+                    <strong>
+                        {{ submission.marks }}/{{ submission.task.total_marks }}
+                    </strong>
+                </div>
+
+            </div>
+
+            {% if submission.status == "Evaluated" %}
+
+                <span class="student-status student-evaluated">
+                    <i class="fa-solid fa-check"></i>
+                    Evaluated
+                </span>
+
+            {% else %}
+
+                <span class="student-status student-pending">
+                    <i class="fa-solid fa-clock"></i>
+                    Pending Evaluation
+                </span>
+
+            {% endif %}
+
+            {% if submission.submitted_file %}
+                <a href="{{ submission.submitted_file.url }}"
+                   target="_blank"
+                   class="student-file-link">
+                    <i class="fa-solid fa-file"></i>
+                    View Submitted File
+                </a>
+            {% endif %}
+
+            <div style="clear:both;"></div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="student-submission-card">
+
+            <div class="student-empty">
+
+                <i class="fa-solid fa-file-circle-xmark"></i>
+
+                <h3>No Submission Found</h3>
+
+                <p>
+                    You have not submitted any assignment yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

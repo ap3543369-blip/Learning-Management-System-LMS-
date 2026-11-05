@@ -1,0 +1,1216 @@
+{% extends 'superadmin/base.html' %}
+
+{% block title %}View Students | NOU e-Gyan{% endblock %}
+
+{% block page_title %}View Students{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   STUDENT PAGE
+========================================================= */
+
+.student-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.student-hero {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background: #661620;
+
+    box-shadow: none;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.student-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -190px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 50%;
+
+    box-shadow:
+        none;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.hero-eyebrow span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0;
+
+    white-space: nowrap;
+}
+
+.student-hero h1 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+.student-hero p {
+    margin: 8px 0 18px;
+
+    font-size: 13px;
+    opacity: .86;
+
+    position: relative;
+    z-index: 2;
+}
+
+.session-tag {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.14);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   STUDENT CARD
+========================================================= */
+
+.student-section {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #ece4df;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-head {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.section-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 16px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    color: #381b1b;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.section-title p {
+    margin: 4px 0 0;
+
+    color: #8b7772;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.add-btn {
+    height: 42px;
+
+    padding: 0 17px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #851f28;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: .2s ease;
+}
+
+.add-btn:hover {
+    background: #6d1820;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap {
+    width: 100%;
+
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+.student-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    table-layout: auto;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.student-table th {
+    padding: 13px 10px;
+
+    text-align: left;
+
+    color: #806b66;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-transform: none;
+
+    letter-spacing: 0;
+
+    background: #faf7f5;
+
+    border-bottom: 1px solid #eee5e0;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.student-table td {
+    padding: 14px 10px;
+
+    color: #5c4945;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #f1eae6;
+
+    vertical-align: middle;
+}
+
+.student-table tbody tr {
+    transition: .2s ease;
+}
+
+.student-table tbody tr:hover {
+    background: #fffaf8;
+}
+
+.student-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   COLUMN WIDTH
+========================================================= */
+
+.student-table th:nth-child(1),
+.student-table td:nth-child(1) {
+    width: 40px;
+}
+
+.student-table th:nth-child(2),
+.student-table td:nth-child(2) {
+    width: 90px;
+}
+
+.student-table th:nth-child(3),
+.student-table td:nth-child(3) {
+    width: 145px;
+}
+
+.student-table th:nth-child(4),
+.student-table td:nth-child(4) {
+    width: 170px;
+}
+
+.student-table th:nth-child(5),
+.student-table td:nth-child(5) {
+    width: 170px;
+}
+
+.student-table th:nth-child(6),
+.student-table td:nth-child(6) {
+    width: 90px;
+}
+
+.student-table th:nth-child(7),
+.student-table td:nth-child(7) {
+    width: 95px;
+}
+
+.student-table th:nth-child(8),
+.student-table td:nth-child(8) {
+    width: 95px;
+}
+
+.student-table th:nth-child(9),
+.student-table td:nth-child(9) {
+    width: 85px;
+}
+
+.student-table th:nth-child(10),
+.student-table td:nth-child(10) {
+    width: 140px;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.number-badge {
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #f7eee9;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ENROLLMENT
+========================================================= */
+
+.enrollment-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #f5f0ed;
+
+    color: #6e252b;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   STUDENT NAME
+========================================================= */
+
+.student-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 0;
+}
+
+.student-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f8eee9;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.student-name strong {
+    display: block;
+
+    color: #382020;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   EMAIL
+========================================================= */
+
+.email-text {
+    color: #6b5853;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.course-info {
+    min-width: 130px;
+}
+
+.course-code {
+    display: block;
+
+    color: #851f28;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    margin-bottom: 3px;
+}
+
+.course-name {
+    display: block;
+
+    color: #5c4945;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+.session-badge {
+    display: inline-flex;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #f8eee9;
+
+    color: #684f49;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SEMESTER
+========================================================= */
+
+.semester-badge {
+    display: inline-flex;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #faf4e8;
+
+    color: #795b22;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   USERNAME
+========================================================= */
+
+.username-text {
+    color: #5c4945;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.status-active {
+    color: #24733d;
+
+    background: #edf8f0;
+}
+
+.status-active .status-dot {
+    background: #35a853;
+}
+
+.status-inactive {
+    color: #9a3e3e;
+
+    background: #fff0f0;
+}
+
+.status-inactive .status-dot {
+    background: #d95353;
+}
+
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+.actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+.action-btn {
+    height: 32px;
+
+    padding: 0 10px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: .2s ease;
+}
+
+.edit-btn {
+    color: #795b22;
+
+    background: #fff8e8;
+
+    border: 1px solid #f4e7ca;
+}
+
+.edit-btn:hover {
+    background: #fff0cc;
+}
+
+.delete-btn {
+    color: #a13c3c;
+
+    background: #fff0f0;
+
+    border: 1px solid #f2dcdc;
+}
+
+.delete-btn:hover {
+    background: #ffe1e1;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-box {
+    padding: 50px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f8eee9;
+
+    color: #a99690;
+
+    font-size: 20px;
+}
+
+.empty-box strong {
+    display: block;
+
+    color: #493532;
+
+    font-size: 13px;
+}
+
+.empty-box span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #9a8883;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .student-section {
+        padding: 22px;
+    }
+
+    .student-table th,
+    .student-table td {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .student-table th {
+        font-size: 13px;
+    }
+
+    .student-table td {
+        font-size: 13px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .student-hero {
+        padding: 25px;
+    }
+
+    .student-hero h1 {
+        font-size: 24px;
+    }
+
+    .student-section {
+        padding: 18px;
+    }
+
+    /*
+       On smaller screens allow table scrolling
+       only when absolutely necessary.
+    */
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    .student-table {
+        min-width: 1050px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .student-hero {
+        padding: 22px;
+    }
+
+    .student-hero h1 {
+        font-size: 20px;
+    }
+
+    .hero-eyebrow {
+        flex-wrap: wrap;
+    }
+
+    .section-head {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+
+<div class="student-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="student-hero">
+
+        <div class="hero-eyebrow">
+
+            <span>
+                ACADEMIC ERP
+            </span>
+
+            <span>
+                SESSION 2026-2027
+            </span>
+
+        </div>
+
+
+        <h1>
+            Student Directory
+        </h1>
+
+
+        <p>
+            View all enrolled students with course and login information.
+        </p>
+
+
+        <span class="session-tag">
+            SESSION 2026-2027
+        </span>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STUDENT SECTION
+    ====================================================== -->
+
+    <section class="student-section">
+
+
+        <div class="section-head">
+
+
+            <div class="section-title">
+
+
+                <div class="section-icon">
+
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Students
+                    </h2>
+
+                    <p>
+                        View and manage all registered students.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <a
+                href="{% url 'addstudent' %}"
+                class="add-btn"
+            >
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Add Student
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             TABLE
+        ================================================== -->
+
+        <div class="table-wrap">
+
+            <table class="student-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Enrollment</th>
+
+                        <th>Name</th>
+
+                        <th>Email</th>
+
+                        <th>Course</th>
+
+                        <th>Session</th>
+
+                        <th>Semester</th>
+
+                        <th>Username</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for student in students %}
+
+                    <tr>
+
+
+                        <!-- NUMBER -->
+
+                        <td>
+
+                            <span class="number-badge">
+
+                                {{ forloop.counter }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- ENROLLMENT -->
+
+                        <td>
+
+                            <span class="enrollment-badge">
+
+                                {{ student.Enrollment_no }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <div class="student-name">
+
+                                <div>
+
+                                    <strong>
+                                        {{ student.name }}
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <span class="email-text">
+
+                                {{ student.email }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- COURSE -->
+
+                        <td>
+
+                            <div class="course-info">
+
+
+                                <span class="course-code">
+
+                                    {{ student.course }}
+
+                                </span>
+
+
+                                {% if student.course_name %}
+
+                                <span class="course-name">
+
+                                    {{ student.course_name }}
+
+                                </span>
+
+                                {% endif %}
+
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- SESSION -->
+
+                        <td>
+
+                            <span class="session-badge">
+
+                                {{ student.session }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- SEMESTER -->
+
+                        <td>
+
+                            <span class="semester-badge">
+
+                                {{ student.sem }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- USERNAME -->
+
+                        <td>
+
+                            <span class="username-text">
+
+                                {{ student.username }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if student.status == "Active" %}
+
+                            <span class="status status-active">
+
+                                <span class="status-dot"></span>
+
+                                Active
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="status status-inactive">
+
+                                <span class="status-dot"></span>
+
+                                Inactive
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <div class="actions">
+
+
+                                <a href="{% url 'editstudent' student.Enrollment_no %}"
+                                    class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </a>
+
+
+                                <a
+                                    href="{% url 'deletestudent' student.Enrollment_no %}"
+                                    class="action-btn delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this student?');"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                    Delete
+
+                                </a>
+
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <tr>
+
+                        <td colspan="10">
+
+                            <div class="empty-box">
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-solid fa-user-graduate"></i>
+
+                                </div>
+
+
+                                <strong>
+                                    No students found
+                                </strong>
+
+
+                                <span>
+                                    Add a student to see the student directory.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

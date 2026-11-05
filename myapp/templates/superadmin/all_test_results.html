@@ -1,0 +1,471 @@
+{% extends "superadmin/base.html" %}
+
+{% block title %}Test Results{% endblock %}
+
+{% block content %}
+
+<style>
+    .test-result-page {
+        font-family: "Poppins", sans-serif;
+        padding: 24px;
+        color: #202535;
+    }
+
+    /* HERO */
+    .test-result-hero {
+        background: #661620;
+        border-radius: 10px;
+        padding: 27px 30px;
+        color: white;
+        margin-bottom: 22px;
+        box-shadow: none;
+    }
+
+    .test-result-hero h1 {
+        margin: 0 0 5px;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .test-result-hero p {
+        margin: 0;
+        font-size: 13px;
+        opacity: .9;
+    }
+
+    /* SUMMARY */
+    .result-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .result-summary-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 17px;
+        box-shadow: none;
+    }
+
+    .result-summary-card small {
+        display: block;
+        color: #9097a6;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .result-summary-card h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #661620;
+    }
+
+    /* MAIN CARD */
+    .result-table-card {
+        background: #fff;
+        border: 1px solid #e5e8ee;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    .result-table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .result-table-header h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .result-count {
+        background: #fff4f5;
+        color: #851f28;
+        border: 1px solid #f0d5d8;
+        padding: 6px 11px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .result-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .result-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 950px;
+    }
+
+    .result-table th {
+        background: #f8f3f4;
+        color: #666d79;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: left;
+        padding: 12px 13px;
+        border-bottom: 1px solid #e5e8ee;
+        white-space: nowrap;
+    }
+
+    .result-table td {
+        padding: 13px;
+        font-size: 13px;
+        color: #4e5665;
+        border-bottom: 1px solid #edf0f3;
+        vertical-align: middle;
+    }
+
+    .result-table tbody tr {
+        transition: .2s ease;
+    }
+
+    .result-table tbody tr:hover {
+        background: #fffafb;
+    }
+
+    .result-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* STUDENT */
+    .student-cell {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .student-avatar {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        border-radius: 6px;
+        background: #661620;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+    }
+
+    .student-name {
+        font-weight: 600;
+        color: #303744;
+    }
+
+    .student-enrollment {
+        display: block;
+        font-size: 13px;
+        color: #9097a6;
+        margin-top: 2px;
+    }
+
+    /* TEST */
+    .test-title {
+        font-weight: 600;
+        color: #303744;
+    }
+
+    .test-course {
+        display: block;
+        color: #9097a6;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+
+    /* MARKS */
+    .marks {
+        font-weight: 600;
+        color: #661620;
+    }
+
+    .percentage {
+        font-weight: 600;
+        color: #851f28;
+    }
+
+    /* STATUS */
+    .result-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 9px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .result-pass {
+        color: #087f5b;
+        background: #eafaf4;
+        border: 1px solid #c9eee0;
+    }
+
+    .result-low {
+        color: #b42318;
+        background: #fff1f0;
+        border: 1px solid #ffd5d1;
+    }
+
+    /* EMPTY */
+    .result-empty {
+        text-align: center;
+        padding: 55px 20px;
+    }
+
+    .result-empty-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        background: #fff4f5;
+        color: #851f28;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .result-empty h3 {
+        margin: 0 0 5px;
+        font-size: 14px;
+    }
+
+    .result-empty p {
+        margin: 0;
+        color: #9097a6;
+        font-size: 13px;
+    }
+
+    @media(max-width: 800px) {
+        .result-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .test-result-page {
+            padding: 15px;
+        }
+
+        .test-result-hero {
+            padding: 22px;
+        }
+
+        .result-table-card {
+            padding: 14px;
+        }
+    }
+</style>
+
+
+<div class="test-result-page">
+
+    <!-- HERO -->
+    <div class="test-result-hero">
+
+        <h1>
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            Test Results
+        </h1>
+
+        <p>
+            View test results and performance of all students.
+        </p>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+    <div class="result-summary">
+
+        <div class="result-summary-card">
+            <small>Total Results</small>
+            <h2>{{ results|length }}</h2>
+        </div>
+
+        <div class="result-summary-card">
+            <small>Students</small>
+            <h2>{{ results|length }}</h2>
+        </div>
+
+        <div class="result-summary-card">
+            <small>Test Records</small>
+            <h2>{{ results|length }}</h2>
+        </div>
+
+    </div>
+
+
+    <!-- RESULTS -->
+    <div class="result-table-card">
+
+        <div class="result-table-header">
+
+            <h2>
+                <i class="fa-solid fa-list-check"
+                   style="color:#851f28;"></i>
+                All Student Results
+            </h2>
+
+            <div class="result-count">
+                {{ results|length }} Records
+            </div>
+
+        </div>
+
+
+        {% if results %}
+
+        <div class="result-table-wrapper">
+
+            <table class="result-table">
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Student</th>
+                        <th>Test</th>
+                        <th>Subject</th>
+                        <th>Course</th>
+                        <th>Obtained</th>
+                        <th>Total Marks</th>
+                        <th>Percentage</th>
+            
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for result in results %}
+
+                    <tr>
+
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+
+
+                        <!-- STUDENT -->
+                        <td>
+
+                            <div class="student-cell">
+
+                                <div class="student-avatar">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+
+                                <div>
+
+                                    <div class="student-name">
+                                        {{ result.student.get_full_name|default:result.student.username }}
+                                    </div>
+
+                                    <span class="student-enrollment">
+                                        {{ result.student.username }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- TEST -->
+                        <td>
+
+                            <div class="test-title">
+                                {{ result.test.test_title }}
+                            </div>
+
+                            <span class="test-course">
+                                {{ result.test.test_date|date:"d M Y" }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- SUBJECT -->
+                        <td>
+                            {{ result.test.subject }}
+                        </td>
+
+
+                        <!-- COURSE -->
+                        <td>
+                            {{ result.test.course }}
+                        </td>
+
+
+                        <!-- OBTAINED -->
+                        <td>
+
+                            <span class="marks">
+                                {{ result.obtained_marks }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- TOTAL -->
+                        <td>
+                            {{ result.test.total_marks }}
+                        </td>
+
+
+                        <!-- PERCENTAGE -->
+                        <td>
+
+                            {% widthratio result.obtained_marks result.test.total_marks 100 as percentage %}
+
+                            <span class="percentage">
+                                {{ percentage }}%
+                            </span>
+
+                        </td>
+
+
+                        
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="result-empty">
+
+            <div class="result-empty-icon">
+                <i class="fa-solid fa-chart-column"></i>
+            </div>
+
+            <h3>No Test Results</h3>
+
+            <p>
+                Student test results will appear here after tests are submitted.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
